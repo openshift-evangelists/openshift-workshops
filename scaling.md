@@ -181,4 +181,4 @@ More information on liveness and readiness is available in the [Application
 Health](https://docs.openshift.org/latest/dev_guide/application_health.html)
 section of the documentation.
 
-**[End of Lab 6](/)**
+**[End of Lab](/)**

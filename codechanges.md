@@ -133,4 +133,4 @@ the automatic deployments run this:
 $ oc deploy openshift3mlbparks --enable-triggers
 ````
 
-**[End of Lab 9](/)**
+**[End of Lab](/)**

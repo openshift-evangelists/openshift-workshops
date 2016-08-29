@@ -55,4 +55,4 @@ platform has failed to create new pods due to reaching a limit of 5 Pods.
 ![ResourceQuota](images/quota-5.png)
 
 
-**[End of Lab 11](/)**
+**[End of Lab](/)**

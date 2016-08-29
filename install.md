@@ -124,4 +124,4 @@ You should see the following (or something similar):
 If you get an error message, you have not updated your path correctly.  If you
 need help, raise your hand and the instructor will assist.
 
-**[End of Lab 1](/)**
+**[End of Lab](/)**

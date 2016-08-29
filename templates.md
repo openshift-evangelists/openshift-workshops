@@ -84,4 +84,4 @@ resources for our *mlbparks* application.
 http://gitlab.apps.10.2.2.2.xip.io/dev/openshift3mlbparks/raw/master/mlbparks-template.json
 ````
 
-**[End of Lab 10](/)**
+**[End of Lab](/)**

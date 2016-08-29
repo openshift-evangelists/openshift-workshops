@@ -212,4 +212,4 @@ information.
 
 **Note:** You currently can't copy/paste into the terminal.
 
-**[End of Lab 8](/)**
+**[End of Lab](/)**

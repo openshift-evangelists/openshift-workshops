@@ -152,4 +152,4 @@ options.  However, we will be using a mix of command line tooling and the web
 console for the labs.
 
 
-**[End of Lab 2](/)**
+**[End of Lab](/)**

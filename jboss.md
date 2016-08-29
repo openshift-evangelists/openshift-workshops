@@ -185,4 +185,4 @@ because we haven't actually added a database to the application yet.  We will do
 that in the next lab. Congratulations on deploying your first application
 using S2I on the OpenShift Platform!
 
-**[End of Lab 7](/)**
+**[End of Lab](/)**

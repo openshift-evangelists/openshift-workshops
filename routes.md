@@ -53,4 +53,4 @@ Pretty nifty, huh?  This application is now available at the above URL:
 
 ![Route](images/route2.png)
 
-**[End of Lab 4](/)**
+**[End of Lab](/)**

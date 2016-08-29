@@ -80,4 +80,4 @@ $ oc rsh guestbook-1-e83hb ls public
 index.html  script.js   style.css
 ````
 
-**[End of Lab 5](/)**
+**[End of Lab](/)**

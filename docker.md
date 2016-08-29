@@ -356,4 +356,4 @@ only one `guestbook` *Pod* running.  In the next lab, we will learn how to scale
 an application, at which point you will be able to see multiple endpoints
 associated with the `guestbook` *Service*.
 
-**[End of Lab 3](/)**
+**[End of Lab](/)**
