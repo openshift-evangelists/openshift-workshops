@@ -1,4 +1,4 @@
-#** Lab 6: Scaling and Self Healing **
+#** Lab: Scaling and Self Healing **
 
 ###** Background: Deployment Configurations and Replication Controllers **
 

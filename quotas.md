@@ -1,4 +1,4 @@
-#** Lab 11: Quota**
+#** Lab: Quota**
 
 Resource quota enables setting usage limits per project. It allows the admin to
 limit the total number of pods and other type of objects created in a project as
@@ -44,12 +44,13 @@ however the number of pods never reaches to 6.
 
 ![ResourceQuota](images/quota-3.png)
 
-Go to project *Settings* and check out the resource limits. You should see a warning
+Go to project *Resources>Quota* and check out the resource limits. You should see a warning
 triangle near Pods stating you have reached the max limit of 5 Pods in your project.
 
 ![ResourceQuota](images/quota-4.png)
 
-Check out *Browse* > *Events* in your project. You will see an event stating that
+Check out *Monitoring* then *View details* on the right hand side, 
+that shows you the *Events* in your project. You will see an event stating that
 platform has failed to create new pods due to reaching a limit of 5 Pods.
 
 ![ResourceQuota](images/quota-5.png)

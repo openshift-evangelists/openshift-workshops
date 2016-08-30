@@ -1,4 +1,4 @@
-#** Lab 4: Creating Routes by Exposing Services **
+#** Lab: Creating Routes by Exposing Services **
 
 ###** Background: Routes **
 

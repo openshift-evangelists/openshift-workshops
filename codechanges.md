@@ -7,8 +7,8 @@ changes, including from GitHub and GitLab. When a notification is received, a ne
 will be triggered on OpenShift. This allows for automated pipeline of
 code/build/deploy.
 
-In the OpenShift web console, navigate to your *mlbparks* Project, and
-then mouse-over *Browse* and then *Builds*. Click the `openshift3mlbparks`
+In the OpenShift web console, navigate to your *nationalparks* Project, and
+then mouse-over *Browse* and then *Builds*. Click the `openshift3nationalparks`
 build.
 
 On this screen you will see the option to copy the Generic webhook URL as shown
@@ -19,18 +19,14 @@ in the following image:
 Once you have the URL copied to your clipboard, navigate to the code repository
 that you have on your local GitLab:
 
-    http://gitlab.apps.10.2.2.2.xip.io/dev/openshift3mlbparks
+    http://gitlab.apps.10.2.2.2.xip.io/dev/openshift3nationalparks
 
-**NOTE:** The credentials in your local GitLab are username: `dev` and password: `devdevdev`
+**NOTE:** The credentials in your local GitLab are username: `dev` and password: `password`
 
-Click the Settings link on the left hand side of the screen as shown in the
+Click the Settings link on the top right of the screen, and then in the webhooks link as shown in the
 following image:
 
 ![Webhook](images/webhook2.png)
-
-Click the Webhooks link:
-
-![Webhook](images/webhook3.png)
 
 And finally, click on Add webhook.  On this screen, enter the URL you copied to
 your clipboard from the OpenShift web console in the Payload URL box and ensure
@@ -53,13 +49,13 @@ hand corner as shown here:
 Change the following line (line number 34):
 
 ````
-	<h1 id="title">MLB Stadiums on OpenShift 3</h1>
+<h1 id="title">National Parks</h1>
 ````
 
 To
 
 ````
-	<h1 id="title">MLB Stadiums on OpenShift Origin</h1>
+<h1 id="title">National Parks on OpenShift</h1>
 ````
 
 **Note:** Ensure you are changing the h1 on line 34 and not the title element.
@@ -77,9 +73,9 @@ $ oc get builds
 You should see that a new build is running:
 
 ````
-NAME                   TYPE      FROM          STATUS     STARTED       DURATION
-openshift3mlbparks-1   Source    Git@31e4fe0   Complete   3 hours ago   4m6s
-openshift3mlbparks-2   Source    Git@master   Running   1 minute ago   
+NAME                        TYPE      FROM          STATUS     STARTED       DURATION
+openshift3nationalparks-1   Source    Git@31e4fe0   Complete   3 hours ago   4m6s
+openshift3nationalparks-2   Source    Git@master   Running   1 minute ago   
 ````
 
 Once the build and deploy has finished, verify your new Docker image was
@@ -107,19 +103,19 @@ $ oc get dc
 The output will be similar to the following:
 
 ````
-NAME                 REVISION   REPLICAS   TRIGGERED BY
-mongodb              1          1          config,image(mongodb:latest)
-openshift3mlbparks   3          1          config,image(openshift3mlbparks:latest)
+NAME                      REVISION   REPLICAS   TRIGGERED BY
+mongodb                   1          1          config,image(mongodb:latest)
+openshift3nationalparks   3          1          config,image(openshift3nationalparks:latest)
 ````
 
 Now run the following command to rollback the latest code change:
 
 ````
-$ oc rollback openshift3mlbparks
+$ oc rollback openshift3nationalparks
 
-#3 rolled back to openshift3mlbparks-2
-Warning: the following images triggers were disabled: openshift3mlbparks:latest
-   You can re-enable them with: oc deploy openshift3mlbparks --enable-triggers -n mlbparks
+#3 rolled back to openshift3nationalparks-2
+Warning: the following images triggers were disabled: openshift3nationalparks:latest
+   You can re-enable them with: oc deploy openshift3nationalparks --enable-triggers -n nationalparks
 ````
 
 Once the deploy is complete, verify that the page header is reverted to the
@@ -130,7 +126,7 @@ to prevent unwanted deployments soon after the rollback is complete. To re-enabl
 the automatic deployments run this:
 
 ````
-$ oc deploy openshift3mlbparks --enable-triggers
+$ oc deploy openshift3nationalparks --enable-triggers
 ````
 
 **[End of Lab](/)**

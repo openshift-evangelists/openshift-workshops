@@ -1,4 +1,4 @@
-#** Lab 3: Deploy a Docker Image **
+#** Lab: Deploy a Docker Image **
 
 ###** Background: Containers and Pods **
 

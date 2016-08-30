@@ -1,4 +1,4 @@
-#** Lab 5: Remote Operations **
+#** Lab: Remote Operations **
 
 ###** Background **
 

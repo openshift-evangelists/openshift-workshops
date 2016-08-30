@@ -1,4 +1,4 @@
-#** Lab 10: Using Templates**
+#** Lab: Using Templates**
 
 Running all these individual commands can be tedious and error prone.
 Fortunately for you, all of this configuration can be put together into a single
@@ -26,8 +26,8 @@ for the magic to happen, first create a new project and add the template to the
 project:
 
 ````
-$ oc new-project mlbparks-template
-$ oc create -f http://gitlab.apps.10.2.2.2.xip.io/dev/openshift3mlbparks/raw/master/mlbparks-template-wildfly.json
+$ oc new-project nationalparks-template
+$ oc create -f http://gitlab.apps.10.2.2.2.xip.io/dev/openshift3nationalparks/raw/master/nationalparks-template-wildfly.json
 ````
 
 Now we have access to the application template in our project.  As a side note, administrators have the capability to add templates to the general *openshift* project which will in turn provide an application template to any user on the system.
@@ -35,38 +35,44 @@ Now we have access to the application template in our project.  As a side note, 
 Are you ready for the magic command?  Here it is:
 
 ````
-$ oc new-app mlbparks-wildfly --name=mlbparks -p GIT_URI=http://gitlab.apps.10.2.2.2.xip.io/dev/openshift3mlbparks.git -p MAVEN_MIRROR_URL=http://nexus.ci.svc.cluster.local:8081/content/groups/public
+$ oc new-app nationalparks-wildfly --name=nationalparks -p GIT_URI=http://gitlab.apps.10.2.2.2.xip.io/dev/openshift3nationalparks.git -p MAVEN_MIRROR_URL=http://nexus.ci:8081/content/groups/public
 ````
 
 You will see the following output:
 
 ````
---> Deploying template mlbparks-wildfly for "mlbparks-wildfly"
-     With parameters:
-      APPLICATION_NAME=mlbparks
-      APPLICATION_HOSTNAME=
-      GIT_URI=http://gitlab.apps.10.2.2.2.xip.io/dev/openshift3mlbparks.git
-      GIT_REF=master
-      Maven mirror url=http://nexus.ci.svc.cluster.local:8081/content/groups/public
-      MONGODB_DATABASE=root
-      MONGODB_NOPREALLOC=
-      MONGODB_SMALLFILES=
-      MONGODB_QUIET=
-      MONGODB_USER=userPX6 # generated
-      MONGODB_PASSWORD=AMCrIoEs # generated
-      MONGODB_ADMIN_PASSWORD=VkImyijw # generated
-      GITHUB_TRIGGER_SECRET=xb5Vreur # generated
-      GENERIC_TRIGGER_SECRET=J1mf583c # generated
---> Creating resources with label app=mlbparks ...
-    buildconfig "mlbparks" created
-    imagestream "mlbparks" created
-    deploymentconfig "mlbparks-mongodb" created
-    deploymentconfig "mlbparks" created
-    route "mlbparks-http-route" created
+--> Deploying template nationalparks-wildfly
+
+     nationalparks-wildfly
+     ---------
+     Application template for MLB Parks application on WildFly & MongoDB built using STI
+
+     * With parameters:
+        * APPLICATION_NAME=nationalparks
+        * APPLICATION_HOSTNAME=
+        * GIT_URI=http://gitlab.apps.10.2.2.2.xip.io/dev/openshift3nationalparks.git
+        * GIT_REF=master
+        * Maven mirror url=http://nexus.ci:8081/content/groups/public
+        * MONGODB_DATABASE=root
+        * MONGODB_NOPREALLOC=
+        * MONGODB_SMALLFILES=
+        * MONGODB_QUIET=
+        * MONGODB_USER=userlq8 # generated
+        * MONGODB_PASSWORD=huVFtx53 # generated
+        * MONGODB_ADMIN_PASSWORD=WGFaA3IY # generated
+        * GITHUB_TRIGGER_SECRET=GMJFWdtR # generated
+        * GENERIC_TRIGGER_SECRET=2UrYx8fG # generated
+
+--> Creating resources with label app=nationalparks ...
+    buildconfig "nationalparks" created
+    imagestream "nationalparks" created
+    deploymentconfig "nationalparks-mongodb" created
+    deploymentconfig "nationalparks" created
+    route "nationalparks" created
     service "mongodb" created
-    service "mlbparks-http" created
+    service "nationalparks" created
 --> Success
-    Build scheduled, use 'oc logs -f bc/mlbparks' to track its progress.
+    Build scheduled, use 'oc logs -f bc/nationalparks' to track its progress.
     Run 'oc status' to view your app.
 ````
 
@@ -78,10 +84,10 @@ You could deploy the entire set of resources with one command, and then hack on
 them to develop new features, microservices, fix bugs, and more.
 
 As a final exercise, look at the template that was used to create the
-resources for our *mlbparks* application.
+resources for our *nationalparks* application.
 
 ````
-http://gitlab.apps.10.2.2.2.xip.io/dev/openshift3mlbparks/raw/master/mlbparks-template.json
+http://gitlab.apps.10.2.2.2.xip.io/dev/openshift3nationalparks/raw/master/nationalparks-template.json
 ````
 
 **[End of Lab](/)**
