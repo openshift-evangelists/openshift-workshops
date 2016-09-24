@@ -1,0 +1,3 @@
+<% @labs.each_key do |lab| %>
+  <li><a href="/<%= lab %>"><%= @labs[lab]['name'] %></a></li>
+<% end %>
