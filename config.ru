@@ -20,7 +20,7 @@ end
 class Application < Sinatra::Base
 
   set :config, Dir.glob('labs/*.yml').map { |lab| [lab, YAML.load(File.read("#{lab}"))] }
-                   .inject({}) { |labs, lab| id = File.basename(lab[0]).gsub('.yml', ''); labs[id] = lab[1]; labs }
+                   .inject({}) { |labs, lab| labs[File.basename(lab[0], '.yml')] = lab[1]; labs }
 
   set :modules, YAML.load(File.read('config/modules.yml'))
   set :markdown, Redcarpet::Markdown.new(WorkshopRenderer, fenced_code_blocks: true, extensions: {})
