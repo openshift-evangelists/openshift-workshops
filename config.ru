@@ -23,8 +23,12 @@ class Application < Sinatra::Base
 	set :markdown, Redcarpet::Markdown.new(WorkshopRenderer, fenced_code_blocks: true, extensions: {})
 
 	get '/' do
-		@labs = settings.config['labs']
-		erb :index
+		if ENV['DEFAULT_LAB']
+			redirect "/#{ENV['DEFAULT_LAB']}"
+		else
+			@labs = settings.config['labs']
+			erb :index
+		end
 	end
 
 	get '/:id/?' do
