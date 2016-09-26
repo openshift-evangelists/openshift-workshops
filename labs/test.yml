@@ -1,4 +1,8 @@
 name: Testing workshop
+logo: test.png
 vars:
   CLUSTER_NAME: "10.2.2.2"
   CLUSTER_PORT: "8443"
+  USER_NAME: "dev"
+  USER_PASSWORD: "dev"
+  

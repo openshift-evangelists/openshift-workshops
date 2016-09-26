@@ -52,7 +52,11 @@ class Application < Sinatra::Base
 				@content = settings.markdown.render(@src)
 			when File.exists?("modules/#{@module}.adoc")
 				@src = File.read("modules/#{@module}.adoc")
-				@content = Asciidoctor.convert(@src, header_footer: true, safe: :safe)
+				attributes = ENV.clone
+				settings.config[@id]['vars'].each_key do |key|
+				  attributes[key] = settings.config[@id]['vars'][key] unless attributes[key]
+				end if settings.config[@id]['vars']
+ 				@content = Asciidoctor.render(@src, attributes: attributes)
 		end
 
 		erb :module
