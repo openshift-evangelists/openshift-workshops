@@ -27,3 +27,5 @@ modules:
     name: Using Application Templates
   quotas:
     name: Limiting application resource usage
+  run-as-non-root:
+    name: Running a container as a non Root user
