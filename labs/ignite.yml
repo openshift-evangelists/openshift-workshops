@@ -2,7 +2,7 @@ name: Microsoft Ignite
 logo: ignite.png
 private: true
 vars:
-  CLUSTER_NAME: "10.2.2.2"
-  CLUSTER_PORT: "8443"
-  USER_NAME: "dev"
-  USER_PASSWORD: "dev"
+  CONSOLE_ADDRESS: "ignitelabcluster.westus.cloudapp.azure.com:8443"
+  ROUTER_ADDRESS: "apps.10.2.2.2.xip.io"
+  USER_NAME: "(The username provided to you)"
+  USER_PASSWORD: "(The password provided to you)"
