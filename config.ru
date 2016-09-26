@@ -77,7 +77,7 @@ class Application < Sinatra::Base
     @lab = settings.config[@id]
     list_modules
     @src, @content = @modules.keys.inject(['', '']) do |content, mod|
-      next unless @active_modules.include?(mod)
+      next content unless @active_modules.include?(mod)
       src, c = render_module(mod)
       content[0] << src
       content[1] << c
