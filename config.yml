@@ -1,29 +1,5 @@
 labs:
   test:
     name: Testing workshop
-
-modules:
-  environment:
-    name: Lab Environment Overview
-  install:
-    name: Installing the *oc* client tool
-  smoketest:
-    name: Smoke Testing the Environment
-  docker:
-    name: Deploying our First Docker Image
-  routes:
-    name: Creating Routes
-  remote-ops:
-    name: Remote Operations
-  scaling:
-    name: Scaling
-  jboss:
-    name: Deploying Java Code on JBoss
-  databases:
-    name: Adding a Database (MongoDB)
-  codechanges:
-    name: Using Source 2 Image for Code Changes
-  templates:
-    name: Using Application Templates
-  quotas:
-    name: Limiting application resource usage
+    modules:
+      - environment

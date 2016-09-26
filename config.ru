@@ -20,6 +20,7 @@ end
 class Application < Sinatra::Base
 
 	set :config, YAML.load(File.read('config.yml'))
+	set :modules, YAML.load(File.read('modules.yml'))
 	set :markdown, Redcarpet::Markdown.new(WorkshopRenderer, fenced_code_blocks: true, extensions: {})
 
 	get '/' do
@@ -34,8 +35,8 @@ class Application < Sinatra::Base
 	get '/:id/?' do
 		@id = params[:id]
 		@lab = settings.config['labs'][@id]
-		@lab['modules'] ||= settings.config['modules'].keys
-		@modules = settings.config['modules']
+		@lab['modules'] ||= settings.modules['modules'].keys
+		@modules = settings.modules['modules']
 		erb :lab
 	end
 
