@@ -1,9 +1,9 @@
 require 'sinatra/base'
+
 require 'redcarpet'
+require 'asciidoctor'
 
 require 'yaml'
-
-CONFIG = 
 
 class WorkshopRenderer < Redcarpet::Render::HTML
   def image(link, title, alt)
@@ -20,7 +20,7 @@ end
 class Application < Sinatra::Base
 
 	set :config, YAML.load(File.read('config.yml'))
-	set :renderer, Redcarpet::Markdown.new(WorkshopRenderer, fenced_code_blocks: true, extensions: {})
+	set :markdown, Redcarpet::Markdown.new(WorkshopRenderer, fenced_code_blocks: true, extensions: {})
 
 	get '/' do
 		@labs = settings.config['labs']
@@ -39,8 +39,14 @@ class Application < Sinatra::Base
 		@id = params[:id]
 		@module = params[:module]
 
-		@md = File.read("#{@module}.md")
-		@content = settings.renderer.render(@md)
+		case 
+			when File.exists?("#{@module}.md")
+				@src = File.read("#{@module}.md")
+				@content = settings.markdown.render(@src)
+			when File.exists?("#{@module}.adoc")
+				@src = File.read("#{@module}.adoc")
+				@content = Asciidoctor.convert(@src, header_footer: true, safe: :safe)
+		end
 
 		erb :module
 	end

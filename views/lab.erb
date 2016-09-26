@@ -6,5 +6,5 @@
 </style>
 
 <% @lab['modules'].each do |mod| %>
-  <li><a href="/<%= @id %>/<%= mod %>"><%= settings.renderer.render(@modules[mod]['name']) %></a></li>
+  <li><a href="/<%= @id %>/<%= mod %>"><%= settings.markdown.render(@modules[mod]['name']) %></a></li>
 <% end %>
