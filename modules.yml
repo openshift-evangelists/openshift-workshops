@@ -17,8 +17,12 @@ modules:
     name: Deploying Java Code on JBoss
   databases:
     name: Adding a Database (MongoDB)
+    requires:
+      - jboss
   codechanges:
     name: Using Source 2 Image for Code Changes
+    requires:
+      - databases
   templates:
     name: Using Application Templates
   quotas:

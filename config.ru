@@ -37,8 +37,15 @@ class Application < Sinatra::Base
 	get '/:id/?' do
 		@id = params[:id]
 		@lab = settings.config[@id]
-		@lab['modules'] ||= settings.modules['modules'].keys
+		@mods = settings.config[@id]['modules'] || settings.modules['modules'].keys.clone
 		@modules = settings.modules['modules']
+
+		@mods.each do |mod|
+			settings.modules['modules'][mod]['requires'].each do |m|
+				@mods << m unless @mods.include?(m)
+			end if settings.modules['modules'][mod]['requires']
+		end
+
 		erb :lab
 	end
 

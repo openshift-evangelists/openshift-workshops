@@ -1,0 +1,4 @@
+name: Modular workshop
+logo: test.png
+modules:
+  - codechanges

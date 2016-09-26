@@ -5,6 +5,7 @@
   }
 </style>
 
-<% @lab['modules'].each do |mod| %>
+<% @modules.each_key do |mod| %>
+  <% next unless @mods.include?(mod) %>
   <li><a href="/<%= @id %>/<%= mod %>"><%= settings.markdown.render(@modules[mod]['name']) %></a></li>
 <% end %>
