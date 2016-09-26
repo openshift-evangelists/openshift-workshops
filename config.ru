@@ -12,23 +12,23 @@ class WorkshopRenderer < Redcarpet::Render::HTML
   end
 
   def link(link, title, content)
-  	link = '.' if link == '/'
-  	"<a href='#{link}' title='#{title}'>#{content}</a>"
+    link = '.' if link == '/'
+    "<a href='#{link}' title='#{title}'>#{content}</a>"
   end
 end
 
 class Application < Sinatra::Base
 
-	set :config, Dir.glob('labs/*.yml').map{ |lab| [lab, YAML.load(File.read("#{lab}"))] }
-		.inject({}) { |labs, lab| id = File.basename(lab[0]).gsub('.yml', ''); labs[id] = lab[1]; labs }
+  set :config, Dir.glob('labs/*.yml').map { |lab| [lab, YAML.load(File.read("#{lab}"))] }
+                   .inject({}) { |labs, lab| id = File.basename(lab[0]).gsub('.yml', ''); labs[id] = lab[1]; labs }
 
-	set :modules, YAML.load(File.read('modules.yml'))
-	set :markdown, Redcarpet::Markdown.new(WorkshopRenderer, fenced_code_blocks: true, extensions: {})
+  set :modules, YAML.load(File.read('config/modules.yml'))
+  set :markdown, Redcarpet::Markdown.new(WorkshopRenderer, fenced_code_blocks: true, extensions: {})
 
-	helpers do
+  helpers do
 
     def list_modules
-      @modules = settings.modules['modules']
+      @modules = settings.modules
       @active_modules = settings.config[@id]['modules'] || @modules.keys.clone
       @active_modules.each do |mod|
         @modules[mod]['requires'].each do |m|
@@ -56,20 +56,20 @@ class Application < Sinatra::Base
 
   end
 
-	get '/' do
-		if ENV['DEFAULT_LAB']
-			redirect "/#{ENV['DEFAULT_LAB']}"
-		else
-			@labs = settings.config
-			erb :index
-		end
-	end
+  get '/' do
+    if ENV['DEFAULT_LAB']
+      redirect "/#{ENV['DEFAULT_LAB']}"
+    else
+      @labs = settings.config
+      erb :index
+    end
+  end
 
-	get '/:id/?' do
-		@id = params[:id]
-		@lab = settings.config[@id]
+  get '/:id/?' do
+    @id = params[:id]
+    @lab = settings.config[@id]
     list_modules
-		erb :lab
+    erb :lab
   end
 
   get '/:id/complete/?' do
@@ -88,11 +88,11 @@ class Application < Sinatra::Base
 
 
   get '/:id/:module/?' do
-		@id = params[:id]
-		@module = params[:module]
+    @id = params[:id]
+    @module = params[:module]
     @src, @content = render_module(@module)
-		erb :module
-	end
+    erb :module
+  end
 
 end
 
