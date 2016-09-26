@@ -8,6 +8,15 @@ install:
     DOWNLOAD_CLIENT_LIN32: "https://github.com/openshift/origin/releases/download/v1.3.0/openshift-origin-client-tools-v1.3.0-3ab7af3d097b57f933eccef684a714f2368804e7-linux-32bit.tar.gz"
     DOWNLOAD_CLIENT_LIN64: "https://github.com/openshift/origin/releases/download/v1.3.0/openshift-origin-client-tools-v1.3.0-3ab7af3d097b57f933eccef684a714f2368804e7-linux-64bit.tar.gz"
     OC_VERSION: "oc v1.3.0\nkubernetes v1.3.0+52492b4"
+  revisions:
+    ocp:
+      vars:
+        DOWNLOAD_CLIENT_WINDOWS: <win link>
+        DOWNLOAD_CLIENT_MAC: <mac link>
+        DOWNLOAD_CLIENT_LIN32: <lin link>
+        DOWNLOAD_CLIENT_LIN64: <lim link>
+        OC_VERSION: <status>
+
 smoketest:
   name: Smoke Testing the Environment
 docker:

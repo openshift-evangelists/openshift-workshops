@@ -84,11 +84,34 @@ databases:
 
 in the example module `databases` requires module `jboss`.
 
-Module may provide multiple revisions. Revision id is string prefixed by `_` and 
-appended to the module name. For example to define revision `extra` for module
-`sourcecode` create file `modules/sourcecode_extra.adoc` instead of 
-`modules/sourcecode.adoc`. Revision is then chosen as described in the previous 
-section.
+Module may provide multiple revisions. There are two approaches to revisions.
+
+First option is to use revision id to provide different module source. In that case
+revision id is appended to the module name. For example to define revision `extra` 
+for module `sourcecode` create file `modules/sourcecode_extra.adoc` instead of 
+`modules/sourcecode.adoc`. 
+
+Second approach is to use the same file name as for the main content. In that case
+the system automatically falls back to non-suffixed source file. The content is then
+configured by redefining default variables for that particular module. This allows
+reuse content but provide specific instruction for specific cases.
+
+```
+install:
+  name: Installing the *oc* client tool
+  vars:
+    VARIABLE: value
+  revisions:
+    extra:
+      vars:
+        VARIABLE: extra value
+```
+
+In this example if the revision is not chosen the variable `VARIABLE` will have value
+of `value`, however in case the `extra` revision is chosen, the value of `VARIABLE` will
+be `extra value`.
+
+Revisions are then chosen as described in the previous section.
 
 ## Defaulting lab
 

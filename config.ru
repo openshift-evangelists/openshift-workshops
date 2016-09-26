@@ -39,12 +39,19 @@ class Application < Sinatra::Base
       end
     end
 
-    def process_template(name, source)
+    def process_template(name, revision, source)
+      mods = settings.modules
       variables = settings.config['vars'] || {}
 
       settings.modules[name]['vars'].each_key do |key|
         variables[key] = settings.modules[name]['vars'][key]
       end if settings.modules[name]['vars']
+
+      if mods[name] && mods[name]['revisions'] && mods[name]['revisions'][revision]
+        mods[name]['revisions'][revision]['vars'].each_key do |key|
+          variables[key] = mods[name]['revisions'][revision]['vars'][key]
+        end
+      end
 
       settings.labs[@id]['vars'].each_key do |key|
         variables[key] = settings.labs[@id]['vars'][key]
@@ -60,19 +67,19 @@ class Application < Sinatra::Base
 
     def render_module(mod)
       cfg = settings.labs[@id]
+      revision = nil
 
-      filename = mod
+      filename = "modules/#{mod}.adoc"
       if cfg['modules'] && cfg['modules']['revisions'] && cfg['modules']['revisions'][mod]
-        filename += "_#{cfg['modules']['revisions'][mod]}"
+        revision = cfg['modules']['revisions'][mod]
+        tmp = "modules/#{mod}_#{revision}.adoc"
+        filename = tmp if File.exists?(tmp)
       end
 
       case
-        when File.exists?("modules/#{filename}.md")
-          src = File.read("modules/#{filename}.md")
-          [src, settings.markdown.render(process_template(mod, src))]
-        when File.exists?("modules/#{filename}.adoc")
-          src = File.read("modules/#{filename}.adoc")
-          [src, Asciidoctor.render(process_template(mod, src))]
+        when File.exists?(filename)
+          src = File.read(filename)
+          [src, Asciidoctor.render(process_template(mod, revision, src))]
         else
           [nil, nil]
       end
