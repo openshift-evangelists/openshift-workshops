@@ -19,7 +19,9 @@ end
 
 class Application < Sinatra::Base
 
-	set :config, YAML.load(File.read('config.yml'))
+	set :config, Dir.glob('labs/*.yml').map{ |lab| [lab, YAML.load(File.read("#{lab}"))] }
+		.inject({}) { |labs, lab| id = File.basename(lab[0]).gsub('.yml', ''); labs[id] = lab[1]; labs }
+
 	set :modules, YAML.load(File.read('modules.yml'))
 	set :markdown, Redcarpet::Markdown.new(WorkshopRenderer, fenced_code_blocks: true, extensions: {})
 
@@ -27,14 +29,14 @@ class Application < Sinatra::Base
 		if ENV['DEFAULT_LAB']
 			redirect "/#{ENV['DEFAULT_LAB']}"
 		else
-			@labs = settings.config['labs']
+			@labs = settings.config
 			erb :index
 		end
 	end
 
 	get '/:id/?' do
 		@id = params[:id]
-		@lab = settings.config['labs'][@id]
+		@lab = settings.config[@id]
 		@lab['modules'] ||= settings.modules['modules'].keys
 		@modules = settings.modules['modules']
 		erb :lab
@@ -45,11 +47,11 @@ class Application < Sinatra::Base
 		@module = params[:module]
 
 		case 
-			when File.exists?("#{@module}.md")
-				@src = File.read("#{@module}.md")
+			when File.exists?("modules/#{@module}.md")
+				@src = File.read("modules/#{@module}.md")
 				@content = settings.markdown.render(@src)
-			when File.exists?("#{@module}.adoc")
-				@src = File.read("#{@module}.adoc")
+			when File.exists?("modules/#{@module}.adoc")
+				@src = File.read("modules/#{@module}.adoc")
 				@content = Asciidoctor.convert(@src, header_footer: true, safe: :safe)
 		end
 

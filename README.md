@@ -5,7 +5,7 @@
 Deploying on OpenShift is very simple, use the Ruby s2i builder and you are (almost ready to go)
 
 ```
-oc new-app ruby~<your git repo>
+oc new-app https://github.com/openshift-evangelists/openshift-workshops.git -p DEFAULT_LAB=<name of the lab>
 ```
 
 ## Adding labs
