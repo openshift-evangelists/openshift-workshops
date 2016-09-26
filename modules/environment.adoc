@@ -1,4 +1,4 @@
-#** Lab 0: Environment Overview **
+## Lab 0: Environment Overview
 
 You will be interacting with an OpenShift environment that is running on a VM
 on your local machine. This environment consists of the following: 
