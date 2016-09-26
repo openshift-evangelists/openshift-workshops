@@ -1,3 +1,6 @@
 name: Modular workshop
 modules:
-  - codechanges
+  activate:
+    - codechanges
+  revisions:
+    codechanges: 13

@@ -31,7 +31,7 @@ class Application < Sinatra::Base
 
     def list_modules
       @modules = settings.modules
-      @active_modules = settings.labs[@id]['modules'] || @modules.keys.clone
+      @active_modules = (settings.labs[@id]['modules'] && settings.labs[@id]['modules']['activate']) || @modules.keys.clone
       @active_modules.each do |mod|
         @modules[mod]['requires'].each do |m|
           @active_modules << m unless @active_modules.include?(m)
@@ -59,12 +59,19 @@ class Application < Sinatra::Base
     end
 
     def render_module(mod)
+      cfg = settings.labs[@id]
+
+      filename = mod
+      if cfg['modules'] && cfg['modules']['revisions'] && cfg['modules']['revisions'][mod]
+        filename += "_#{cfg['modules']['revisions'][mod]}"
+      end
+
       case
-        when File.exists?("modules/#{mod}.md")
-          src = File.read("modules/#{mod}.md")
+        when File.exists?("modules/#{filename}.md")
+          src = File.read("modules/#{filename}.md")
           [src, settings.markdown.render(process_template(mod, src))]
-        when File.exists?("modules/#{mod}.adoc")
-          src = File.read("modules/#{mod}.adoc")
+        when File.exists?("modules/#{filename}.adoc")
+          src = File.read("modules/#{filename}.adoc")
           [src, Asciidoctor.render(process_template(mod, src))]
         else
           [nil, nil]
