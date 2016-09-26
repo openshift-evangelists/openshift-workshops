@@ -1,0 +1,8 @@
+name: Microsoft Ignite
+logo: ignite.png
+private: true
+vars:
+  CLUSTER_NAME: "10.2.2.2"
+  CLUSTER_PORT: "8443"
+  USER_NAME: "dev"
+  USER_PASSWORD: "dev"

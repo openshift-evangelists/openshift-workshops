@@ -1,5 +1,5 @@
-name: Testing workshop
-logo: test.png
+name: JavaZone 2016
+logo: javazone16.png
 vars:
   CLUSTER_NAME: "10.2.2.2"
   CLUSTER_PORT: "8443"
