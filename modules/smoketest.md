@@ -1,6 +1,6 @@
-#** Lab: Smoke Test and Quick Tour **
+#**Lab: Smoke Test and Quick Tour**
 
-###** Command Line **
+###**Command Line**
 
 The first thing we want to do to ensure that our `oc` command line tools was
 installed and successfully added to our path is login to the OpenShift
@@ -150,6 +150,3 @@ tab on the left hand side of the screen, and explore the different menus. Play
 around a bit more with the web console to get familiar with the various tabs and
 options.  However, we will be using a mix of command line tooling and the web
 console for the labs.
-
-
-**[End of Lab](/)**
