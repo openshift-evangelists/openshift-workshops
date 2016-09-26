@@ -44,19 +44,30 @@ With this configuration, there will be only one module in the lab.
 ## Modules
 
 Modules are content sections that you go through during your workshop and are 
-configured in the `modules.yml` file. Most of the time you should not need to 
+configured in the `config/modules.yml` file. Most of the time you should not need to 
 change this file, but in case you want to change the structure of your lab, you 
 will need to know the ids of the modules you want ot use, and those are 
 configured in this file. The content files itself live in `modules/` directory.
 
 ```
-modules:
-  environment:
-    name: Lab Environment Overview
+environment:
+  name: Lab Environment Overview
 ```
 
 defines one module with id `environment` and display name 
-`Lab Environment Overview`.
+`Lab Environment Overview`. Module may require other modules, when such module is 
+added to a lab, it also adds all required modules.
+
+```
+jboss:
+  name: Deploying Java Code on JBoss
+databases:
+  name: Adding a Database (MongoDB)
+  requires:
+    - jboss
+```
+
+in the example module `databases` requires module `jboss`.
 
 ## Defaulting lab
 
