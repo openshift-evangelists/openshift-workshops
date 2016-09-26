@@ -1,3 +1,4 @@
 <% @labs.each_key do |lab| %>
+    <% next if @labs[lab]['private'] %>
     <li><a href="/<%= lab %>"><%= @labs[lab]['name'] %></a></li>
 <% end %>
