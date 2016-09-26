@@ -5,7 +5,20 @@
   }
 </style>
 
-<% @modules.each_key do |mod| %>
-  <% next unless @mods.include?(mod) %>
-  <li><a href="/<%= @id %>/<%= mod %>"><%= settings.markdown.render(@modules[mod]['name']) %></a></li>
-<% end %>
+<div class="row">
+
+	<div class="col-lg-6">
+		<h2>Lab contents</h2>
+		<ol>
+			<% @modules.each_key do |mod| %>
+  				<% next unless @mods.include?(mod) %>
+  				<li><a href="/<%= @id %>/<%= mod %>"><%= settings.markdown.render(@modules[mod]['name']) %></a></li>
+			<% end %>
+		</ol>
+	</div>
+
+	<div class="col-lg-6">
+			<p><img src="/logos/<%= @id %>.png" alt="OpenShift Labs"></p>
+	</div>
+
+</div>
