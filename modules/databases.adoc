@@ -1,4 +1,4 @@
-#** Lab: Adding a Database**
+## Lab: Adding a Database
 
 Most useful applications are "stateful" or "dynamic" in some way, and this is
 usually achieved with a database or other data storage. In this next lab we are
@@ -12,7 +12,7 @@ disappears the data does as well. In a real application you would use
 OpenShift's persistent storage mechanism with the database *Pods* to give them a
 persistent place to store their data.
 
-###** Environment Variables **
+### Environment Variables
 As you saw in the last lab, the web console makes it pretty easy to deploy
 application components as well. When we deploy the database, we need to pass in
 some environment variables to be used inside the container. These environment
@@ -35,13 +35,13 @@ ensure that:
 In the web console in your `nationalparks` project, again click the *"Add to
 Project"* button, and then find the `mongodb-ephemeral` template, and click it.
 
-![MongoDB](images/mongodb-template.png)
+image::/images/mongodb-template.png[MongoDB]
 
 Your view on the next page is slightly different than before. Since this
 template requires several environment variables, they are predominantly
 displayed:
 
-![MongoDB](images/mongo-template-deploy.png)
+image::/images/mongo-template-deploy.png[MongoDB]
 
 You can see that some of the fields say *"generated if empty"*. This is a
 feature of *Templates* in OpenShift that will be covered in the next lab. For
@@ -56,7 +56,7 @@ You can leave the rest of the values as their defaults, and then click
 *"Create"*. Then click *Continue to overview*. The MongoDB instance should
 quickly be deployed.
 
-###**Wiring the WildFly pod(s) to communicate with our MongoDB database**
+### Wiring the WildFly pod(s) to communicate with our MongoDB database
 
 When we initially created our WildFly application, we provided no environment
 variables. The application is looking for a database, but can't find one, and it
@@ -69,25 +69,29 @@ need to modify the *DeploymentConfiguration*.
 
 First, find the name of the DC:
 
-````
+[source]
+----
 $ oc get dc
-````
+----
 
 Then, use the `oc env` command to set environment variables directly on the DC:
 
-````
+[source]
+----
 $ oc env dc openshift3nationalparks -e MONGODB_USER=mongodb -e MONGODB_PASSWORD=mongodb -e MONGODB_DATABASE=mongodb
-````
+----
 
 After you have modified the *DeploymentConfig* object, you can verify the environment variables have been added by viewing the JSON document of the configuration:
 
-````
+[source]
+----
 $ oc get dc openshift3nationalparks -o json
-````
+----
 
 You should see the following section:
 
-````
+[source]
+----
 env": [
    {
       "name": "MONGODB_USER",
@@ -102,37 +106,40 @@ env": [
       "value": "mongodb"
    }
 ],
-````
+----
 
-###** OpenShift Magic **
+### OpenShift Magic
 As soon as we set the environment variables on the *DeploymentConfiguration*, some
 magic happened. OpenShift decided that this was a significant enough change to
 warrant updating the internal version number of the *DeploymentConfiguration*. You
 can verify this by looking at the output of `oc get dc`:
 
-````
+[source]
+----
 NAME                     REVISION   REPLICAS   TRIGGERED BY
 openshift3nationalparks  2          1          config,image(openshift3nationalparks:latest)
-````
+----
 
 Something that increments the version of a *DeploymentConfiguration*, by default,
 causes a new deployment. You can verify this by looking at the output of `oc get
 rc`:
 
-````
+[source]
+----
 NAME                        DESIRED   CURRENT   AGE
 openshift3nationalparks-1   0         0         3h
 openshift3nationalparks-2   1         1         1h
-````
+----
 
 We see that the desired and current number of instances for the "-1" deployment is 0. The desired and current number of instances for the "-2" deployment is 1. This means that OpenShift has gracefully torn down
 our "old" application and stood up a "new" instance.
 
 If you refresh your application:
 
-````
-http://openshift3nationalparks-nationalparks.apps.10.2.2.2.xip.io/
-````
+[source]
+----
+http://openshift3nationalparks-nationalparks.{{ROUTER_ADDRESS}}/
+----
 
 You'll notice that the parks suddenly are showing up. That's really cool!
 
@@ -142,17 +149,17 @@ define connections to dependent systems.  This allows for application
 portability across different environments.  The source file that performs the
 connection as well as creates the database schema can be viewed here:
 
-[DBConnection.java](http://gitlab.apps.10.2.2.2.xip.io/dev/openshift3nationalparks/blob/master/src/main/java/org/openshift/parks/mongo/DBConnection.java)
+http://gitlab.{{ROUTER_ADDRESS}}/dev/openshift3nationalparks/blob/master/src/main/java/org/openshift/parks/mongo/DBConnection.java[DBConnection.java]
 
 In short summary: By referring to environment variables to connect to services
 (like databases), it can be trivial to promote applications throughout different
 lifecycle environments on OpenShift without having to modify application code.
 
-You can learn more about environment variables in the [environment
-variables](https://docs.openshift.org/latest/dev_guide/environment_variables.html)
+You can learn more about environment variables in the
+https://docs.openshift.org/latest/dev_guide/environment_variables.html[environment variables]
 section of the Developer Guide.
 
-###**Using the Mongo command line shell in the container**
+### Using the Mongo command line shell in the container
 
 To interact with our database we will use the `oc exec` command, which allows us
 to run arbitrary commands in our *Pods*. If you are familiar with `docker exec`,
@@ -162,7 +169,8 @@ exists in the MongoDB Docker image, and then invoke the `mongo` command while
 passing in the credentials needed to authenticate to the database. First, find
 the name of your MongoDB Pod:
 
-````
+[source]
+----
 $ oc get pods
 NAME                              READY     STATUS      RESTARTS   AGE
 mongodb-1-ovu50                   1/1       Running     0          1h
@@ -170,7 +178,7 @@ openshift3nationalparks-1-build   0/1       Completed   0          3h
 openshift3nationalparks-2-c5b6k   1/1       Running     0          1h
 
 $ oc exec -ti mongodb-1-ovu50 -- bash -c 'mongo -u mongodb -p mongodb mongodb'
-````
+----
 
 **Note:** If you used different credentials when you created your MongoDB Pod,
 ensure that you substitute them for the values above.
@@ -179,17 +187,19 @@ ensure that you substitute them for the values above.
 
 Once you are connected to the database, run the following command to count the number of MLB teams added to the database:
 
-````
+[source]
+----
 > db.parks.count();
-````
+----
 
 You can also view the json documents with the following command:
 
-````
+[source]
+----
 > db.parks.find();
-````
+----
 
-###**OpenShift's Web Console Terminal**
+### OpenShift's Web Console Terminal
 
 If you go back to the web console in your `nationalparks` *Project* and then
 mouse-over *"Browse"* and then select *Pods*, you'll be taken to the list of
@@ -200,9 +210,10 @@ any of the *Pods* in your *Project*.
 
 In the terminal for your Mongo *Pod*, run the same `mongo` command from before:
 
-````
+[source]
+----
 sh-4.2$ mongo -u mongodb -p mongodb mongodb
-````
+----
 
 Then you can issue the same `db.parks.count();` command from before, without
 having to use the CLI! This is seriously cool.
@@ -211,5 +222,3 @@ having to use the CLI! This is seriously cool.
 information.
 
 **Note:** You currently can't copy/paste into the terminal.
-
-**[End of Lab](/)**
