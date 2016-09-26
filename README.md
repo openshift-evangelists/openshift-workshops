@@ -17,6 +17,7 @@ a new file and add required information, e.g. `labs/test.yml`
 
 ```
 name: Testing workshop
+logo: test.png
 vars:
   CLUSTER_NAME: "10.2.2.2"
   CLUSTER_PORT: "8443"
@@ -27,7 +28,10 @@ vars:
 defines new lab with id `test` and display name `Testing workshop`. It also 
 defines variables that are then substitued in the content itself. Variables are
 set either in the config files or using environment variables. Environment
-variables take precedense over variables in config file.
+variables take precedence over variables in config file.
+
+Lab can have a logo, it is displayed next to the lab content. In the example above
+the logo file name is `test.png` and logos are always in `public/logos/` directory.
 
 By default all modules are added to the workshops. In case you want just a 
 subset of the workshops, add `modules` section to your lab and list the ids of 

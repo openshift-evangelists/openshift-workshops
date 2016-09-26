@@ -21,7 +21,9 @@
   </div>
 
   <div class="col-lg-6">
-    <p><img src="/logos/<%= @id %>.png" alt="OpenShift Labs" onError="this.style.display = 'none';"></p>
+    <% if @lab['logo'] %>
+      <p><img src="/logos/<%= @lab['logo']%>" alt="OpenShift Labs"></p>
+    <% end %>
   </div>
 
 </div>
