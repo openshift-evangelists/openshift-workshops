@@ -27,7 +27,7 @@ almost all of those cases, OpenShift will create all of them for you.
 There are some edge cases where you might want some *Pods* and an *RC* without a *DC*
 or a *Service*, and others, so feel free to ask us about them after the labs.
 
-### Exercise 3: Scaling up
+### Exercise: Scaling up
 
 Now that we know what a *ReplicatonController* and *DeploymentConfig* are, we can
 start to explore scaling in OpenShift. Take a look at the
@@ -70,7 +70,7 @@ For example, if you just want to see how many replicas are defined for the
 $ oc get rc guestbook-1 -o json | grep -B1 -E "replicas" | grep -v "deployment"
 ----
 
-**Note:** The above command uses the *grep* utility which may not be available on your operating system.  
+**Note:** The above command uses the *grep* utility which may not be available on your operating system.
 
 The output of the above command should be:
 

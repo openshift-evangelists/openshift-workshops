@@ -1,7 +1,7 @@
-## Lab 0: Environment Overview
+## Lab: Environment Overview
 
 You will be interacting with an OpenShift environment that is running on a VM
-on your local machine. This environment consists of the following: 
+on your local machine. This environment consists of the following:
 
 * One OpenShift Origin Node with master/node roles
 
@@ -12,6 +12,6 @@ It has configured two users:
 
 It has installed a collection of software needed to make this demo easier:
 
-* Gitlab 
+* Gitlab
 * Sonatype Nexus Repository Manager
 * Lab contents

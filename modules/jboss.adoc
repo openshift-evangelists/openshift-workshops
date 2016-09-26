@@ -29,7 +29,7 @@ https://docs.openshift.org/latest/creating_images/s2i.html[OpenShift S2I documen
 or on GitHub (following the link above). The only key concept you need to
 remember about S2I is that it's magic.
 
-#### Exercise 4: Creating a WildFly application
+#### Exercise: Creating a WildFly application
 
 The sample application that we will be deploying as part of this exercise is
 called `nationalparks`.  This application is a Java EE-based application that
@@ -187,7 +187,6 @@ http://openshift3nationalparks-nationalparks.{{ROUTER_ADDRESS}}
 Verify your application is working by viewing the URL in a web browser.  You should see the following:
 
 image::/images/mlbparks1.png[MLBParks]
-
 
 Wait a second!  Why are the national parks not showing up?  Well, that is
 because we haven't actually added a database to the application yet.  We will do

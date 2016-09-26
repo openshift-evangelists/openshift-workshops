@@ -1,4 +1,4 @@
-## Lab 1: Installing the OpenShift CLI
+## Lab: Installing the OpenShift CLI
 
 ### Command Line Interface
 
@@ -19,10 +19,10 @@ from any directory on the command line.
 The first thing we want to do is download the correct executable for your
 operating system as linked below:
 
-- https://github.com/openshift/origin/releases/download/v1.2.0/openshift-origin-client-tools-v1.2.0-2e62fab-windows.zip[Microsoft Windows]
-- https://github.com/openshift/origin/releases/download/v1.2.0/openshift-origin-client-tools-v1.2.0-2e62fab-mac.zip[Apple OS X]
-- https://github.com/openshift/origin/releases/download/v1.2.0/openshift-origin-client-tools-v1.2.0-2e62fab-linux-64bit.tar.gz[Linux 64]
-- https://github.com/openshift/origin/releases/download/v1.2.0/openshift-origin-client-tools-v1.2.0-2e62fab-linux-32bit.tar.gz[Linux 32]
+- {{DOWNLOAD_CLIENT_WINDOWS}}[Microsoft Windows]
+- {{DOWNLOAD_CLIENT_MAC}}[Apple OS X]
+- {{DOWNLOAD_CLIENT_LIN64}}[Linux 64]
+- {{DOWNLOAD_CLIENT_LIN32}}[Linux 32]
 
 
 Once the file has been downloaded, you will need to extract the contents as it
@@ -130,8 +130,7 @@ You should see the following (or something similar):
 
 [source]
 ----
-oc v1.2.0
-kubernetes v1.2.0-36-g4a3f9c5
+{{OC_VERSION}}
 ----
 
 If you get an error message, you have not updated your path correctly.  If you

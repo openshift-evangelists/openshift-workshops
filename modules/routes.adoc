@@ -10,7 +10,7 @@ optionally define security, such as TLS, for the *Route*. If you want your
 *Services*, and, by extension, your *Pods*,  to be accessible to the outside
 world, you need to create a *Route*.
 
-#### Exercise 2: Creating a Route
+#### Exercise: Creating a Route
 
 Fortunately, creating a *Route* is a pretty straight-forward process.  You simply
 `expose` the *Service*. First we want to verify that we don't already have any

@@ -1,4 +1,4 @@
-== Running Your Images as a Non-Root User
+== Lab: Running Your Images as a Non-Root User
 
 If you look at most of the images on Dockerhub they run as the root user - so if yours
 does as well you have a lot of company. Unfortunately this is a bad security practice.
@@ -87,7 +87,7 @@ and then spins up the pod with our image running in it as a container.
 
 You can also log into the web console to look at what we created:
 
-https://$CLUSTER_NAME:$CLUSTER_PORT/console
+https://{{CONSOLE_ADDRESS}}/console
 
 Just use the same username and password as you used in the command line.
 
@@ -199,5 +199,3 @@ And with that we have:
 
 The final things we absolutely need to make it do is use volumes for changing content.
 So let's go to the next section and get going!
-
-<<<
