@@ -1,3 +1,6 @@
 labs:
   test:
     name: Testing workshop
+    vars:
+      CLUSTER_NAME: "10.2.2.2"
+      CLUSTER_PORT: "8443"
