@@ -34,16 +34,27 @@ Lab can have a logo, it is displayed next to the lab content. In the example abo
 the logo file name is `test.png` and logos are always in `public/logos/` directory.
 
 By default all modules are added to the workshops. In case you want just a 
-subset of the workshops, add `modules` section to your lab and list the ids of 
-modules you want to use.
+subset of the workshops, add `activate` section to the `modules` section of 
+your lab and list the ids of modules you want to use.
 
 ```
 name: Testing workshop
 modules:
-  - environment
+  activate:
+    - environment
 ```
 
-With this configuration, there will be only one module in the lab.
+With this configuration, there will be only one module in the lab. 
+
+Modules may have multiple revisions. In case you want to specific revision,
+add `revisions` section to the `modules` section and specify revision per module.
+
+```
+name: Testing workshop
+modules:
+  revisions:
+    codechanges: <revision_name>
+```
 
 ## Modules
 
@@ -72,6 +83,12 @@ databases:
 ```
 
 in the example module `databases` requires module `jboss`.
+
+Module may provide multiple revisions. Revision id is string prefixed by `_` and 
+appended to the module name. For example to define revision `extra` for module
+`sourcecode` create file `modules/sourcecode_extra.adoc` instead of 
+`modules/sourcecode.adoc`. Revision is then chosen as described in the previous 
+section.
 
 ## Defaulting lab
 
