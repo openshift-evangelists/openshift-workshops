@@ -2,6 +2,7 @@ require 'sinatra/base'
 
 require 'redcarpet'
 require 'asciidoctor'
+require 'liquid'
 
 require 'yaml'
 
@@ -37,18 +38,29 @@ class Application < Sinatra::Base
       end
     end
 
+    def process_template(name, source)
+      variables = settings.modules[name]['vars'] || {}
+
+      settings.config[@id]['vars'].each_key do |key|
+        variables[key] = settings.config[@id]['vars'][key]
+      end if settings.config[@id]['vars']
+
+      ENV.each_key do |key|
+        variables[key] = ENV[key]
+      end
+
+      template = Liquid::Template.parse(source)
+      template.render!(variables)
+    end
+
     def render_module(mod)
       case
         when File.exists?("modules/#{mod}.md")
           src = File.read("modules/#{mod}.md")
-          [src, settings.markdown.render(src)]
+          [src, settings.markdown.render(process_template(mod, src))]
         when File.exists?("modules/#{mod}.adoc")
           src = File.read("modules/#{mod}.adoc")
-          attributes = ENV.clone
-          settings.config[@id]['vars'].each_key do |key|
-            attributes[key] = settings.config[@id]['vars'][key] unless attributes[key]
-          end if settings.config[@id]['vars']
-          [src, Asciidoctor.render(src, attributes: attributes)]
+          [src, Asciidoctor.render(process_template(mod, src))]
         else
           [nil, nil]
       end
