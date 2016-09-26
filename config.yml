@@ -1,5 +1,3 @@
 labs:
   test:
     name: Testing workshop
-    modules:
-      - environment
