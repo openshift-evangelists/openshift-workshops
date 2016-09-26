@@ -20,9 +20,10 @@ end
 
 class Application < Sinatra::Base
 
-  set :config, Dir.glob('labs/*.yml').map { |lab| [lab, YAML.load(File.read("#{lab}"))] }
+  set :labs, Dir.glob('labs/*.yml').map { |lab| [lab, YAML.load(File.read("#{lab}"))] }
                    .inject({}) { |labs, lab| labs[File.basename(lab[0], '.yml')] = lab[1]; labs }
 
+  set :config, YAML.load(File.read('config/config.yml'))
   set :modules, YAML.load(File.read('config/modules.yml'))
   set :markdown, Redcarpet::Markdown.new(WorkshopRenderer, fenced_code_blocks: true, extensions: {})
 
@@ -30,7 +31,7 @@ class Application < Sinatra::Base
 
     def list_modules
       @modules = settings.modules
-      @active_modules = settings.config[@id]['modules'] || @modules.keys.clone
+      @active_modules = settings.labs[@id]['modules'] || @modules.keys.clone
       @active_modules.each do |mod|
         @modules[mod]['requires'].each do |m|
           @active_modules << m unless @active_modules.include?(m)
@@ -39,11 +40,15 @@ class Application < Sinatra::Base
     end
 
     def process_template(name, source)
-      variables = settings.modules[name]['vars'] || {}
+      variables = settings.config['vars'] || {}
 
-      settings.config[@id]['vars'].each_key do |key|
-        variables[key] = settings.config[@id]['vars'][key]
-      end if settings.config[@id]['vars']
+      settings.modules[name]['vars'].each_key do |key|
+        variables[key] = settings.modules[name]['vars'][key]
+      end if settings.modules[name]['vars']
+
+      settings.labs[@id]['vars'].each_key do |key|
+        variables[key] = settings.labs[@id]['vars'][key]
+      end if settings.labs[@id]['vars']
 
       ENV.each_key do |key|
         variables[key] = ENV[key]
@@ -72,21 +77,21 @@ class Application < Sinatra::Base
     if ENV['DEFAULT_LAB']
       redirect "/#{ENV['DEFAULT_LAB']}"
     else
-      @labs = settings.config
+      @labs = settings.labs
       erb :index
     end
   end
 
   get '/:id/?' do
     @id = params[:id]
-    @lab = settings.config[@id]
+    @lab = settings.labs[@id]
     list_modules
     erb :lab
   end
 
   get '/:id/complete/?' do
     @id = params[:id]
-    @lab = settings.config[@id]
+    @lab = settings.labs[@id]
     list_modules
     @src, @content = @modules.keys.inject(['', '']) do |content, mod|
       next content unless @active_modules.include?(mod)
