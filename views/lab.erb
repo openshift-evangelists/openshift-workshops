@@ -11,10 +11,13 @@
 		<h2>Lab contents</h2>
 		<ol>
 			<% @modules.each_key do |mod| %>
-  				<% next unless @mods.include?(mod) %>
+  				<% next unless @active_modules.include?(mod) %>
   				<li><a href="/<%= @id %>/<%= mod %>"><%= settings.markdown.render(@modules[mod]['name']) %></a></li>
 			<% end %>
 		</ol>
+		<p>
+			<a href="/<%= @id %>/complete">All modules in single page</a>
+		</p>
 	</div>
 
 	<div class="col-lg-6">

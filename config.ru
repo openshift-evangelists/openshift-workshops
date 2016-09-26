@@ -25,6 +25,37 @@ class Application < Sinatra::Base
 	set :modules, YAML.load(File.read('modules.yml'))
 	set :markdown, Redcarpet::Markdown.new(WorkshopRenderer, fenced_code_blocks: true, extensions: {})
 
+	helpers do
+
+    def list_modules
+      @modules = settings.modules['modules']
+      @active_modules = settings.config[@id]['modules'] || @modules.keys.clone
+      @active_modules.each do |mod|
+        @modules[mod]['requires'].each do |m|
+          @active_modules << m unless @active_modules.include?(m)
+        end if @modules[mod]['requires']
+      end
+    end
+
+    def render_module(mod)
+      case
+        when File.exists?("modules/#{mod}.md")
+          src = File.read("modules/#{mod}.md")
+          [src, settings.markdown.render(src)]
+        when File.exists?("modules/#{mod}.adoc")
+          src = File.read("modules/#{mod}.adoc")
+          attributes = ENV.clone
+          settings.config[@id]['vars'].each_key do |key|
+            attributes[key] = settings.config[@id]['vars'][key] unless attributes[key]
+          end if settings.config[@id]['vars']
+          [src, Asciidoctor.render(src, attributes: attributes)]
+        else
+          [nil, nil]
+      end
+    end
+
+  end
+
 	get '/' do
 		if ENV['DEFAULT_LAB']
 			redirect "/#{ENV['DEFAULT_LAB']}"
@@ -37,35 +68,29 @@ class Application < Sinatra::Base
 	get '/:id/?' do
 		@id = params[:id]
 		@lab = settings.config[@id]
-		@mods = settings.config[@id]['modules'] || settings.modules['modules'].keys.clone
-		@modules = settings.modules['modules']
-
-		@mods.each do |mod|
-			settings.modules['modules'][mod]['requires'].each do |m|
-				@mods << m unless @mods.include?(m)
-			end if settings.modules['modules'][mod]['requires']
-		end
-
+    list_modules
 		erb :lab
-	end
+  end
 
-	get '/:id/:module/?' do
+  get '/:id/complete/?' do
+    @id = params[:id]
+    @lab = settings.config[@id]
+    list_modules
+    @src, @content = @modules.keys.inject(['', '']) do |content, mod|
+      next unless @active_modules.include?(mod)
+      src, c = render_module(mod)
+      content[0] << src
+      content[1] << c
+      content
+    end
+    erb :module
+  end
+
+
+  get '/:id/:module/?' do
 		@id = params[:id]
 		@module = params[:module]
-
-		case 
-			when File.exists?("modules/#{@module}.md")
-				@src = File.read("modules/#{@module}.md")
-				@content = settings.markdown.render(@src)
-			when File.exists?("modules/#{@module}.adoc")
-				@src = File.read("modules/#{@module}.adoc")
-				attributes = ENV.clone
-				settings.config[@id]['vars'].each_key do |key|
-				  attributes[key] = settings.config[@id]['vars'][key] unless attributes[key]
-				end if settings.config[@id]['vars']
- 				@content = Asciidoctor.render(@src, attributes: attributes)
-		end
-
+    @src, @content = render_module(@module)
 		erb :module
 	end
 
