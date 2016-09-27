@@ -4,7 +4,7 @@ GEM
     asciidoctor (1.5.4)
     liquid (3.0.6)
     multi_json (1.12.1)
-    oj (2.17.3)
+    oj (2.17.4)
     puma (3.6.0)
     rack (1.6.4)
     rack-protection (1.5.3)
@@ -29,4 +29,4 @@ DEPENDENCIES
   sinatra
 
 BUNDLED WITH
-   1.12.5
+   1.13.1
