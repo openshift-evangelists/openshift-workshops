@@ -4,8 +4,10 @@
   <a href="/<%= @id %>">END OF LAB</a>
 </div>
 
-<hr>
+<% if ENV['DISPLAY_SOURCE'] %>
+  <hr>
 
-<pre>
-<%= @src %>
-</pre>
+  <pre>
+  <%= @src %>
+  </pre>
+<% end %>

@@ -123,3 +123,18 @@ redirected to the defined lab.
 ```
 oc new-app https://github.com/openshift-evangelists/openshift-workshops.git -p DEFAULT_LAB=<name of the lab>
 ```
+
+## System configuration
+
+System is configured through environment variables
+
+### DEFAULT_LAB
+
+When this environment is set, the application root `/` does not show list of labs, but
+redirects to lab specified as value, e.g. for `DEFAULT_LAB=test`, the user is redirected
+to the Test lab at `/test`.
+
+### DISPLAY_SOURCE
+
+If this environment variables is set, source of the module is displayed below the rendered 
+content.  
