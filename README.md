@@ -137,4 +137,36 @@ to the Test lab at `/test`.
 ### DISPLAY_SOURCE
 
 If this environment variables is set, source of the module is displayed below the rendered 
-content.  
+content.
+
+## Workshop content as a service
+
+The system can provide you with workshop content without commiting your yml files to the 
+application itself. You upload the YAML definition as a file to the `_custom` endpoint and
+the system give you embeddable version of your workshop.
+
+To get a list for modules for your workshop, upload your `lab` file to the `/_custom` path.
+
+```
+$ curl -XPOST -F "lab=@labs/mods.yml" http://localhost:9292/_custom
+```
+
+and you will receive JSON with your modules
+ 
+ ```
+[
+  {"id":"install","name":"Installing the *oc* client tool"},
+  {"id":"jboss","name":"Deploying Java Code on JBoss"},
+  {"id":"databases","name":"Adding a Database (MongoDB)"},
+  {"id":"codechanges","name":"Using Source 2 Image for Code Changes"}
+]
+ ```
+ 
+ To get the module content, upload the same file to the `/_custom/:module` path, where
+ `:module` is the module name. E.g.
+ 
+ ```
+ $ curl -XPOST -F "lab=@labs/mods.yml" http://localhost:9292/_custom/install
+ ```
+ 
+ to get the HTML of the `Installing the *oc* client tool` module.
