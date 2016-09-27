@@ -4,6 +4,8 @@ require 'redcarpet'
 require 'asciidoctor'
 require 'liquid'
 
+require 'oj'
+require 'multi_json'
 require 'yaml'
 
 class WorkshopRenderer < Redcarpet::Render::HTML
@@ -31,7 +33,7 @@ class Application < Sinatra::Base
 
     def list_modules
       @modules = settings.modules
-      @active_modules = (settings.labs[@id]['modules'] && settings.labs[@id]['modules']['activate']) || @modules.keys.clone
+      @active_modules = (@lab['modules'] && @lab['modules']['activate']) || @modules.keys.clone
       @active_modules.each do |mod|
         @modules[mod]['requires'].each do |m|
           @active_modules << m unless @active_modules.include?(m)
@@ -53,9 +55,9 @@ class Application < Sinatra::Base
         end
       end
 
-      settings.labs[@id]['vars'].each_key do |key|
-        variables[key] = settings.labs[@id]['vars'][key]
-      end if settings.labs[@id]['vars']
+      @lab['vars'].each_key do |key|
+        variables[key] = @lab['vars'][key]
+      end if @lab['vars']
 
       ENV.each_key do |key|
         variables[key] = ENV[key]
@@ -66,12 +68,11 @@ class Application < Sinatra::Base
     end
 
     def render_module(mod)
-      cfg = settings.labs[@id]
       revision = nil
 
       filename = "modules/#{mod}.adoc"
-      if cfg['modules'] && cfg['modules']['revisions'] && cfg['modules']['revisions'][mod]
-        revision = cfg['modules']['revisions'][mod]
+      if @lab['modules'] && @lab['modules']['revisions'] && @lab['modules']['revisions'][mod]
+        revision = @lab['modules']['revisions'][mod]
         tmp = "modules/#{mod}_#{revision}.adoc"
         filename = tmp if File.exists?(tmp)
       end
@@ -96,6 +97,14 @@ class Application < Sinatra::Base
     end
   end
 
+  post '/_custom' do
+    @id = params[:id]
+    @lab = YAML.load(params[:lab][:tempfile].read)
+    list_modules
+    @active_modules = @active_modules.map { |mod| { id: mod, name: settings.modules[mod]['name'] } }
+    MultiJson.dump(@active_modules)
+  end
+
   get '/:id/?' do
     @id = params[:id]
     @lab = settings.labs[@id]
@@ -103,7 +112,7 @@ class Application < Sinatra::Base
     erb :lab
   end
 
-  get '/:id/complete/?' do
+  get '/:id/_complete/?' do
     @id = params[:id]
     @lab = settings.labs[@id]
     list_modules
@@ -121,8 +130,18 @@ class Application < Sinatra::Base
   get '/:id/:module/?' do
     @id = params[:id]
     @module = params[:module]
+    @lab = settings.labs[@id]
     @src, @content = render_module(@module)
     erb :module
+  end
+
+  post '/_custom/:module/?' do
+    @id = params[:id]
+    @module = params[:module]
+    @lab = YAML.load(params[:lab][:tempfile].read)
+
+    @src, @content = render_module(@module)
+    @content
   end
 
 end
