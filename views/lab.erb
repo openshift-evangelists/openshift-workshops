@@ -12,7 +12,7 @@
     <ol>
       <% @modules.each_key do |mod| %>
           <% next unless @active_modules.include?(mod) %>
-          <li><a href="/<%= @id %>/<%= mod %>"><%= settings.markdown.render(@modules[mod]['name']) %></a></li>
+          <li><a href="/<%= @id %>/<%= mod %>"><%= markdown(@modules[mod]['name']) %></a></li>
       <% end %>
     </ol>
     <p>

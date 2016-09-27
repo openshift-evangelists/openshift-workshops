@@ -8,31 +8,37 @@ require 'oj'
 require 'multi_json'
 require 'yaml'
 
-class WorkshopRenderer < Redcarpet::Render::HTML
-  def image(link, title, alt)
-    link = "/#{link}" unless link[0] == '/'
-    "<img src='#{link}' title='#{title}' alt='#{alt}'>"
-  end
-
-  def link(link, title, content)
-    link = '.' if link == '/'
-    "<a href='#{link}' title='#{title}'>#{content}</a>"
-  end
-end
-
 class Application < Sinatra::Base
-
-  set :labs, Dir.glob('labs/*.yml').map { |lab| [lab, YAML.load(File.read("#{lab}"))] }
-                   .inject({}) { |labs, lab| labs[File.basename(lab[0], '.yml')] = lab[1]; labs }
-
-  set :config, YAML.load(File.read('config/config.yml'))
-  set :modules, YAML.load(File.read('config/modules.yml'))
-  set :markdown, Redcarpet::Markdown.new(WorkshopRenderer, fenced_code_blocks: true, extensions: {})
 
   helpers do
 
+    def labs
+      if !@labs || settings.development?
+        @labs = Dir.glob('labs/*.yml').map do |lab|
+          [lab, YAML.load(File.read("#{lab}"))]
+        end.inject({}) do |labs, lab|
+          labs[File.basename(lab[0], '.yml')] = lab[1]; labs
+        end
+      end
+      @labs
+    end
+
+    def config
+      if !@config || settings.development?
+        @config = YAML.load(File.read('config/config.yml'))
+      end
+      @config
+    end
+
+    def modules
+      if !@modules || settings.development?
+        @modules = YAML.load(File.read('config/modules.yml'))
+      end
+      @modules
+    end
+
     def list_modules
-      @modules = settings.modules
+      @modules = modules
       @active_modules = (@lab['modules'] && @lab['modules']['activate']) || @modules.keys.clone
       @active_modules.each do |mod|
         @modules[mod]['requires'].each do |m|
@@ -42,16 +48,15 @@ class Application < Sinatra::Base
     end
 
     def process_template(name, revision, source)
-      mods = settings.modules
-      variables = settings.config['vars'] || {}
+      variables = config['vars'] || {}
 
-      settings.modules[name]['vars'].each_key do |key|
-        variables[key] = settings.modules[name]['vars'][key]
-      end if settings.modules[name]['vars']
+      modules[name]['vars'].each_key do |key|
+        variables[key] = modules[name]['vars'][key]
+      end if modules[name]['vars']
 
-      if mods[name] && mods[name]['revisions'] && mods[name]['revisions'][revision]
-        mods[name]['revisions'][revision]['vars'].each_key do |key|
-          variables[key] = mods[name]['revisions'][revision]['vars'][key]
+      if modules[name] && modules[name]['revisions'] && modules[name]['revisions'][revision]
+        modules[name]['revisions'][revision]['vars'].each_key do |key|
+          variables[key] = modules[name]['revisions'][revision]['vars'][key]
         end
       end
 
@@ -86,13 +91,18 @@ class Application < Sinatra::Base
       end
     end
 
+    def markdown(content)
+      @markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML)
+      @markdown.render(content)
+    end
+
   end
 
   get '/' do
     if ENV['DEFAULT_LAB']
       redirect "/#{ENV['DEFAULT_LAB']}"
     else
-      @labs = settings.labs
+      @labs = labs
       erb :index
     end
   end
@@ -101,7 +111,7 @@ class Application < Sinatra::Base
     @id = params[:id]
     @lab = YAML.load(params[:lab][:tempfile].read)
     list_modules
-    mods = settings.modules.each_key.inject([]) do |temp, id|
+    mods = modules.each_key.inject([]) do |temp, id|
       next temp unless @active_modules.include?(id)
       temp << {
           id: id,
@@ -113,14 +123,14 @@ class Application < Sinatra::Base
 
   get '/:id/?' do
     @id = params[:id]
-    @lab = settings.labs[@id]
+    @lab = labs[@id]
     list_modules
     erb :lab
   end
 
   get '/:id/_complete/?' do
     @id = params[:id]
-    @lab = settings.labs[@id]
+    @lab = labs[@id]
     list_modules
     @src, @content = @modules.keys.inject(['', '']) do |content, mod|
       next content unless @active_modules.include?(mod)
@@ -135,7 +145,7 @@ class Application < Sinatra::Base
   get '/:id/:module/?' do
     @id = params[:id]
     @module = params[:module]
-    @lab = settings.labs[@id]
+    @lab = labs[@id]
     @src, @content = render_module(@module)
     erb :module
   end
