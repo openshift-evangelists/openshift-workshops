@@ -9,6 +9,17 @@ Deploying on OpenShift is very simple, use the Ruby s2i builder and you are
 oc new-app https://github.com/openshift-evangelists/openshift-workshops.git
 ```
 
+## Get started
+
+* Clone repository locally
+* Install Ruby
+    * on macOS
+        * `brew install ruby`
+        * `gem install bundler`
+* `bundle install` in the repository
+* `bundle exec puma` in the repository
+* `http://localhost:9292/`
+
 ## Adding labs
 
 In the terminology of this app `lab` is a workshop or some other kind of event. 
