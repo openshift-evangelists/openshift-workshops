@@ -1,6 +1,6 @@
 ## Lab: Making Code Changes and using webhooks
 
-### Exercise: Using Git Web Hooks
+### Exercise: Using Git hosting Web Hooks
 
 OpenShift supports receiving webhooks from remote code repositories when code
 changes, including from GitHub and GitLab. When a notification is received, a new build
