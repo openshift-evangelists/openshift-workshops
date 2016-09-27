@@ -101,8 +101,14 @@ class Application < Sinatra::Base
     @id = params[:id]
     @lab = YAML.load(params[:lab][:tempfile].read)
     list_modules
-    @active_modules = @active_modules.map { |mod| { id: mod, name: settings.modules[mod]['name'] } }
-    MultiJson.dump(@active_modules)
+    mods = settings.modules.each_key.inject([]) do |temp, id|
+      next temp unless @active_modules.include?(id)
+      temp << {
+          id: id,
+          name: settings.modules[id]['name']
+      }
+    end
+    MultiJson.dump(mods)
   end
 
   get '/:id/?' do
@@ -125,7 +131,6 @@ class Application < Sinatra::Base
     end
     erb :module
   end
-
 
   get '/:id/:module/?' do
     @id = params[:id]
