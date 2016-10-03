@@ -1,0 +1,7 @@
+name: OpenShift 3 Roadshow
+vars:
+  DOCS_URL: "docs.openshift.com/container-platform"
+  USER_SUFFIX: "-XX"
+  OPENSHIFT_NAME: "OpenShift Container Platform"
+  OPENSHIFT_SHORTNAME: "OCP"
+  OPENSHIFT_VERSION: "3.3"

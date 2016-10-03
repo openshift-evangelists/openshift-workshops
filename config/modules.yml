@@ -16,9 +16,8 @@ install:
         DOWNLOAD_CLIENT_LIN32: <lin link>
         DOWNLOAD_CLIENT_LIN64: <lim link>
         OC_VERSION: <status>
-
-smoketest:
-  name: Smoke Testing the Environment
+explore:
+  name: Exploring the CLI and Web Console
 docker:
   name: Deploying our First Docker Image
 routes:

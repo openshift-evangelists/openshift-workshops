@@ -1,5 +1,67 @@
 ## Lab: Deploy a Docker Image
 
+### Exercise: Deploying your first Image
+
+Let's start by doing the simplest thing possible - get a plain old
+Docker-formatted image to run on OpenShift. This is incredibly simple to do.
+With {{OPENSHIFT_NAME}} {{OPENSHIFT_VERSION}} it can be done directly from the
+web console.
+
+Return to the web console:
+
+[source]
+----
+https://{{CONSOLE_ADDRESS}}
+----
+
+Find your *explore{{USER_SUFFIX}}" project and click it. Next, click "Add to
+project" at the top of the screen:
+
+<< NEEDIMAGE >>
+
+There are several options, but we are only concerned with "Deploy Image". Click
+it. We will learn more about image streams and image stream tags later. For now,
+select the "Image Name" option, and copy/paste the following into the box:
+
+[source]
+----
+docker.io/openshiftdemos/parksmap:0.2
+----
+
+Either press *enter* or click on the magnifying glass. OpenShift will then go
+out to the Docker registry specified and interrogate the image. You then are
+presented with some options to add things like environment variables, labels,
+and etc. -- which we will learn about later.
+
+<< NEEDIMAGE >>
+
+[NOTE]
+====
+It is important to understand that, for security reasons, OpenShift
+does not run Docker containers as the specified user by default. In fact, when
+OpenShift launches a container its user is actually randomized. While this image
+specifies the `root` user in its Dockerfile, running as an arbitrary, randomized
+user ID will not break the application.
+
+If you want or need to allow OpenShift users to deploy Docker images that do
+expect to run as root (or any specific user), a small configuration change is
+needed. You can learn more about the
+https://{{DOCS_URL}}/latest/creating_images/guidelines.html[Docker guidelines]
+for OpenShift, or you can look at the section on
+https://{{DOCS_URL}}/latest/admin_guide/manage_scc.html#enable-images-to-run-with-user-in-the-dockerfile[enabling
+images to run with a USER in the dockerfile].
+====
+
+Hit the blue "Create" button at the bottom of the screen and then click ithe
+"Continue to overview" link. Take a moment to look at the various messages that
+you now see on the overview page.
+
+WINNING! These few steps are the only ones you need to run to get a "vanilla"
+Docker-formatted image deployed on OpenShift. This should work with any
+Docker-formatted image that follows best practices, such as defining an EXPOSE
+port, not needing to run specifically as the *root user* or other user name, and
+a single non-exiting CMD to execute on start.
+
 ### Background: Containers and Pods
 
 Before we start digging in we need to understand how containers and *Pods* are
@@ -22,35 +84,38 @@ contain a "server" and any auxiliary services you want to run along with that
 server. Examples of containers you might put in a *Pod* are, an Apache HTTPD
 server, a log analyzer, and a file service to help manage uploaded files.
 
-Let's look at the *Pod*s that were deployed as part of the *smoke* application in
-the *smoke* Project.
+### Exercise: Examining the Pod
+
+In the web console's overview page you will see that there is a single *Pod* that
+was created by your actions. This *Pod* contains a single container, which
+happens to be the parks map application - a simple Spring Boot/Java application.
+
+You can also examine *Pods* from the command line:
 
 [source]
 ----
-$ oc get pods
+oc get pod
 ----
 
-You should see output similar to the following:
+You should see output that looks similar to:
 
 [source]
 ----
-NAME            READY     STATUS      RESTARTS   AGE
-smoke-1-build   0/1       Completed   0          2d
-smoke-1-eivfk   1/1       Running     0          5m
-smoke-1-ufae4   1/1       Running     1          2d
+NAME               READY     STATUS    RESTARTS   AGE
+parksmap-1-hx0kv   1/1       Running   0          2m
 ----
 
-The above output lists all of the *Pod*s in the current Project, including the *Pod*
-name, state, restarts, and uptime for the *Pod*.  Once you have a *Pod*'s name, you
-can get more information about the *Pod*'s using the *oc get* command.  To make
-the output readable, I suggest changing the output type to *JSON* using the
+The above output lists all of the *Pods* in the current *Project*, including the
+*Pod* name, state, restarts, and uptime. Once you have a *Pod*'s name, you can
+get more information about the *Pod* using the *oc get* command.  To make the
+output readable, I suggest changing the output type to *YAML* using the
 following syntax:
 
-**Note:** Make sure you use the correct *Pod* name from your output.
+NOTE: Make sure you use the correct *Pod* name from your output.
 
 [source]
 ----
-$  oc get pod smoke-1-eivfk -o json
+oc get pod parksmap-1-hx0kv -o yaml
 ----
 
 You should see something like the following output (which is have truncated due
@@ -58,121 +123,37 @@ to space considerations of this workshop manual):
 
 [source]
 ----
-{
-    "kind": "Pod",
-    "apiVersion": "v1",
-    "metadata": {
-       "name": "smoke-1-eivfk",
-       "generateName": "smoke-1-",
-       "namespace": "smoke",
-       "selfLink": "/api/v1/namespaces/smoke/pods/smoke-1-eivfk",
-       "uid": "05603d07-36cf-11e6-8232-525400b263eb",
-       "resourceVersion": "10437",
-       "creationTimestamp": "2016-06-20T10:09:05Z",
-       "labels": {
-           "app": "smoke",
-           "deployment": "smoke-1",
-           "deploymentconfig": "smoke"
-       },
-       ...............
-}
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kubernetes.io/created-by: |
+      {"kind":"SerializedReference","apiVersion":"v1","reference":{"kind":"ReplicationController","namespace":"explore-00","name":"parksmap-1","uid":"b5ae65e9-897e-11e6-bdaa-2cc2602f8794","apiVersion":"v1","resourceVersion":"6924"}}
+    openshift.io/deployment-config.latest-version: "1"
+    openshift.io/deployment-config.name: parksmap
+    openshift.io/deployment.name: parksmap-1
+    openshift.io/generated-by: OpenShiftWebConsole
+    openshift.io/scc: restricted
+  creationTimestamp: 2016-10-03T15:33:29Z
+  generateName: parksmap-1-
+  labels:
+    app: parksmap
+    deployment: parksmap-1
+    deploymentconfig: parksmap
+  name: parksmap-1-hx0kv
+...............
 ----
 
-### Exercise: Deploying your first Image
+The web interface also shows a lot of the same information on the *Pod* details
+page. If you click in the *Pod* circle, and then click the *Pod* name, you will
+find the details page. You can also get there by clicking "Applications", then
+"Pods", at the left, and then clicking the *Pod* name.
 
-Let's start by doing the simplest thing possible - get a plain old Docker image
-to run inside of OpenShift. This is incredibly simple to do. We are going to use
-the Kubernetes Guestbook application
-(https://registry.hub.Docker.com/u/kubernetes/guestbook/) for this example.
-
-The first thing we want to do is create a new *Project* called `guestbook`.
-Remember that Projects group resources together.
-
-[source]
-----
-$ oc new-project guestbook
-----
-
-The *new-project* command will automatically switch you to use that *Project*. You
-will see something like the following:
-
-[source]
-----
-Now using project "guestbook" on server "https://{{CONSOLE_ADDRESS}}".
-
-You can add applications to this project with the 'new-app' command. For example, try:
-
-   $ oc new-app centos/ruby-22-centos7~https://github.com/openshift/ruby-hello-world.git
-
-to build a new hello-world application in Ruby.
-----
-
-To see all the Projects you have access to, you can simply use `oc get`.
-
-[source]
-----
-$ oc get projects
-----
-
-You should see a list like the following:
-
-[source]
-----
-NAME        DISPLAY NAME   STATUS
-guestbook                  Active
-smoke       Smoke Test     Active
-----
-
-With the new *Project* created, in order to tell OpenShift to define and run the
-Docker image, you can simply execute the following command:
-
-[source]
-----
-$ oc new-app kubernetes/guestbook
-----
-
-You will see output similar to the following:
-
-[source]
-----
---> Found Docker image 4305190 (20 months old) from Docker Hub for "kubernetes/guestbook"
-
-    * An image stream will be created as "guestbook:latest" that will track this image
-    * This image will be deployed in deployment config "guestbook"
-    * Port 3000/tcp will be load balanced by service "guestbook"
-       * Other containers can access this service through the hostname "guestbook"
-    * WARNING: Image "guestbook" runs as the 'root' user which may not be permitted by your cluster administrator
-
---> Creating resources with label app=guestbook ...
-    imagestream "guestbook" created
-    deploymentconfig "guestbook" created
-    service "guestbook" created
---> Success
-    Run 'oc status' to view your app.
-----
-
-Pretty easy, huh?
-
-This may take a while to complete. Each OpenShift node has to pull (download)
-the Docker image for kubernetes/guestbook from the Docker hub if it does not
-already have it locally. You can check on the status of the image download and
-deployment by:
-
-1. Going into the web console
-1. Select Project `guestbook`
-1. Select *Browse*
-1. Select *Pods*
-
-Under status you might see *Pending* rather than *Running*.
-
-You can also use the `oc` command line tool to watch for changes in pods:
-
-[source]
-----
-$ oc get pods -w
-----
-
-To exit, hit `Control+C` (`^c`).
+Getting the parks map image running may take a little while to complete. Each
+OpenShift node that is asked to run the image has to pull (download) it if the
+node does not already have it cached locally. You can check on the status of the
+image download and deployment in the *Pod* details page, or from the command
+line with the `oc get pods` command that you used before.
 
 ### Background: A Little About the Docker Daemon
 
@@ -181,39 +162,11 @@ daemon will check to make sure it has the right "version" of the image to run.
 If it doesn't, it will pull it from the specified registry.
 
 There are a number of ways to customize this behavior. They are documented in
-https://docs.openshift.org/latest/dev_guide/new_app.html#specifying-an-image[specifying an image]
+https://{{DOCS_URL}}/latest/dev_guide/new_app.html#specifying-an-image[specifying an image]
 as well as
-https://docs.openshift.org/latest/dev_guide/managing_images.html#image-pull-policy[image pullpolicy].
-
-WINNING! These few commands are the only ones you need to run to get a "vanilla"
-Docker image deployed on OpenShift. This should work with any Docker image
-that follows best practices, such as defining an EXPOSE port, not running as the
-*root user* or specific user name, and a single non-exiting CMD to execute on start.
-
-**Note:** It is important to understand that, for security reasons, OpenShift
-does not allow the deployment of Docker images that run as *root* by default.
-If you want or need to allow OpenShift users to deploy Docker images that do
-expect to run as root (or any specific user), a small configuration change is
-needed. You can learn more about the
-https://docs.openshift.org/latest/creating_images/guidelines.html[Docker guidelines]
-for OpenShift, or you can look at the section on
-https://docs.openshift.org/latest/admin_guide/manage_scc.html#enable-images-to-run-with-user-in-the-dockerfile[enabling images to run with a USER in the dockerfile].
-
-**Note:** In the VM used for this labs (http://openshift.org/vm[All-in-one Origin VM])
-deploying applications as root is enabled by default.
+https://{{DOCS_URL}}/latest/dev_guide/managing_images.html#image-pull-policy[image pullpolicy].
 
 #### Background: Services
-
-You may be wondering how you can access this application. There was a *Service*
-that was created, but *Service*s are only used inside OpenShift - they are not
-exposed to the outside world by default. Don't worry though, we will cover that
-later in this lab.
-
-You can see that when we ran the `new-app` command, OpenShift actually created
-several resources behind the scenes in order to handle deploying this Docker
-image. `new-app` created a *Service*, which maps to a set of *Pods* (via *Labels* and
-*Selectors*). *Services* are assigned an IP address and port pair that, when
-accessed, balance across the appropriate back end (*Pods*).
 
 *Services* provide a convenient abstraction layer inside OpenShift to find a
 group of like *Pods*. They also act as an internal proxy/load balancer between
@@ -224,127 +177,125 @@ endpoints to the *Service*, and the incoming requests would not notice anything
 different except that the *Service* was now doing a better job handling the
 requests.
 
+When you asked OpenShift to run the image, it automatically created a *Service*
+for you. Remember that services are an internal construct. They are not
+available to the "outside world", or anything that is outside the OpenShift
+environment. That's OK, as you will learn later.
+
+The way that a *Service* maps to a set of *Pods* is via a system of *Labels* and
+*Selectors*. *Services* are assigned an eternal IP address and many ports and
+protocols can be mapped. 
+
 There is a lot more information about
-https://docs.openshift.org/latest/architecture/core_concepts/pods_and_services.html#services[Services],
+https://{{DOCS_URL}}/latest/architecture/core_concepts/pods_and_services.html#services[Services],
 including the YAML format to make one by hand, in the official documentation.
 
-Now that we understand the basics of what a *Service* is, let's take a look at the
-*Service* that was created for the kubernetes/guestbook image that we just
-deployed.  In order to view the *Services* defined in your Project, enter in the
-following command:
+Now that we understand the basics of what a *Service* is, let's take a look at
+the *Service* that was created for the image that we just deployed.  In order to
+view the *Services* defined in your *Project*, enter in the following command:
 
 [source]
 ----
-$ oc get services
+oc get services
 ----
 
 You should see output similar to the following:
 
 [source]
 ----
-NAME        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
-guestbook   172.30.244.132   <none>        3000/TCP   12m
+NAME       CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+parksmap   172.30.169.213   <none>        8080/TCP   3h
 ----
 
-In the above output, we can see that we have a *Service* named `guestbook` with an
-IP/Port combination of 172.30.244.132/3000. Your IP address may be different, as
-each *Service* receives a unique IP address upon creation. *Service* IPs never
-change for the life of the *Service*.
+In the above output, we can see that we have a *Service* named `parksmap` with an
+IP/Port combination of 172.30.169.213/8080TCP. Your IP address may be different, as
+each *Service* receives a unique IP address upon creation. *Service* IPs are
+eternal and never change for the life of the *Service*.
+
+In the web console, service information is available by clicking "Applications"
+and then clicking "Services" in the "Networking" submenu.
 
 You can also get more detailed information about a *Service* by using the
-following command to display the data in JSON:
+following command to display the data in YAML:
 
 [source]
 ----
-$ oc get service guestbook -o json
+oc get service parksmap -o yaml
 ----
 
 You should see output similar to the following:
 
 [source]
 ----
-{
-    "kind": "Service",
-    "apiVersion": "v1",
-    "metadata": {
-        "name": "guestbook",
-        "namespace": "guestbook",
-        "selfLink": "/api/v1/namespaces/guestbook/services/guestbook",
-        "uid": "acc7d356-36d0-11e6-8232-525400b263eb",
-        "resourceVersion": "10703",
-        "creationTimestamp": "2016-06-20T10:20:56Z",
-        "labels": {
-            "app": "guestbook"
-        },
-        "annotations": {
-            "openshift.io/generated-by": "OpenShiftNewApp"
-        }
-    },
-    "spec": {
-        "ports": [
-            {
-                "name": "3000-tcp",
-                "protocol": "TCP",
-                "port": 3000,
-                "targetPort": 3000
-            }
-        ],
-        "selector": {
-            "app": "guestbook",
-            "deploymentconfig": "guestbook"
-        },
-        "portalIP": "172.30.244.132",
-        "clusterIP": "172.30.244.132",
-        "type": "ClusterIP",
-        "sessionAffinity": "None"
-    },
-    "status": {
-        "loadBalancer": {}
-    }
-}
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftWebConsole
+  creationTimestamp: 2016-10-03T15:33:17Z
+  labels:
+    app: parksmap
+  name: parksmap
+  namespace: explore-00
+  resourceVersion: "6893"
+  selfLink: /api/v1/namespaces/explore-00/services/parksmap
+  uid: b51260a9-897e-11e6-bdaa-2cc2602f8794
+spec:
+  clusterIP: 172.30.169.213
+  ports:
+  - name: 8080-tcp
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    deploymentconfig: parksmap
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
 ----
 
 Take note of the `selector` stanza. Remember it.
 
 It is also of interest to view the JSON of the *Pod* to understand how OpenShift
 wires components together.  For example, run the following command to get the
-name of your `guestbook` Pod:
+name of your `parksmap` *Pod*:
 
 [source]
 ----
-$ oc get pods
+oc get pods
 ----
 
 You should see output similar to the following:
 
 [source]
 ----
-NAME                READY     STATUS    RESTARTS   AGE
-guestbook-1-e83hb   1/1       Running   0          24m
+NAME               READY     STATUS    RESTARTS   AGE
+parksmap-1-hx0kv   1/1       Running   0          3h
 ----
 
 Now you can view the detailed data for your *Pod* with the following command:
 
 [source]
 ----
-$ oc get pod guestbook-1-e83hb -o json
+oc get pod parksmap-1-hx0kv -o yaml
 ----
 
 Under the `metadata` section you should see the following:
 
 [source]
 ----
-"labels": {
-   "app": "guestbook",
-   "deployment": "guestbook-1",
-   "deploymentconfig": "guestbook"
-},
+labels:
+  app: parksmap
+  deployment: parksmap-1
+  deploymentconfig: parksmap
 ----
 
-* The *Service* has `selector` stanza that refers to `app=guestbook,deploymentconfig=guestbook`.
+* The *Service* has `selector` stanza that refers to `deploymentconfig=parksmap`.
 * The *Pod* has multiple *Labels*:
-    * `deploymentconfig=guestbook`
-    * `app=guestbook`
+    * `deploymentconfig=parksmap`
+    * `app=parksmap`
+    * `deployment=parksmap-1`
 
 *Labels* are just key/value pairs. Any *Pod* in this *Project* that has a *Label* that
 matches the *Selector* will be associated with the *Service*. To see this in
@@ -352,26 +303,26 @@ action, issue the following command:
 
 [source]
 ----
-$ oc describe service guestbook
+oc describe service parksmap
 ----
 
-You should see the following output:
+You should see something like the following output:
 
 [source]
 ----
-Name:			guestbook
-Namespace:		guestbook
-Labels:			app=guestbook
-Selector:		app=guestbook,deploymentconfig=guestbook
-Type:			ClusterIP
-IP:			172.30.244.132
-Port:			3000-tcp	3000/TCP
-Endpoints:		172.17.0.6:3000
-Session Affinity:	None
+Name:                   parksmap
+Namespace:              explore-00
+Labels:                 app=parksmap
+Selector:               deploymentconfig=parksmap
+Type:                   ClusterIP
+IP:                     172.30.169.213
+Port:                   8080-tcp        8080/TCP
+Endpoints:              10.1.2.5:8080
+Session Affinity:       None
 No events.
 ----
 
 You may be wondering why only one end point is listed. That is because there is
-only one `guestbook` *Pod* running.  In the next lab, we will learn how to scale
+only one *Pod* currently running.  In the next lab, we will learn how to scale
 an application, at which point you will be able to see multiple endpoints
-associated with the `guestbook` *Service*.
+associated with the *Service*.
