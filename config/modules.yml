@@ -20,12 +20,12 @@ explore:
   name: Exploring the CLI and Web Console
 docker:
   name: Deploying our First Docker Image
+scaling:
+  name: Scaling
 routes:
   name: Creating Routes
 remote-ops:
   name: Remote Operations
-scaling:
-  name: Scaling
 jboss:
   name: Deploying Java Code on JBoss
 databases:
