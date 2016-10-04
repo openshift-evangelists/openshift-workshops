@@ -26,6 +26,8 @@ routes:
   name: Creating Routes
 logging:
   name: Exploring OpenShift's Logging Capabilities
+permissions:
+  name: Role-Based Access Control
 remote-ops:
   name: Remote Operations
 jboss:
