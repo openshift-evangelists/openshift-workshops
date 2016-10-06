@@ -21,7 +21,7 @@
   </div>
 
   <div class="col-lg-6">
-    <% if @lab['logo'] %>
+    <% if @lab && @lab['logo'] %>
       <p><img src="/logos/<%= @lab['logo']%>" alt="OpenShift Labs"></p>
     <% end %>
   </div>

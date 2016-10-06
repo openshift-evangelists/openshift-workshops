@@ -39,7 +39,7 @@ class Application < Sinatra::Base
 
     def list_modules
       @modules = modules
-      @active_modules = (@lab['modules'] && @lab['modules']['activate']) || @modules.keys.clone
+      @active_modules = (@lab && @lab['modules'] && @lab['modules']['activate']) || @modules.keys.clone
       @active_modules.each do |mod|
         @modules[mod]['requires'].each do |m|
           @active_modules << m unless @active_modules.include?(m)
