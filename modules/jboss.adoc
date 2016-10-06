@@ -25,7 +25,7 @@ other aspects of OpenShift.
 
 A full discussion of S2I is beyond the scope of this class, but you can find
 more information about it either in the
-https://docs.openshift.org/latest/creating_images/s2i.html[OpenShift S2I documentation]
+https://{{DOCS_URL}}/latest/creating_images/s2i.html[OpenShift S2I documentation]
 or on GitHub (following the link above). The only key concept you need to
 remember about S2I is that it's magic.
 
@@ -43,8 +43,8 @@ The first thing you need to do is create a new project called `nationalparks`:
 
 [source]
 ----
-$ oc new-project nationalparks
-Now using project "nationalparks" on server "https://{{ROUTER_ADDRESS}}".
+$ oc new-project nationalparks{{USER_SUFFIX}}
+Now using project "nationalparks{{USER_SUFFIX}}" on server "https://{{ROUTER_ADDRESS}}".
 
 You can add applications to this project with the 'new-app' command. For example, try:
 
@@ -55,19 +55,19 @@ to build a new hello-world application in Ruby.
 
 ##### Using application code on embedded GitLab
 
-OpenShift can work with Git repositories on GitHub, GitLab,... You can even register
-webhooks to initiate OpenShift builds triggered by any update to the application
-code on your Git hosting solution.
+OpenShift can work with any accessible Git repository. This could be GitHub,
+GitLab, or any other server that speaks Git. You can even register webhooks in
+your Git server to initiate OpenShift builds triggered by any update to the
+application code!
 
 The repository that we are going to use is already cloned in the internal GitLab repository
 and located at the following URL:
 
-http://gitlab.{{ROUTER_ADDRESS}}/dev/openshift3nationalparks.git[http://gitlab.{{ROUTER_ADDRESS}}/dev/openshift3nationalparks.git]
+<< NEEDSFIX >>
 
-You can log in to the embedded GitLab server using any of the 2 accounts available:
+http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/user{{USER_SUFFIX}}/nationalparks.git[http://gitlab.{{ROUTER_ADDRESS}}/dev/openshift3nationalparks.git]
 
-- dev/password
-- root/password
+Your GitLab credentials are: {{GITLAB_LOGIN}}
 
 Later in the lab, we want you to make a code change and then rebuild your application.
 If you are familiar with Java EE applications, you will notice that there is
@@ -79,15 +79,18 @@ application.
 
 While the `new-app` command makes it very easy to get OpenShift to build code
 from a GitHub/GitLab repository into a Docker image, we can also use the web console to
-do the same thing -- it's not all command line and green screen where we're
-going! Since for this lab you have your own GitLab repository let's use it with
-OpenShift's WildFly S2I image.
+do the same thing. Similar to how we used "Add to project" before with a
+Docker-formatted image, we can do the same for specifying a source code
+repository. Since for this lab you have your own GitLab repository let's use it with
+OpenShift's {{JAVA_BUILDER}} S2I image.
 
-In the OpenShift web console, find your `nationalparks` project, and then
+In the OpenShift web console, find your `nationalparks{{USER_SUFFIX}}` project, and then
 click the *"Add to Project"* button. You will see a number of runtimes that you
 can choose from, but you will want to select the one titled
-`wildfly:latest`. As you might guess, this is going to use an S2I
-builder image that contains latest WildFly (currently version 10.0).
+`{{JAVA_BUILDER_STRING}}`. As you might guess, this is going to use an S2I
+builder image that contains {{JAVA_BUILDER_PROPER}}.
+
+<< NEEDS IMAGE >>
 
 image::/images/runtimes.png[Runtimes]
 
@@ -95,17 +98,18 @@ After you click *"Add to Project"*, on the next screen you will need to enter a
 name and a Git repository URL. For the name, enter `openshift3nationalparks`, and for
 the Git repository URL, enter:
 
-	http://gitlab.{{ROUTER_ADDRESS}}/dev/openshift3nationalparks.git
+    http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/dev/nationalparks.git
 
 **Note:** All of these runtimes shown are made available via *Templates*, which
 will be discussed in a later lab.
 
 image::/images/new_mlbparks_1.png[Runtimes]
 
-**NOTE:** To speed build process, a Sonatype Nexus in included in the VM that will cache
-your dependencies as you pull them down. To use it, you need to click on *Show advanced routing, build, and
-deployment options*, scroll down to *Build Configuration*, add an environment variable named *MAVEN_MIRROR_URL*
-with value *http://nexus.ci:8081/content/groups/public*
+**NOTE:** To speed build process, a Sonatype Nexus server is running in the
+environment that will cache your dependencies as you pull them down. To use it,
+you need to click on *Show advanced routing, build, and deployment options*,
+scroll down to *Build Configuration*, add an environment variable named
+*MAVEN_MIRROR_URL* with value *http://nexus.ci:8081/content/groups/public*
 
 image::/images/new_mlbparks_2.png[Runtimes]
 

@@ -13,9 +13,6 @@ want to authenticate to.  Issue the following command:
 $ oc login {{CONSOLE_ADDRESS}}
 ----
 
-**Note:** After entering in the above command, you may be prompted to accept the
-security certificate
-
 You may see the following output:
 
 [source]
@@ -32,7 +29,9 @@ by OpenShift. In a real-world scenario, either OpenShift's certificate would be
 signed by a standard CA (eg: Thawte, Verisign, StartSSL, etc.) or signed by a
 corporate-standard CA that you already have installed on your system.
 
-**Note:** On some versions of Microsoft Windows, you may get an error that the
+[NOTE]
+====
+On some versions of Microsoft Windows, you may get an error that the
 server has an invalid x.509 certificate.  If you receive this error, enter in
 the following command:
 
@@ -40,6 +39,7 @@ the following command:
 ----
 $ oc login {{CONSOLE_ADDRESS}} --insecure-skip-tls-verify=true
 ----
+====
 
 Once you issue the `oc login` command, you will be prompted for the username and
 password combination for your user account:
@@ -115,25 +115,21 @@ Username: {{USER_NAME}}
 Password: {{USER_PASSWORD}}
 ----
 
-image::/images/v3login.png[OpenShift Login Screen]
+image::/images/ocp-login.png[OpenShift Login Screen]
 
 After you have authenticated to the web console, you will be presented with a
 list of projects that your user has permission to work with. You will see
 something that looks like the following image:
 
-image::/images/webconsole1.png[Web Console]
+image::/images/explore-webconsole1.png[Web Console]
 
 Click on the *explore{{USER_SUFFIX}}* project. When you click on the
-*smoke{{USER_SUFFIX}}* project, you will be taken to the project overview page
+*explore{{USER_SUFFIX}}* project, you will be taken to the project overview page
 which will list all of the routes, services, deployments, and pods that you have
-running as part of your project.  For this example, you will see a frontend that
-is deployed to two pods.
+running as part of your project. There's nothing there now, but that's about to
+change.
 
-image::/images/webconsole2.png[Web Console]
+image::/images/explore-webconsole2.png[Explore Project]
 
-Once you have digested the information on the overview page, mouseover *Browse*
-tab on the left hand side of the screen, and explore the different menus. Play
-around a bit more with the web console to get familiar with the various tabs and
-options.  However, we will be using a mix of command line tooling and the web
-console for the labs.
-
+We will be using a mix of command line tooling and the web console for the labs.
+Get ready!

@@ -15,9 +15,7 @@ https://{{CONSOLE_ADDRESS}}
 ----
 
 Find your *explore{{USER_SUFFIX}}" project and click it. Next, click "Add to
-project" at the top of the screen:
-
-<< NEEDIMAGE >>
+project" at the top of the screen.
 
 There are several options, but we are only concerned with "Deploy Image". Click
 it. We will learn more about image streams and image stream tags later. For now,
@@ -25,23 +23,23 @@ select the "Image Name" option, and copy/paste the following into the box:
 
 [source]
 ----
-docker.io/openshiftdemos/parksmap:0.2
+docker.io/openshiftdemos/parksmap:{{PARKSMAP_VERSION}}
 ----
+
+Your screen will end up looking something like this:
+
+image::/images/parksmap-image.png[Explore Project]
 
 Either press *enter* or click on the magnifying glass. OpenShift will then go
 out to the Docker registry specified and interrogate the image. You then are
 presented with some options to add things like environment variables, labels,
 and etc. -- which we will learn about later.
 
-<< NEEDIMAGE >>
-
 [NOTE]
 ====
-It is important to understand that, for security reasons, OpenShift
-does not run Docker containers as the specified user by default. In fact, when
-OpenShift launches a container its user is actually randomized. While this image
-specifies the `root` user in its Dockerfile, running as an arbitrary, randomized
-user ID will not break the application.
+It is important to understand that, for security reasons, OpenShift does not run
+Docker containers as the user specified in the Dockerfile by default. In fact,
+when OpenShift launches a container its user is actually randomized.
 
 If you want or need to allow OpenShift users to deploy Docker images that do
 expect to run as root (or any specific user), a small configuration change is
@@ -74,10 +72,13 @@ In OpenShift, the smallest deployable unit is a *Pod*. A *Pod* is a group of one
 more Docker containers deployed together and guaranteed to be on the same host.
 From the doc:
 
-    Each pod has its own IP address, therefore owning its entire port space, and
-    containers within pods can share storage. Pods can be "tagged" with one or
-    more labels, which are then used to select and manage groups of pods in a
-    single operation.
+[source]
+----
+Each pod has its own IP address, therefore owning its entire port space, and
+containers within pods can share storage. Pods can be "tagged" with one or
+more labels, which are then used to select and manage groups of pods in a
+single operation.
+----
 
 *Pods* can contain multiple Docker instances. The general idea is for a Pod to
 contain a "server" and any auxiliary services you want to run along with that
@@ -293,9 +294,9 @@ labels:
 
 * The *Service* has `selector` stanza that refers to `deploymentconfig=parksmap`.
 * The *Pod* has multiple *Labels*:
-    * `deploymentconfig=parksmap`
-    * `app=parksmap`
-    * `deployment=parksmap-1`
+** `deploymentconfig=parksmap`
+** `app=parksmap`
+** `deployment=parksmap-1`
 
 *Labels* are just key/value pairs. Any *Pod* in this *Project* that has a *Label* that
 matches the *Selector* will be associated with the *Service*. To see this in

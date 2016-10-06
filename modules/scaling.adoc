@@ -13,12 +13,15 @@ how OpenShift "self heals".
 A *DeploymentConfiguration* (DC) defines how something in OpenShift should be
 deployed. From the https://{{DOCS_URL}}/latest/architecture/core_concepts/deployments.html#deployments-and-deployment-configurations[deployments documentation]:
 
-    Building on replication controllers, OpenShift adds expanded support for the
-    software development and deployment lifecycle with the concept of deployments.
-    In the simplest case, a deployment just creates a new replication controller and
-    lets it start up pods. However, OpenShift deployments also provide the ability
-    to transition from an existing deployment of an image to a new one and also
-    define hooks to be run before or after creating the replication controller.
+[source]
+----
+Building on replication controllers, OpenShift adds expanded support for the
+software development and deployment lifecycle with the concept of deployments.
+In the simplest case, a deployment just creates a new replication controller and
+lets it start up pods. However, OpenShift deployments also provide the ability
+to transition from an existing deployment of an image to a new one and also
+define hooks to be run before or after creating the replication controller.
+----
 
 In almost all cases, you will end up using the *Pod*, *Service*,
 *ReplicationController* and *DeploymentConfiguration* resources together. And, in
@@ -39,7 +42,7 @@ OpenShift to stand up the `parksmap` image:
 oc get dc
 
 NAME       REVISION   DESIRED   CURRENT   TRIGGERED BY
-parksmap   1          1         1         config,image(parksmap:0.2)
+parksmap   1          1         1         config,image(parksmap:{{PARKSMAP_VERSION}})
 ----
 
 To get more details, we can look into the *ReplicationController* (*RC*).
@@ -62,7 +65,7 @@ the desired number, we can tell OpenShift that we want more or less *Pods*.
 OpenShift's *HorizontalPodAutoscaler* effectively monitors the CPU usage of a
 set of instances and then manipulates the RCs accordingly.
 
-You can learn more about the tech-preview CPU-based
+You can learn more about the CPU-based
 https://{{DOCS_URL}}/latest/dev_guide/pod_autoscaling.html[Horizontal Pod Autoscaler here]
 
 ### Exercise: Scaling the Application
@@ -143,8 +146,7 @@ many pods are behind a service.
 
 You can also that all three *Pods* are running using the web console:
 
-<< NEEDS UPDATED IMAGE >>
-image::/images/scaling.png[Scaling]
+image::/images/parksmap-scaled.png[Scaling]
 
 Overall, that's how simple it is to scale an application (*Pods* in a
 *Service*). Application scaling can happen extremely quickly because OpenShift

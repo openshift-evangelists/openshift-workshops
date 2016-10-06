@@ -84,6 +84,11 @@ $ oc rsh parksmap-1-tegp4 ls -l /parksmap.jar
 -rw-rw-r--. 1 root root 21486607 Oct  4 18:26 /parksmap.jar
 ----
 
+#### Exercise: Use the Web Console
+
+You can also access a terminal into a container from the web console. On the
+*Pod* details page, one of the tabs says "Terminal". Try it!
+
 [NOTE]
 ----
 The `--` syntax in the `oc exec` command delineates where exec's options

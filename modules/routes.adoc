@@ -52,19 +52,16 @@ Verify the *Route* was created with the following command:
 ----
 $ oc get route
 NAME       HOST/PORT                                              PATH      SERVICES   PORT       TERMINATION
-parksmap   parksmap-explore{{USER_SUFFIX}}.{{CLOUD_DOMAIN}}                 parksmap   8080-tcp
+parksmap   parksmap-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}             parksmap   8080-tcp
 ----
 
 You can also verify the *Route* by looking at the project in the OpenShift web console:
 
-<< NEED UPDATED IMAGE >>
-
-image::/images/route.png[Route]
+image::/images/parksmap-route.png[Route]
 
 Pretty nifty, huh?  This application is now available at the above URL:
 
-<< NEED UPDATED IMAGE >>
-image::/images/route2.png[Route]
+image::/images/parksmap-empty.png[Route]
 
 ### Exercise: Scale Down
 
