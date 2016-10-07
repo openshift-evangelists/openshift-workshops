@@ -35,10 +35,11 @@ remember about S2I is that it's magic.
 #### Exercise: Creating a Java application
 
 The sample application that we will be deploying as part of this exercise is
-called `nationalparks`.  This application is a Java EE-based application that
-performs 2D geo-spatial queries against a MongoDB database to locate and map all
-National Parks in the world. That was just a fancy way of saying that we are
-going to deploy a map of National Parks.
+called `nationalparks`.  This is a Java Spring Boot application that performs 2D
+geo-spatial queries against a MongoDB database to locate and return map
+coordinates of all National Parks in the world. That was just a fancy way of
+saying that we are going to deploy a webservice that returns a JSON list of
+places.
 
 ##### Add to Project
 Because the `nationalparks` application is a back-end to serve data that our
@@ -108,11 +109,11 @@ overview*. You will see this in the web console:
 
 [source]
 ----
-Build nationalparks, #2 Running. A new deployment will be created automatically
+Build nationalparks, #1 Running. A new deployment will be created automatically
 once the build completes.  a few seconds ago View Log
 ----
 
-Go ahead and click *"View Log"*. This is a new Java-based project that uses
+Go ahead and click *"View Log"*. This is a Java-based application that uses
 Maven as the build and dependency system.  For this reason, the initial build
 will take a few minutes as Maven downloads all of the dependencies needed for
 the application. You can see all of this happening in real time!
@@ -155,7 +156,7 @@ has finished (exited) and that an application *Pod* is in a ready and running st
 NAME                    READY     STATUS      RESTARTS   AGE
 nationalparks-1-tkid3   1/1       Running     3          2m
 nationalparks-1-build   0/1       Completed   0          3m
-parksmap-2-4hbtk        1/1       Running     0          2h
+parksmap-1-4hbtk        1/1       Running     0          2h
 ----
 
 If you look again at the web console, you will notice that, when you create the
@@ -183,14 +184,31 @@ In the above example, the URL is:
 http://nationalparks-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}
 ----
 
+Since this is a back-end application, it doesn't actually have a web interface.
+However, it can give us some data. All back ends that work with the parks map
+front end are required to implement a `/ws/info/` endpoint. To test, the
+complete URL to enter in your browser is:
 
-<< NEEDS UPDATE >>
+[source]
+----
+http://nationalparks-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/info/
+----
 
-Verify your application is working by viewing the URL in a web browser.  You should see the following:
+NOTE: The trailing slash is *required*.
 
-image::/images/mlbparks1.png[MLBParks]
+You will see a simple JSON string:
 
-Wait a second!  Why are the national parks not showing up?  Well, that is
-because we haven't actually added a database to the application yet.  We will do
-that in the next lab. Congratulations on deploying your first application
-using S2I on the OpenShift Platform!
+[source]
+----
+{"id":"nationalparks","displayName":"National Parks","center":{"latitude":"47.039304","longitude":"14.505178"},"zoom":4}
+----
+
+Earlier we said:
+
+[source]
+----
+This is a Java Spring Boot application that performs 2D geo-spatial queries
+against a MongoDB database
+----
+
+But we don't have a database. Yet.
