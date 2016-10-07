@@ -1,14 +1,15 @@
 name: OpenShift 3 Roadshow
 vars:
   DOCS_URL: "docs.openshift.com/container-platform"
+  SUFFIX: "XX"
   USER_SUFFIX: "-XX"
   OPENSHIFT_NAME: "OpenShift Container Platform"
   OPENSHIFT_SHORTNAME: "OCP"
   OPENSHIFT_VERSION: "3.3"
-  GITLAB_LOGIN: "userxx / password"
+  GITLAB_LOGIN: "userxx / openshift3"
   GITLAB_URL_PREFIX: "gitlab-ce-workshop-infra"
-  JAVA_BUILDER_PROPER: "JBoss EAP 6.4"
-  JAVA_BUILDER_STRING: "jboss-eap64-openshift:1.4"
+  JAVA_BUILDER_PROPER: "JBoss EAP 7"
+  JAVA_BUILDER_STRING: "jboss-eap70-openshift:1.4"
   USER_NAME: "userXX"
   USER_PASSWORD: "openshift3"
   PARKSMAP_VERSION: "0.4"
