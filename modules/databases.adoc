@@ -180,10 +180,10 @@ openshift3nationalparks-2-c5b6k   1/1       Running     0          1h
 $ oc exec -ti mongodb-1-ovu50 -- bash -c 'mongo -u mongodb -p mongodb mongodb'
 ----
 
-**Note:** If you used different credentials when you created your MongoDB Pod,
+NOTE: If you used different credentials when you created your MongoDB Pod,
 ensure that you substitute them for the values above.
 
-**Note:** You will need to substitute the correct name for your MongoDB Pod.
+NOTE: You will need to substitute the correct name for your MongoDB Pod.
 
 Once you are connected to the database, run the following command to count the number of MLB teams added to the database:
 
@@ -218,7 +218,7 @@ sh-4.2$ mongo -u mongodb -p mongodb mongodb
 Then you can issue the same `db.parks.count();` command from before, without
 having to use the CLI! This is seriously cool.
 
-**Note:** Don't forget to use the right user and password and database
+NOTE: Don't forget to use the right user and password and database
 information.
 
-**Note:** You currently can't copy/paste into the terminal.
+NOTE: You currently can't copy/paste into the terminal.

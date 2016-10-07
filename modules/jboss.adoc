@@ -97,12 +97,12 @@ the Git repository URL, enter:
 
 	http://gitlab.{{ROUTER_ADDRESS}}/dev/openshift3nationalparks.git
 
-**Note:** All of these runtimes shown are made available via *Templates*, which
+NOTE: All of these runtimes shown are made available via *Templates*, which
 will be discussed in a later lab.
 
 image::/images/new_mlbparks_1.png[Runtimes]
 
-**NOTE:** To speed build process, a Sonatype Nexus in included in the VM that will cache
+NOTE: To speed build process, a Sonatype Nexus in included in the VM that will cache
 your dependencies as you pull them down. To use it, you need to click on *Show advanced routing, build, and
 deployment options*, scroll down to *Build Configuration*, add an environment variable named *MAVEN_MIRROR_URL*
 with value *http://nexus.ci:8081/content/groups/public*

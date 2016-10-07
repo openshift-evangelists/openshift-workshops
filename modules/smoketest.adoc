@@ -13,7 +13,7 @@ want to authenticate to.  Issue the following command:
 $ oc login {{CONSOLE_ADDRESS}}
 ----
 
-**Note:** After entering in the above command, you may be prompted to accept the
+NOTE: After entering in the above command, you may be prompted to accept the
 security certificate
 
 You may see the following output:
@@ -32,7 +32,7 @@ by OpenShift. In a real-world scenario, either OpenShift's certificate would be
 signed by a standard CA (eg: Thawte, Verisign, StartSSL, etc.) or signed by a
 corporate-standard CA that you already have installed on your system.
 
-**Note:** On some versions of Microsoft Windows, you may get an error that the
+NOTE: On some versions of Microsoft Windows, you may get an error that the
 server has an invalid x.509 certificate.  If you receive this error, enter in
 the following command:
 
