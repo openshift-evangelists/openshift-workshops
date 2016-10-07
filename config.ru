@@ -85,7 +85,9 @@ class Application < Sinatra::Base
       case
         when File.exists?(filename)
           src = File.read(filename)
-          [src, Asciidoctor.render(process_template(mod, revision, src))]
+          options = { attributes: { 'icons' => 'font' } }
+          adoc = Asciidoctor::Document.new(process_template(mod, revision, src), options)
+          [src, adoc.render]
         else
           [nil, nil]
       end
