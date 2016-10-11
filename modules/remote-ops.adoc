@@ -25,30 +25,30 @@ You should an output similar to the following:
 [source]
 ----
 NAME               READY     STATUS    RESTARTS   AGE
-parksmap-1-tegp4   1/1       Running   0          2m
+parksmap-2-tegp4   1/1       Running   0          2m
 ----
 
 Now you can establish a remote shell session into the pod by using the pod name:
 
 [source]
 ----
-oc rsh parksmap-1-tegp4
+oc rsh parksmap-2-tegp4
 ----
 
 You would see the following output:
 
 [source]
 ----
-$ oc rsh parksmap-1-tegp4
+$ oc rsh parksmap-2-tegp4
 sh-4.2$
 ----
 
 [NOTE]
-----
+====
 The default shell used by `oc rsh` is `/bin/sh`. If the deployed container does
 not have *sh* installed and uses another shell, (e.g. *A Shell*) the shell command
 can be specified after the pod name in the issued command.
-----
+====
 
 Run the following command to list the files in the top folder:
 
@@ -70,7 +70,7 @@ In order to show just the JAR file, run the following:
 
 [source]
 ----
-$ oc exec parksmap-1-tegp4 -- ls -l /parksmap.jar
+$ oc exec parksmap-2-tegp4 -- ls -l /parksmap.jar
 
 -rw-rw-r--. 1 root root 21486607 Oct  4 18:26 /parksmap.jar
 ----
@@ -79,7 +79,7 @@ You can also specify the shell commands to run directly with the *oc rsh* comman
 
 [source]
 ----
-$ oc rsh parksmap-1-tegp4 ls -l /parksmap.jar
+$ oc rsh parksmap-2-tegp4 ls -l /parksmap.jar
 
 -rw-rw-r--. 1 root root 21486607 Oct  4 18:26 /parksmap.jar
 ----
@@ -90,8 +90,8 @@ You can also access a terminal into a container from the web console. On the
 *Pod* details page, one of the tabs says "Terminal". Try it!
 
 [NOTE]
-----
+====
 The `--` syntax in the `oc exec` command delineates where exec's options
 end and where the actual command to execute begins. Take a look at `oc exec
 --help` for more details.
-----
+====

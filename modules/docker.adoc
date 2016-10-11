@@ -171,12 +171,12 @@ https://{{DOCS_URL}}/latest/dev_guide/managing_images.html#image-pull-policy[ima
 
 *Services* provide a convenient abstraction layer inside OpenShift to find a
 group of like *Pods*. They also act as an internal proxy/load balancer between
-those *Pods* and anything else that needs to access them from inside the OpenShift
-environment. For example, if you needed more Guestbook servers to handle the
-load, you could spin up more *Pods*. OpenShift automatically maps them as
-endpoints to the *Service*, and the incoming requests would not notice anything
-different except that the *Service* was now doing a better job handling the
-requests.
+those *Pods* and anything else that needs to access them from inside the
+OpenShift environment. For example, if you needed more parks map servers to
+handle the load, you could spin up more *Pods*. OpenShift automatically maps
+them as endpoints to the *Service*, and the incoming requests would not notice
+anything different except that the *Service* was now doing a better job handling
+the requests.
 
 When you asked OpenShift to run the image, it automatically created a *Service*
 for you. Remember that services are an internal construct. They are not

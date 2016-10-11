@@ -47,8 +47,8 @@ parksmap   1          1         1         config,image(parksmap:{{PARKSMAP_VERSI
 
 To get more details, we can look into the *ReplicationController* (*RC*).
 
-Take a look at the *ReplicationController* (RC) that was created for you when you told OpenShift to
-stand up the `guestbook` image:
+Take a look at the *ReplicationController* (RC) that was created for you when
+you told OpenShift to stand up the `parksmap` image:
 
 [source]
 ----
