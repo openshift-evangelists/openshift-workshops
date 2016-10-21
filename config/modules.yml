@@ -16,23 +16,26 @@ install:
         DOWNLOAD_CLIENT_LIN32: <lin link>
         DOWNLOAD_CLIENT_LIN64: <lim link>
         OC_VERSION: <status>
-
-smoketest:
-  name: Smoke Testing the Environment
+explore:
+  name: Exploring the CLI and Web Console
 docker:
   name: Deploying our First Docker Image
-routes:
-  name: Creating Routes
-remote-ops:
-  name: Remote Operations
 scaling:
   name: Scaling
-jboss:
-  name: Deploying Java Code on JBoss
+routes:
+  name: Creating Routes
+logging:
+  name: Exploring OpenShift's Logging Capabilities
+permissions:
+  name: Role-Based Access Control
+remote-ops:
+  name: Remote Operations
+java:
+  name: Deploying Java Code
 databases:
   name: Adding a Database (MongoDB)
   requires:
-    - jboss
+    - java
 codechanges:
   name: Using Source 2 Image for Code Changes
   requires:
