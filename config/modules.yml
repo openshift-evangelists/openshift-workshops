@@ -32,6 +32,8 @@ remote-ops:
   name: Remote Operations
 java:
   name: Deploying Java Code
+clustering:
+  name: Statefull Java EE Apps
 databases:
   name: Adding a Database (MongoDB)
   requires:
