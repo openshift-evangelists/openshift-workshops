@@ -9,16 +9,7 @@ For KUBE_PING to work, the following steps must be taken:
 2. The OPENSHIFT_KUBE_PING_LABELS environment variables should be set. If not set, pods outside of your application (albeit in your namespace) will try to join.
 3. Authorization must be granted to the service account the pod is running under to be allowed to access Kubernetes' REST api.
 
-Note that, KUBE_PING is pre-configured in JBoss EAP S2I templates.
-
-Run the following command in order to allow JBoss EAP service account to use Kubernetes' REST api as the discovery mechanism.
-
-[source]
-----
-$ oc policy add-role-to-user view system:serviceaccount:$(oc project -q):default -n $(oc project -q)
-----
-
-Scale up the *mlbparks* pod to two by clicking on the upper arrows on the console. Alternatively, you can use the command line to scale up the pods and form a two-member cluster.
+You have already configured the default service account to have access to Kubernetes' REST api during previous labs. Now you can scale up the *mlbparks* pod to two by clicking on the upper arrows on the console. Alternatively, you can use the command line to scale up the pods and form a two-member cluster.
 
 [source]
 ----
