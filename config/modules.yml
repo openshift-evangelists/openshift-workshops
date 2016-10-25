@@ -34,6 +34,8 @@ java:
   name: Deploying Java Code
 clustering:
   name: Statefull Java EE Apps
+  requires:
+    - permissions
 databases:
   name: Adding a Database (MongoDB)
   requires:
