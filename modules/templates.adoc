@@ -40,7 +40,7 @@ the source code repository. Execute the following command:
 
 [source]
 ----
-oc create -f https://raw.githubusercontent.com/openshift-roadshow/mlbparks/master/ose3/application-template.json
+oc create -f https://raw.githubusercontent.com/openshift-roadshow/mlbparks/master/ose3/application-template-jboss.json
 ----
 
 What just happened? What did you just `create`? The item that we passed to the `create`
@@ -51,7 +51,7 @@ your *Project*. You can see this with the following command:
 ----
 oc get template
 NAME       DESCRIPTION                                                                  PARAMETERS     OBJECTS
-mlbparks   Application template MLBParks backend running on Wildfly and using mongodb   15 (5 blank)   8
+mlbparks   Application template MLBParks backend running on JBoss EAP and using mongodb   15 (5 blank)   8
 ----
 
 Are you ready for the magic command?  Here it is:
@@ -129,4 +129,3 @@ resources for our *mlbparks* application.
 ----
 oc get template mlbparks -o yaml
 ----
-
