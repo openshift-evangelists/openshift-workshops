@@ -13,3 +13,6 @@ vars:
   USER_NAME: "userXX"
   USER_PASSWORD: "openshift3"
   PARKSMAP_VERSION: "0.4"
+modules:
+  revisions:
+    templates: ocp

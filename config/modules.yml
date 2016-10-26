@@ -32,10 +32,6 @@ remote-ops:
   name: Remote Operations
 java:
   name: Deploying Java Code
-clustering:
-  name: Statefull Java EE Apps
-  requires:
-    - permissions
 databases:
   name: Adding a Database (MongoDB)
   requires:
@@ -46,6 +42,18 @@ codechanges:
     - databases
 templates:
   name: Using Application Templates
+  vars:
+    MW_NAME: "wildfly"
+    MW_TEXT: "WildFly"
+  revisions:
+    ocp:
+      vars:
+        MW_NAME: "eap"
+        MW_TEXT: "JBoss EAP"
+clustering:
+  name: Clustering Stateful Java EE Applications
+  requires:
+    - permissions
 quotas:
   name: Limiting application resource usage
 run-as-non-root:
