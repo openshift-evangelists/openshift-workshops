@@ -51,7 +51,7 @@ your *Project*. You can see this with the following command:
 ----
 oc get template
 NAME       DESCRIPTION                                                                  PARAMETERS     OBJECTS
-mlbparks   Application template MLBParks backend running on JBoss EAP and using mongodb   15 (5 blank)   8
+mlbparks   Application template MLBParks backend running on JBoss EAP and using MongoDB 15 (5 blank)   8
 ----
 
 Are you ready for the magic command?  Here it is:
