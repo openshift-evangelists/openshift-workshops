@@ -1,4 +1,4 @@
-## Lab: Statefull Java EE Applications
+## Lab: Clustering Stateful Java EE Applications
 
 ### JBoss EAP Clustering
 
