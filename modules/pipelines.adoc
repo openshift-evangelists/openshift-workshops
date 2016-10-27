@@ -1,0 +1,19 @@
+## Lab: Automating Deployment with CI/CD Pipeline [WIP]
+
+### Exercise: Hit the Limits!
+
+Remove the deployment trigger so that the pipeline can control when deployment takes place
+
+[source]
+----
+oc patch dc nationalparks -p '{"spec": {"triggers": [{"type": "ConfigChange"}]}}'
+----
+
+Create the pipeline object
+
+[source]
+----
+$ oc create -f https://github.com/openshift-roadshow/nationalparks/blob/master/ose3/pipeline.yaml
+----
+
+Go to `https://10.2.2.2:8443/console/project/demo/browse/pipelines` to check the created the pipeline. Click on `nationalparks-pipeline`. 
