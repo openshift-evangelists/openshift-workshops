@@ -1,6 +1,20 @@
-## Lab: Automating Deployment with CI/CD Pipeline [WIP]
+## Lab: Automating Deployment with CI/CD Pipeline
 
-### Exercise: Hit the Limits!
+### Exercise: Configure Jenkins
+
+Setup Jenkins. Give 'openshift3' as password.
+
+User: admin
+Password: openshift3
+
+Give permissions
+
+[source]
+----
+oc policy add-role-to-user view system:serviceaccount:explore{{USER_SUFFIX}}:jenkins
+----
+
+### Exercise: Prepare for Pipeline
 
 Remove the deployment trigger so that the pipeline can control when deployment takes place
 
@@ -9,6 +23,16 @@ Remove the deployment trigger so that the pipeline can control when deployment t
 oc patch dc nationalparks -p '{"spec": {"triggers": [{"type": "ConfigChange"}]}}'
 ----
 
+Rename route and dc to reprennt Dev
+
+[source]
+----
+oc patch svc nationalparks -p '{"metadata": {"labels": {"app": "nationalparks-dev"}}}'
+oc get route nationalparks -o yaml | sed 's/host: nationalparks/host: nationalparks-dev/g' | oc replace --force -f -
+----
+
+### Exercise: Create Pipeline
+
 Create the pipeline object
 
 [source]
@@ -16,4 +40,7 @@ Create the pipeline object
 $ oc create -f https://github.com/openshift-roadshow/nationalparks/blob/master/ose3/pipeline.yaml
 ----
 
-Go to `https://10.2.2.2:8443/console/project/demo/browse/pipelines` to check the created the pipeline. Click on `nationalparks-pipeline`. 
+Go to `https://10.2.2.2:8443/console/project/demo/browse/pipelines` to check the created the pipeline. Click on `nationalparks-pipeline`.
+
+
+When the pipeline pauses at input, verify the changes are applied correctly to the application. When verified, click on input link and then 'Proceed'.
