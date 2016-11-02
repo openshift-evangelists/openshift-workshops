@@ -76,8 +76,10 @@ class Application < Sinatra::Base
       revision = nil
 
       filename = "modules/#{mod}.adoc"
-      if @lab['modules'] && @lab['modules']['revisions'] && @lab['modules']['revisions'][mod]
-        revision = @lab['modules']['revisions'][mod]
+      has_mod_revision = @lab['modules'] && @lab['modules']['revisions'] && @lab['modules']['revisions'][mod]
+
+      if @lab['revision'] || has_mod_revision
+        revision = has_mod_revision ? @lab['modules']['revisions'][mod] : @lab['revision']
         tmp = "modules/#{mod}_#{revision}.adoc"
         filename = tmp if File.exists?(tmp)
       end
