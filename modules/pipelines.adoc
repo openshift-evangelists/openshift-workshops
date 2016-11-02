@@ -128,11 +128,33 @@ diagram.
 
 image::/images/pipeline-live.png[National Parks Live]
 
-Go to *Builds* &rarr; *Pipelines* on the left side-bar and click on *Start Pipeline*
-to start the exection of `nationalparks-pipeline`. You can click on *View Log* to
-take a look at the build logs as they progress through the pipeline or on *Build #N*
-to see the details of this specific pipeline execution as well as the pipeline
-definition using the https://jenkins.io/doc/book/pipeline/overview/[Jenkins DSL].
+As discussed in previous labs, the `parksmap` web app queries the OpenShift API and
+looks for services that have the label `type=parksmap-backend` and interrogates the
+discovered endpoints to visualize their map data. Check what services are labeled
+with `type=parksmap-backend` in your project:
+
+[source]
+----
+oc get svc -l type=parksmap-backend
+
+NAME                 CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+nationalparks        172.30.194.180   <none>        8080/TCP   2h
+nationalparks-live   172.30.215.212   <none>        8080/TCP   2h
+----
+
+Remove the `type` label from the *Dev* service so that the `parksmap` web app
+uses only the *Live* service for the map data.
+
+[source]
+----
+oc label svc nationalparks type-
+----
+
+In order to trigger the pipeline, Go to *Builds* &rarr; *Pipelines* on the left
+side-bar and click on *Start Pipeline* to start the exection of `nationalparks-pipeline`.
+You can click on *View Log* to take a look at the build logs as they progress
+through the pipeline or on *Build #N* to see the details of this specific pipeline
+execution as well as the pipeline definition using the https://jenkins.io/doc/book/pipeline/overview/[Jenkins DSL].
 
 image::/images/pipeline-details.png[Pipeline Details]
 
@@ -181,5 +203,8 @@ NOTE: Build metrics are generated and displayed after a few executions of the pi
 to determine trends.
 
 image::/images/pipeline-history.png[OpenShift History]
+
+
+parksmap-backend
 
 Congratulations! Now you have a CI/CD Pipeline for the `nationalparks` application.
