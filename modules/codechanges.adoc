@@ -9,14 +9,30 @@ hook at the OpenShift API, automated code/build/deploy pipelines can be
 achieved.
 
 #### Exercise: Configuring GitLab Web Hooks
+
+
+{% if WITH_PIPELINE == true %}
+In previous labs, you created a CI/CD Pipeline to automate build, test and deployment of
+the `nationalparks` application. In this lab you can use the pipline webhook to
+trigger a pipeline execution every time there is a change in the `nationalparks` GitLab
+repository. In the OpenShift web console, navigate to your `explore{{USER_SUFFIX}}` *Project*, and
+then mouse-over *Browse* and then *Pipelines*. Click the `nationalparks-pipeline` and
+then *Configuration* tab.
+
+On this screen you will see the option to copy the *generic* webhook URL as shown
+in the following image:
+
+image::/images/ocp-webhook1-pipeline.png[Webhook]
+{% else %}
 In the OpenShift web console, navigate to your `explore{{USER_SUFFIX}}` *Project*, and
-then mouse-over *Browse* and then *Builds*. Click the `nationalparks`
-build.
+then mouse-over *Browse* and then *Builds*. Click the `nationalparks` build.
 
 On this screen you will see the option to copy the *generic* webhook URL as shown
 in the following image:
 
 image::/images/ocp-webhook1.png[Webhook]
+{% endif %}
+
 
 Once you have the URL copied to your clipboard, navigate to the code repository
 that you have on your local GitLab:
@@ -86,6 +102,24 @@ return new Backend("nationalparks","OpenShift National Parks", new Coordinates("
 Click on Commit changes at the bottom of the screen. Feel free to enter a commit
 message.
 
+{% if WITH_PIPELINE == true %}
+
+Once you have committed your changes, the `nationalparks-pipeline` should almost
+instantaneously be triggered in OpenShift. Look at the *Builds* &rarr; *Pipelines*
+page in OpenShift Console to verify the pipeline is running:
+
+image::/images/ocp-webhook6-pipeline.png[Pipeline Running]
+
+After the test stage, pipeline waits for manual approval in order to deploy to the
+*Live* container. Click on *Input Required* link which takes you to the Jenkins Console
+for approving the deployment and then *Proceed* button.
+
+image::/images/pipeline-jenkins-input.png[Pipline Manual Approval,1000,align=center]
+
+Once you pipeline execution is finished, verify your new Docker image was
+automatically deployed by viewing the application in your browser:
+
+{% else %}
 Once you have committed your changes, a *Build* should almost instantaneously be
 triggered in OpenShift. Look at the *Builds* page in the web console, or run the
 following command to verify:
@@ -106,6 +140,7 @@ nationalparks-2   Source    Git@3b26e1a   Running    43 seconds ago
 
 Once the build and deploy has finished, verify your new Docker image was
 automatically deployed by viewing the application in your browser:
+{% endif %}
 
 [source]
 ----

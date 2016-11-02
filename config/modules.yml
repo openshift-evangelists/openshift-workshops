@@ -44,13 +44,19 @@ codechanges:
   name: Using Source 2 Image for Code Changes
   requires:
     - databases
+  vars:
+    WITH_PIPELINE: false
+  revisions:
+    roadshow:
+      vars:
+        WITH_PIPELINE: true
 templates:
   name: Using Application Templates
   vars:
     MW_NAME: "wildfly"
     MW_TEXT: "WildFly"
   revisions:
-    ocp:
+    roadshow:
       vars:
         MW_NAME: "eap"
         MW_TEXT: "JBoss EAP"

@@ -15,4 +15,5 @@ vars:
   PARKSMAP_VERSION: "0.4"
 modules:
   revisions:
-    templates: ocp
+    templates: roadshow
+    codechanges: roadshow
