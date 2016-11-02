@@ -1,0 +1,210 @@
+## Lab: Automating Deployment with CI/CD Pipeline
+
+### Background: CI/CD Pipeline
+Continuous Integration and Continuous Deployment refer to a set of practises with
+the intention of automating various aspects of delivery software. One of these
+practises is Pipeline which is an automated process to define the steps a change
+in code or configuration has to go through in order to reach upper environments
+such as staging and production. OpenShift supports CI/CD Pipelines by integrating
+the popular https://jenkins.io/doc/book/pipeline/overview/[Jenkins pipelines] into
+the platform and enables defining truly complex workflows directly within OpenShift.
+
+### Exercise: Deploy Jenkins
+
+OpenShift provides a certified Jenkins which includes a rich set of plugins that
+enable the full pipeline flow. In the web console in your `explore{{USER_SUFFIX}}`
+project, again click the *"Add to project"* button, and then find the `jenkins-ephemeral`
+template, and click on it.
+
+image::/images/pipeline-jenkins-catalog.png[Jenkins Ephemeral]
+
+You can customize the Jenkins properties such as service name, admin password, memory
+allocation, etc through the parameters in the web console. Specify _openshift3_ for
+*Jenkins Password* and leave the rest of parameters with the default values. Click on
+*Create* to deploy Jenkins.
+
+image::/images/pipeline-jenkins-params.png[Jenkins Template]
+
+OpenShift deploys a Jenkins pod and also creates a service and route for for the
+deployed container.
+
+image::/images/pipeline-jenkins-pods.png[Jenkins Pods]
+
+Click on Jenkins route in order to open Jenkins Console. Login in Jenkins using the
+admin credentials and explore the Jenkins Console.
+
+NOTE: The admin credentials for Jenkins are: admin/openshift3
+
+image::/images/pipeline-jenkins-console.png[Jenkins Console]
+
+Jenkins uses the OpenShift REST API in order to integrate into various OpenShift
+operations and therefore you should grant permission to the Jenkins service account
+to invoke these APIs. Run the following CLI command to allow Jenkins to retrieve
+information about state of OpenShift.
+
+[source]
+----
+oc policy add-role-to-user view system:serviceaccount:explore{{USER_SUFFIX}}:jenkins
+----
+
+### Exercise: Pipeline Preparation
+
+In a previous lab, you deployed the `nationalparks` application using the https://docs.openshift.com/container-platform/3.3/architecture/core_concepts/builds_and_image_streams.html#source-build[Source-to-Image (S2I)]
+mechanism. S2I already provides build automation by automatically running builds
+when source code changes, or an underlying image changes. Deployments are also automated
+by S2I and can be triggered when the image they are based on changes. In this lab,
+you will create a more complex workflow by creating a pipeline that extends the S2I
+functionality by adding more steps to the build and deploy process. The following
+diagram shows the pipeline you will create in this lab.
+
+image::/images/pipeline-diagram.png[CI/CD Pipeline Diagram,800,align="center"]
+
+There are two environments for the `nationalparks` application in this pipeline.
+*Dev* container is the for development and test purposes where all code and
+configuration changes are deployed so that you can run automated tests against it.
+Furthermore, the test teams can run their manual tests on this container and
+report any bugs discovered through their test cases. If the tests are all successful
+and the _Deployment Manager_ in the team approves the change, it is then deployed to the
+*Live* container which is the production environment with defined SLA and is
+critical to function properly at all times.
+
+The pipeline execution starts with a developer making a change in the application
+code or configuration. For every change, the following steps are executed with the
+goal of determining if the change is appropriate for deployment in the *Live*
+environment:
+
+. Clone the code from Git repo, build and run unit tests and build a docker image container the code (S2I)
+. Deploy the docker image into *Dev* container
+. Run automated tests against the *Dev* container
+. Run manual tests against the *Dev* container
+. Wait for the *Deployment Manager*'s to either approve or reject the deployment (e.g. manual tests have revealed an unacceptable number of bugs)
+. If approved, deployed to the _Live_ container
+
+You need to make a few modifications to the `nationalparks` application which is
+deployed in previous labs in order to adjust it to the pipeline described above.
+
+First, the deployment of the docker image is triggered automatically whenever a new
+image is built by the S2I process. Since in this lab, the pipeline controls when the
+deployments should take place, you need to remove the automated trigger from the deployment
+configuration. Run the following CLI command to disable the deployment trigger.:
+
+[source]
+----
+oc patch dc nationalparks -p '{"spec": {"triggers": [{"type": "ConfigChange"}]}}'
+----
+
+You can re-use the `nationalparks` container deployed in previous labs as the *Dev*
+container. If better aesthetics and clarity, rename the service and route created
+in previous labs to contain a _dev_ appendix by running the following CLI commands:
+
+[source]
+----
+oc patch svc nationalparks -p '{"metadata": {"labels": {"app": "nationalparks-dev"}}}'
+oc get route nationalparks -o yaml | sed 's/host: nationalparks/host: nationalparks-dev/g' | oc replace --force -f -
+----
+
+image::/images/pipeline-dev.png[National Parks Dev]
+
+### Exercise: Create OpenShift Pipeline
+
+The Pipeline is in fact a type of build that allows developers to define a Jenkins
+pipeline for execution by the Jenkins pipeline plugin. The build can be started,
+monitored, and managed by OpenShift Container Platform in the same way as any other
+build type. Pipeline workflows are defined in a Jenkinsfile, either embedded directly
+in the build configuration, or supplied in a Git repository and referenced by the
+build configuration.
+
+In order to create the pipeline, as well as the *Live* container, run the following
+CLI command:
+
+[source]
+----
+$ oc create -f https://github.com/openshift-roadshow/nationalparks/blob/master/ose3/pipeline.yaml
+----
+
+A new route, service and a pod is created for the *Live* environment as well as an
+OpenShift Pipeline that automates the execution of steps showed in the above pipeline
+diagram.
+
+image::/images/pipeline-live.png[National Parks Live]
+
+As discussed in previous labs, the `parksmap` web app queries the OpenShift API and
+looks for services that have the label `type=parksmap-backend` and interrogates the
+discovered endpoints to visualize their map data. Check what services are labeled
+with `type=parksmap-backend` in your project:
+
+[source]
+----
+oc get svc -l type=parksmap-backend
+
+NAME                 CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+nationalparks        172.30.194.180   <none>        8080/TCP   2h
+nationalparks-live   172.30.215.212   <none>        8080/TCP   2h
+----
+
+Remove the `type` label from the *Dev* service so that the `parksmap` web app
+uses only the *Live* service for the map data.
+
+[source]
+----
+oc label svc nationalparks type-
+----
+
+In order to trigger the pipeline, Go to *Builds* &rarr; *Pipelines* on the left
+side-bar and click on *Start Pipeline* to start the exection of `nationalparks-pipeline`.
+You can click on *View Log* to take a look at the build logs as they progress
+through the pipeline or on *Build #N* to see the details of this specific pipeline
+execution as well as the pipeline definition using the https://jenkins.io/doc/book/pipeline/overview/[Jenkins DSL].
+
+image::/images/pipeline-details.png[Pipeline Details]
+
+When the pipeline reaches the *Deploy Dev* stage, a new deployment takes place to the *Dev* container
+while leaving the *Live* container intact, not to disrupt the live environment.
+
+NOTE: You will notice there are no containers in the *Live* environment. That is
+because this is the first run of the pipeline and no deployments have taken place
+yet so far in the pipeline in the *Live* container.
+
+image::/images/pipeline-deploy-dev.png[Pipeline - Deploy to Dev]
+
+Pipeline execution will pause after running automated tests against the *Dev*
+container. Visit the `nationalparks` web service to query for data and verify the
+service works as expected.
+
+[source]
+----
+http://nationalparks-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/data/all/
+----
+
+After the test stage, pipeline waits for manual approval in order to deploy to the
+*Live* container.
+
+image::/images/pipeline-input.png[Manual Approval]
+
+Click on *Input Required* link which takes you to the Jenkins Console for approving
+the deployment. This step typically will be integrated into your workflow process
+(e.g. JIRA Service Desk and ServiceNow) and will be performed as part of the overall
+deployment process without interacting directly with Jenkins. For simplicity in
+this lab, click on *Proceed* button to approve the build.
+
+image::/images/pipeline-jenkins-input.png[Jenkins Approval,1000,align=center]
+
+Pipeline execution continues to promote and deploy the `nationalparks` docker image
+which was successfully tested in the *Dev* container, to the *Live* container.
+
+image::/images/pipeline-live-deployed.png[National Parks Live Container]
+
+On *Builds* &rarr; *Pipelines*, click on *View History* to go to the pipeline overview
+which shows the pipeline execution history as well as build time metrics so that you can
+iteratively improve the build process as well detect build time anomalies which usually
+signal a bad change in the code or configuration.
+
+NOTE: Build metrics are generated and displayed after a few executions of the pipeline
+to determine trends.
+
+image::/images/pipeline-history.png[OpenShift History]
+
+
+parksmap-backend
+
+Congratulations! Now you have a CI/CD Pipeline for the `nationalparks` application.
