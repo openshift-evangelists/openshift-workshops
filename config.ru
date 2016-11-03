@@ -73,13 +73,17 @@ class Application < Sinatra::Base
     end
 
     def render_module(mod)
-      revision = nil
+      revision = case
+                   when @lab['modules'] && @lab['modules']['revisions'] && @lab['modules']['revisions'][mod]
+                     @lab['modules']['revisions'][mod]
+                   when  @lab['revision']
+                     @lab['revision']
+                   else
+                     nil
+      end
 
       filename = "modules/#{mod}.adoc"
-      has_mod_revision = @lab['modules'] && @lab['modules']['revisions'] && @lab['modules']['revisions'][mod]
-
-      if @lab['revision'] || has_mod_revision
-        revision = has_mod_revision ? @lab['modules']['revisions'][mod] : @lab['revision']
+      if revision
         tmp = "modules/#{mod}_#{revision}.adoc"
         filename = tmp if File.exists?(tmp)
       end
