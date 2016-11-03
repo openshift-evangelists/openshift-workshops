@@ -129,7 +129,7 @@ kind: Pod
 metadata:
   annotations:
     kubernetes.io/created-by: |
-      {"kind":"SerializedReference","apiVersion":"v1","reference":{"kind":"ReplicationController","namespace":"explore-00","name":"parksmap-1","uid":"b5ae65e9-897e-11e6-bdaa-2cc2602f8794","apiVersion":"v1","resourceVersion":"6924"}}
+      {"kind":"SerializedReference","apiVersion":"v1","reference":{"kind":"ReplicationController","namespace":"explore-user00","name":"parksmap-1","uid":"b5ae65e9-897e-11e6-bdaa-2cc2602f8794","apiVersion":"v1","resourceVersion":"6924"}}
     openshift.io/deployment-config.latest-version: "1"
     openshift.io/deployment-config.name: parksmap
     openshift.io/deployment.name: parksmap-1
@@ -185,7 +185,7 @@ environment. That's OK, as you will learn later.
 
 The way that a *Service* maps to a set of *Pods* is via a system of *Labels* and
 *Selectors*. *Services* are assigned an eternal IP address and many ports and
-protocols can be mapped. 
+protocols can be mapped.
 
 There is a lot more information about
 https://{{DOCS_URL}}/latest/architecture/core_concepts/pods_and_services.html#services[Services],
@@ -237,9 +237,9 @@ metadata:
   labels:
     app: parksmap
   name: parksmap
-  namespace: explore-00
+  namespace: explore-user00
   resourceVersion: "6893"
-  selfLink: /api/v1/namespaces/explore-00/services/parksmap
+  selfLink: /api/v1/namespaces/explore-user00/services/parksmap
   uid: b51260a9-897e-11e6-bdaa-2cc2602f8794
 spec:
   clusterIP: 172.30.169.213
@@ -312,7 +312,7 @@ You should see something like the following output:
 [source]
 ----
 Name:                   parksmap
-Namespace:              explore-00
+Namespace:              explore-user00
 Labels:                 app=parksmap
 Selector:               deploymentconfig=parksmap
 Type:                   ClusterIP
