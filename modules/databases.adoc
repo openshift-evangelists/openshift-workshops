@@ -251,7 +251,7 @@ labels. `describe` the `nationalparks` service:
 ----
 oc describe service nationalparks
 Name:                   nationalparks
-Namespace:              explore-00
+Namespace:              explore{{USER_SUFFIX}}
 Labels:                 app=nationalparks
 Selector:               deploymentconfig=nationalparks
 Type:                   ClusterIP
