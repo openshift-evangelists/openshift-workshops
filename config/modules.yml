@@ -16,29 +16,54 @@ install:
         DOWNLOAD_CLIENT_LIN32: <lin link>
         DOWNLOAD_CLIENT_LIN64: <lim link>
         OC_VERSION: <status>
-
-smoketest:
-  name: Smoke Testing the Environment
+explore:
+  name: Exploring the CLI and Web Console
 docker:
   name: Deploying our First Docker Image
-routes:
-  name: Creating Routes
-remote-ops:
-  name: Remote Operations
 scaling:
   name: Scaling
-jboss:
-  name: Deploying Java Code on JBoss
+routes:
+  name: Creating Routes
+logging:
+  name: Exploring OpenShift's Logging Capabilities
+permissions:
+  name: Role-Based Access Control
+remote-ops:
+  name: Remote Operations
+java:
+  name: Deploying Java Code
 databases:
   name: Adding a Database (MongoDB)
   requires:
-    - jboss
+    - java
+pipelines:
+  name: Automating Deployment with CI/CD Pipeline
+  requires:
+    - java
 codechanges:
   name: Using Source 2 Image for Code Changes
   requires:
     - databases
+  vars:
+    WITH_PIPELINE: false
+  revisions:
+    roadshow:
+      vars:
+        WITH_PIPELINE: true
 templates:
   name: Using Application Templates
+  vars:
+    MW_NAME: "wildfly"
+    MW_TEXT: "WildFly"
+  revisions:
+    roadshow:
+      vars:
+        MW_NAME: "eap"
+        MW_TEXT: "JBoss EAP"
+clustering:
+  name: Clustering Stateful Java EE Applications
+  requires:
+    - permissions
 quotas:
   name: Limiting application resource usage
 run-as-non-root:
