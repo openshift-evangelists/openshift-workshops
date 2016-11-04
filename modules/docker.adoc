@@ -129,7 +129,7 @@ kind: Pod
 metadata:
   annotations:
     kubernetes.io/created-by: |
-      {"kind":"SerializedReference","apiVersion":"v1","reference":{"kind":"ReplicationController","namespace":"explore-user00","name":"parksmap-1","uid":"b5ae65e9-897e-11e6-bdaa-2cc2602f8794","apiVersion":"v1","resourceVersion":"6924"}}
+      {"kind":"SerializedReference","apiVersion":"v1","reference":{"kind":"ReplicationController","namespace":"explore{{USER_SUFFIX}}","name":"parksmap-1","uid":"b5ae65e9-897e-11e6-bdaa-2cc2602f8794","apiVersion":"v1","resourceVersion":"6924"}}
     openshift.io/deployment-config.latest-version: "1"
     openshift.io/deployment-config.name: parksmap
     openshift.io/deployment.name: parksmap-1
@@ -237,9 +237,9 @@ metadata:
   labels:
     app: parksmap
   name: parksmap
-  namespace: explore-user00
+  namespace: explore{{USER_SUFFIX}}
   resourceVersion: "6893"
-  selfLink: /api/v1/namespaces/explore-user00/services/parksmap
+  selfLink: /api/v1/namespaces/explore{{USER_SUFFIX}}/services/parksmap
   uid: b51260a9-897e-11e6-bdaa-2cc2602f8794
 spec:
   clusterIP: 172.30.169.213
@@ -312,7 +312,7 @@ You should see something like the following output:
 [source]
 ----
 Name:                   parksmap
-Namespace:              explore-user00
+Namespace:              explore{{USER_SUFFIX}}
 Labels:                 app=parksmap
 Selector:               deploymentconfig=parksmap
 Type:                   ClusterIP

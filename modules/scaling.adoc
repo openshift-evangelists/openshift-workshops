@@ -114,7 +114,7 @@ You will see something like the following output:
 [source]
 ----
 Name:			parksmap
-Namespace:		explore-user00
+Namespace:		explore{{USER_SUFFIX}}
 Labels:			app=parksmap
 Selector:		deploymentconfig=parksmap
 Type:			ClusterIP
