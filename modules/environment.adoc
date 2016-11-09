@@ -1,17 +1,21 @@
 ## Lab: Environment Overview
 
-You will be interacting with an OpenShift environment that is running on a VM
-on your local machine. This environment consists of the following:
+You will be interacting with an OpenShift environment that is running on Amazon
+Web Services. The environment consists of the following systems:
 
-* One OpenShift Origin Node with master/node roles
+* One master
+* One infrastructure node
+* 24 "application" nodes
+* An NFS server
 
-It has configured two users:
+The infrastructure node is providing several services:
 
-* Cluster administrator with roles to view/edit everything (admin/admin)
-* Developer user (dev/dev)
+* Aggregated logging
+* Cluster metrics
+* GitLab
+* This lab manual
+* The OpenShift Docker registry
+* The OpenShift router
 
-It has installed a collection of software needed to make this demo easier:
-
-* Gitlab
-* Sonatype Nexus Repository Manager
-* Lab contents
+Additionally, 100 user accounts have been provisioned. If you do not know your
+user number, please make sure you figure that out with your instructor.
