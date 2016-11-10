@@ -82,28 +82,15 @@ environment:
 
 You need to make a few modifications to the `nationalparks` application which is
 deployed in previous labs in order to adjust it to the pipeline described above.
-
-First, the deployment of the docker image is triggered automatically whenever a new
+The deployment of the docker image is triggered automatically whenever a new
 image is built by the S2I process. Since in this lab, the pipeline controls when the
 deployments should take place, you need to remove the automated trigger from the deployment
 configuration. Run the following CLI command to disable the deployment trigger.:
 
 [source]
 ----
-oc patch dc nationalparks -p '{"spec": {"triggers": [{"type": "ConfigChange"}]}}'
+oc set triggers dc/nationalparks --remove-all
 ----
-
-You can re-use the `nationalparks` container deployed in previous labs as the *Dev*
-container. If better aesthetics and clarity, rename the service and route created
-in previous labs to contain a _dev_ appendix by running the following CLI commands:
-
-[source]
-----
-oc patch svc nationalparks -p '{"metadata": {"labels": {"app": "nationalparks-dev"}}}'
-oc get route nationalparks -o yaml | sed 's/host: nationalparks/host: nationalparks-dev/g' | oc replace --force -f -
-----
-
-image::/images/pipeline-dev.png[National Parks Dev]
 
 As discussed in previous labs, the `parksmap` web app queries the OpenShift API and
 looks for services that have the label `type=parksmap-backend` and interrogates the
