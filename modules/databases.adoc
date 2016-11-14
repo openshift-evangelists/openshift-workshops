@@ -83,7 +83,11 @@ environment variables, we simply need to modify the *DeploymentConfiguration*
 (DC).  This can easily be done from either the web interface or via the command
 line.
 
-The command line takes a little less time, so let's use that option. First, find the name of the DC:
+The command line takes a little less time, so let's use that option. Spring Boot
+has a
+https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html[special
+mechanism] for finding database connection information when it comes to Mongo.
+First, find the name of the DC:
 
 [source]
 ----
@@ -94,7 +98,7 @@ Then, use the `oc env` command to set environment variables directly on the DC:
 
 [source]
 ----
-oc env dc nationalparks -e MONGODB_USER=mongodb -e MONGODB_PASSWORD=mongodb -e MONGODB_DATABASE=mongodb
+oc env dc nationalparks -e SPRING_DATA_MONGODB_USERNAME=mongodb -e SPRING_DATA_MONGODB_PASSWORD=mongodb -e SPRING_DATA_MONGODB_DATABASE=mongodb -e SPRING_DATA_MONGODB_HOST=mongodb
 ----
 
 After you have modified the *DeploymentConfig* object, you can verify the
@@ -109,13 +113,15 @@ You should see the following section:
 
 [source]
 ----
-      - env:
-        - name: MONGODB_USER
-          value: mongodb
-        - name: MONGODB_PASSWORD
-          value: mongodb
-        - name: MONGODB_DATABASE
-          value: mongodb
+  - env:
+    - name: SPRING_DATA_MONGODB_USERNAME
+      value: mongodb
+    - name: SPRING_DATA_MONGODB_PASSWORD
+      value: mongodb
+    - name: SPRING_DATA_MONGODB_DATABASE
+      value: mongodb
+    - name: SPRING_DATA_MONGODB_HOST
+      value: mongodb
 ----
 
 You can also just ask OpenShift to tell you about the environment variables on
@@ -125,9 +131,10 @@ the DC:
 ----
 oc env dc/nationalparks --list
 # deploymentconfigs nationalparks, container nationalparks
-MONGODB_USER=mongodb
-MONGODB_PASSWORD=mongodb
-MONGODB_DATABASE=mongodb
+SPRING_DATA_MONGODB_USERNAME=mongodb
+SPRING_DATA_MONGODB_PASSWORD=mongodb
+SPRING_DATA_MONGODB_DATABASE=mongodb
+SPRING_DATA_MONGODB_HOST=mongodb
 ----
 
 #### Exercise: Exploring OpenShift Magic
@@ -278,6 +285,5 @@ http://openshift3nationalparks-nationalparks.{{ROUTER_ADDRESS}}/
 ----
 
 image::/images/parksmap-new-parks.png[MongoDB]
-[MongoDB]
 
 You'll notice that the parks suddenly are showing up. That's really cool!
