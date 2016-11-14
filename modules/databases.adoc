@@ -94,7 +94,7 @@ Then, use the `oc env` command to set environment variables directly on the DC:
 
 [source]
 ----
-oc env dc nationalparks -e MONGODB_USER=mongodb -e MONGODB_PASSWORD=mongodb -e MONGODB_DATABASE=mongodb
+oc env dc nationalparks -e SPRING_DATA_MONGODB_USER=mongodb -e SPRING_DATA_MONGODB_PASSWORD=mongodb -e SPRING_DATA_MONGODB_DATABASE=mongodb
 ----
 
 After you have modified the *DeploymentConfig* object, you can verify the
@@ -110,11 +110,11 @@ You should see the following section:
 [source]
 ----
       - env:
-        - name: MONGODB_USER
+        - name: SPRING_DATA_MONGODB_USER
           value: mongodb
-        - name: MONGODB_PASSWORD
+        - name: SPRING_DATA_MONGODB_PASSWORD
           value: mongodb
-        - name: MONGODB_DATABASE
+        - name: SPRING_DATA_MONGODB_DATABASE
           value: mongodb
 ----
 
@@ -125,9 +125,9 @@ the DC:
 ----
 oc env dc/nationalparks --list
 # deploymentconfigs nationalparks, container nationalparks
-MONGODB_USER=mongodb
-MONGODB_PASSWORD=mongodb
-MONGODB_DATABASE=mongodb
+SPRING_DATA_MONGODB_USER=mongodb
+SPRING_DATA_MONGODB_PASSWORD=mongodb
+SPRING_DATA_MONGODB_DATABASE=mongodb
 ----
 
 #### Exercise: Exploring OpenShift Magic
