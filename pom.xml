@@ -121,6 +121,19 @@
               <filename>warble</filename>
             </configuration>
           </execution>
+          <execution>
+            <id>move-war</id>
+            <phase>package</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <script>
+                require 'fileutils'
+                FileUtils.mv '${project.artifactId}.war', '${project.build.directory}/ROOT.war'
+              </script>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
 
