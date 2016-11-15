@@ -130,7 +130,7 @@
             <configuration>
               <script>
                 require 'fileutils'
-                FileUtils.mv '${project.artifactId}.war', '${project.build.directory}/ROOT.war'
+                FileUtils.mv Dir['*.war'].first, 'deployments/ROOT.war'
               </script>
             </configuration>
           </execution>
@@ -141,6 +141,8 @@
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
           <failOnMissingWebXml>false</failOnMissingWebXml>
+          <outputDirectory>deployments</outputDirectory>
+          <warName>ROOT</warName>
         </configuration>
       </plugin>
 
