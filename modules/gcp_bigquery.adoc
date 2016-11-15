@@ -8,7 +8,7 @@
 The sample application that we will be deploying as part of this exercise is
 called `publicweatherdata`.  This is a Java Spring Boot application that performs
 data queries against a Google Compute BigQuery to locate and return map
-coordinates of public weather sensors, with avergae temperature information for a given month.
+coordinates of public weather sensors, with average temperature information for a given month.
 That was just a fancy way of saying that we are going to deploy, yet again, a webservice that returns a JSON list of places.
 
 #### Create web application credentials
@@ -103,7 +103,7 @@ After you click `publicweatherdata`, on the next screen you will need to enter s
 
 [source]
 ----
-http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/user{{SUFFIX}}/nationalparks.git
+http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/user{{SUFFIX}}/publicweatherdata.git
 ----
 
 Also, you will need to provide some configuration for the application to connect to the Google BigQuery service.

@@ -12,7 +12,7 @@ vars:
   JAVA_BUILDER_STRING: "jboss-eap70-openshift:1.4"
   USER_NAME: "userXX"
   USER_PASSWORD: "openshift3"
-  PARKSMAP_VERSION: "0.4"
+  PARKSMAP_VERSION: "0.5"
 modules:
   activate:
     - install
@@ -24,7 +24,7 @@ modules:
     - databases
     - codechanges
     - templates
-    - gcpservice
+    - gcp_bigquery
   revisions:
     install: ocp
     templates: roadshow
