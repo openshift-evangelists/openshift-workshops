@@ -70,13 +70,13 @@ https://{{DOCS_URL}}/latest/dev_guide/pod_autoscaling.html[Horizontal Pod Autosc
 
 ### Exercise: Scaling the Application
 
-Let's scale our parksmap "application" up to 3 instances. We can do this with
+Let's scale our parksmap "application" up to 2 instances. We can do this with
 the `scale` command. You could also do this by clicking the "up" arrow next to
 the *Pod* in the OpenShift web console on the overview page. It's your choice.
 
 [source]
 ----
-oc scale --replicas=3 dc/parksmap
+oc scale --replicas=2 dc/parksmap
 ----
 
 To verify that we changed the number of replicas, issue the following command:
@@ -86,10 +86,10 @@ To verify that we changed the number of replicas, issue the following command:
 oc get rc
 
 NAME         DESIRED   CURRENT   READY     AGE
-parksmap-1   3         3         0         4h
+parksmap-1   2         2         0         4h
 ----
 
-You can see that we now have 3 replicas. Let's verify the number of pods with
+You can see that we now have 2 replicas. Let's verify the number of pods with
 the `oc get pods` command:
 
 [source]
@@ -99,10 +99,10 @@ oc get pods
 NAME               READY     STATUS    RESTARTS   AGE
 parksmap-1-8g6lb   1/1       Running   0          1m
 parksmap-1-hx0kv   1/1       Running   0          4h
-parksmap-1-oxs94   1/1       Running   0          1m
 ----
 
-And lastly, let's verify that the *Service* that we learned about in the previous lab accurately reflects three endpoints:
+And lastly, let's verify that the *Service* that we learned about in the
+previous lab accurately reflects two endpoints:
 
 [source]
 ----
@@ -120,7 +120,7 @@ Selector:		deploymentconfig=parksmap
 Type:			ClusterIP
 IP:			172.30.169.213
 Port:			8080-tcp	8080/TCP
-Endpoints:		10.1.0.5:8080,10.1.1.5:8080,10.1.2.5:8080
+Endpoints:		10.1.0.5:8080,10.1.1.5:8080
 Session Affinity:	None
 No events.
 ----
@@ -137,7 +137,7 @@ And you will see something like the following:
 [source]
 ----
 NAME       ENDPOINTS                                   AGE
-parksmap   10.1.0.5:8080,10.1.1.5:8080,10.1.2.5:8080   4h
+parksmap   10.1.0.5:8080,10.1.1.5:8080                 4h
 ----
 
 Your IP addresses will likely be different, as each pod receives a unique IP
@@ -165,7 +165,7 @@ name. Then, do the following:
 
 [source]
 ----
-oc delete pod parksmap-1-oxs94
+oc delete pod parksmap-1-hx0kv
 ----
 
 Then, as fast as you can, do the following:
