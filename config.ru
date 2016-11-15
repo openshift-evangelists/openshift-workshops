@@ -1,12 +1,13 @@
 require 'sinatra/base'
 
-require 'redcarpet'
 require 'asciidoctor'
 require 'liquid'
 
-require 'oj'
-require 'multi_json'
 require 'yaml'
+require 'kramdown'
+require 'json'
+require 'multi_markdown'
+require 'multi_json'
 
 class Application < Sinatra::Base
 
@@ -100,8 +101,7 @@ class Application < Sinatra::Base
     end
 
     def markdown(content)
-      @markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML)
-      @markdown.render(content)
+      MultiMarkdown.new(content).to_html
     end
 
   end
