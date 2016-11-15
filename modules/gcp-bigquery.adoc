@@ -1,6 +1,8 @@
-## Lab: Integrating with a Google Compute Service
+## Lab: Integrating with Google Compute Service BigQuery
 
 ### Background: Integrating with external services
+
+TODO: Write some content here on external services
 
 
 #### Exercise: Integrating with Google Compute BigQuery

@@ -24,7 +24,7 @@ modules:
     - databases
     - codechanges
     - templates
-    - gcp_bigquery
+    - gcp-bigquery
   revisions:
     install: ocp
     templates: roadshow

@@ -68,5 +68,5 @@ quotas:
   name: Limiting application resource usage
 run-as-non-root:
   name: Running a container as a non Root user
-gcpservice:
-  name: Integrating with a Google Compute Service
+gcp-bigquery:
+  name: Integrating with Google Compute Service BigQuery
