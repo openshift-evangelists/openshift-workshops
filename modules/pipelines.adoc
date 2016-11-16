@@ -85,19 +85,6 @@ environment:
 . Wait for the *Deployment Manager*'s to either approve or reject the deployment (e.g. manual tests have revealed an unacceptable number of bugs)
 . If approved, deployed to the _Live_ container
 
-You need to make a few modifications to the `nationalparks` application which is
-deployed in previous labs in order to adjust it to the pipeline described above.
-The deployment of the docker image is triggered automatically whenever a new
-image is built by the S2I process. Since in this lab, the pipeline controls when the
-deployments should take place, you need to remove the automated trigger from the deployment
-configuration. Run the following CLI command to disable the deployment trigger.:
-
-[source]
-----
-oc project explore{{USER_SUFFIX}}
-oc set triggers dc/nationalparks --remove-all
-----
-
 As discussed in previous labs, the `parksmap` web app queries the OpenShift API and
 looks for services that have the label `type=parksmap-backend` and interrogates the
 discovered endpoints to visualize their map data. After creating the pipeline,
