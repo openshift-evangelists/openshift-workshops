@@ -93,3 +93,17 @@ Verify
 ----
 oc env dc/nationalparks --list
 ----
+
+Spring Boot requires access to OpenShift API in order to find the ConfigMap.
+
+[source]
+----
+oc policy add-role-to-user view -z default
+----
+
+Restart the pod by deleting it
+
+[source]
+----
+oc delete pod -l app=nationalparks
+----

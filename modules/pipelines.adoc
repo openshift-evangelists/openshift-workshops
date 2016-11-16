@@ -12,9 +12,13 @@ the platform and enables defining truly complex workflows directly within OpenSh
 ### Exercise: Deploy Jenkins
 
 OpenShift provides a certified Jenkins which includes a rich set of plugins that
-enable the full pipeline flow. In the web console in your `explore{{USER_SUFFIX}}`
-project, again click the *"Add to project"* button, and then find the `jenkins-ephemeral`
-template, and click on it.
+enable the full pipeline flow. In the web console, create a new project named
+`cicd{{USER_SUFFIX}}`.
+
+image::/images/pipeline-project.png[CI/CD Project]
+
+In the `cicd{{USER_SUFFIX}}` project, click on the
+*"Add to project"* button, find the `jenkins-ephemeral` template, and click on it.
 
 image::/images/pipeline-jenkins-catalog.png[Jenkins Ephemeral]
 
@@ -40,16 +44,17 @@ image::/images/pipeline-jenkins-console.png[Jenkins Console]
 Jenkins uses the OpenShift REST API in order to integrate into various OpenShift
 operations and therefore you should grant permission to the Jenkins service account
 to invoke these APIs. Run the following CLI command to allow Jenkins to retrieve
-information about state of OpenShift.
+information and invoke action in OpenShift.
 
 [source]
 ----
-oc policy add-role-to-user view system:serviceaccount:explore{{USER_SUFFIX}}:jenkins
+oc policy add-role-to-user edit system:serviceaccount:cicd{{USER_SUFFIX}}:jenkins -n explore{{USER_SUFFIX}}
 ----
 
 ### Exercise: Pipeline Preparation
 
-In a previous lab, you deployed the `nationalparks` application using the https://docs.openshift.com/container-platform/3.3/architecture/core_concepts/builds_and_image_streams.html#source-build[Source-to-Image (S2I)]
+In a previous lab, you deployed the `nationalparks` application using the
+https://docs.openshift.com/container-platform/3.3/architecture/core_concepts/builds_and_image_streams.html#source-build[Source-to-Image (S2I)]
 mechanism. S2I already provides build automation by automatically running builds
 when source code changes, or an underlying image changes. Deployments are also automated
 by S2I and can be triggered when the image they are based on changes. In this lab,
@@ -89,6 +94,7 @@ configuration. Run the following CLI command to disable the deployment trigger.:
 
 [source]
 ----
+oc project explore{{USER_SUFFIX}}
 oc set triggers dc/nationalparks --remove-all
 ----
 
@@ -105,6 +111,24 @@ You can do that by remove the `type` label from the *Dev* service so that the
 oc label svc nationalparks type-
 ----
 
+### Exercise: Create Live Environment
+
+Before creating the pipeline, you need to create a *Live* container that runs the
+live version of `nationalparks` application. The `parksmap` front-end will use
+the *Live* container for retrieving the geo data so that developers can make frequent
+changes in the *Dev* container without interfering with the live application. Run
+the following CLI command to create the *Live* environment:
+
+[source]
+----
+oc create -f https://raw.githubusercontent.com/openshift-roadshow/nationalparks/master/ose3/nationalparks-live.yaml
+----
+
+A new deployment of `nationalparks` and new MongoDB container is created for the
+*Live* environment.
+
+image::/images/pipeline-live.png[National Parks Live]
+
 ### Exercise: Create OpenShift Pipeline
 
 The Pipeline is in fact a type of build that allows developers to define a Jenkins
@@ -114,19 +138,25 @@ build type. Pipeline workflows are defined in a Jenkinsfile, either embedded dir
 in the build configuration, or supplied in a Git repository and referenced by the
 build configuration.
 
-In order to create the pipeline, as well as the *Live* container, run the following
-CLI command:
+
+
+
+In order to create the pipeline, import the pipeline template created for this lab.
 
 [source]
 ----
-oc create -f https://raw.githubusercontent.com/openshift-roadshow/nationalparks/master/ose3/pipeline.yaml
+oc project cicd{{USER_SUFFIX}}
+oc create -f https://raw.githubusercontent.com/openshift-roadshow/nationalparks/master/ose3/pipeline-template.yaml
 ----
 
-A new route, service and a pod is created for the *Live* environment as well as an
-OpenShift Pipeline that automates the execution of steps showed in the above pipeline
-diagram.
+In the `cicd{{USER_SUFFIX}}` project, click on the *"Add to project"* button,
+find the `dev-live-pipeline` template, and click on it. Specify the project name
+and click on *Create*
 
-image::/images/pipeline-live.png[National Parks Live]
+NOTE: Specify the name of the project (e.g.`explore{{USER_SUFFIX}}`) where
+`nationalparks` *Dev* and *Live* containers are deployed.
+
+image::/images/pipeline-template.png[Pipeline Template]
 
 In order to trigger the pipeline, Go to *Builds* &rarr; *Pipelines* on the left
 side-bar and click on *Start Pipeline* to start the exection of `nationalparks-pipeline`.
@@ -181,8 +211,5 @@ NOTE: Build metrics are generated and displayed after a few executions of the pi
 to determine trends.
 
 image::/images/pipeline-history.png[OpenShift History]
-
-
-parksmap-backend
 
 Congratulations! Now you have a CI/CD Pipeline for the `nationalparks` application.
