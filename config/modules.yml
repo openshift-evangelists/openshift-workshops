@@ -55,6 +55,10 @@ codechanges:
     roadshow:
       vars:
         WITH_PIPELINE: true
+canaryrelease:
+  name: Canary Release to Production
+  requires:
+    - pipelines
 templates:
   name: Using Application Templates
   vars:

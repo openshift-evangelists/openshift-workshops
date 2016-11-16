@@ -1,0 +1,25 @@
+## Lab: Canary Release to Production
+
+### Background: Canary Release
+
+
+#### Exercise: TBD
+
+Make a change in the code to trigger the pipeline and wait at "Input Required" in pipeline
+
+Go to *Applications* -> *Routes* and click on `nationalparks-live`. Edit the route
+
+image::/images/canary-edit-route.png[Edit Route]
+
+image::/images/canary-split-link.png[Split Traffic Link]
+
+image::/images/canary-alt-service.png[Choose Alternative Service]
+
+image::/images/canary-split-traffic.png[Split Traffic]
+
+Make Router to do round robin
+
+[source]
+----
+oc annotate route/nationalparks-live haproxy.router.openshift.io/balance=roundrobin
+----
