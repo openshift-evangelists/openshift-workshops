@@ -36,6 +36,11 @@ databases:
   name: Adding a Database (MongoDB)
   requires:
     - java
+configmap:
+  name: Externalizing Application Configurations
+  requires:
+    - java
+    - databases
 pipelines:
   name: Automating Deployment with CI/CD Pipeline
   requires:

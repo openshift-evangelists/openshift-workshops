@@ -1,0 +1,95 @@
+## Lab: Externalizing Application Configuration
+
+### Background: Application Configuration with ConfigMaps
+
+TBD: Describe ConfigMaps, mounting options as env vars and files, etc. Also how
+nationalparks app with Spring Boot uses application.properties which is populated in this
+lab with configmaps.
+
+#### Exercise: Create a ConfigMap
+
+Create the `ConfigMap`. Download the properties file to your local machine:
+https://raw.githubusercontent.com/openshift-roadshow/nationalparks/master/ose3/application.properties
+
+[source]
+----
+oc create configmap nationalparks --from-file=application.properties
+configmap "nationalparks" created
+----
+
+List `ConfigMap`
+
+[source]
+----
+oc get configmap
+
+NAME            DATA      AGE
+nationalparks   1         23s
+----
+
+Explore the `ConfigMap`
+
+[source]
+----
+oc describe configmap nationalparks
+
+Name:		nationalparks
+Namespace:	demo
+Labels:		<none>
+Annotations:	<none>
+
+Data
+====
+application.properties:	123 bytes
+----
+
+[source]
+----
+oc get configmap nationalparks -o yaml
+
+apiVersion: v1
+data:
+  application.properties: |
+    # NationalParks MongoDB
+    mongodb.server.host=mongodb
+    mongodb.user=mongodb
+    mongodb.password=mongodb
+    mongodb.database=mongodb
+kind: ConfigMap
+metadata:
+  creationTimestamp: 2016-11-16T09:17:02Z
+  name: nationalparks
+  namespace: demo
+  resourceVersion: "8421"
+  selfLink: /api/v1/namespaces/demo/configmaps/nationalparks
+  uid: 6f4536cf-abdd-11e6-9282-525400c3c0db
+----
+
+#### Exercise: Re-wire NationalParks App
+
+List env vars
+
+[source]
+----
+oc env dc/nationalparks --list
+
+# deploymentconfigs nationalparks, container nationalparks
+MONGODB_USER=mongodb
+MONGODB_PASSWORD=mongodb
+MONGODB_DATABASE=mongodb
+MONGODB_SERVER_HOST=mongodb
+----
+
+Remove env vars
+
+[source]
+----
+oc env dc/nationalparks MONGODB_USER- MONGODB_PASSWORD- MONGODB_DATABASE- MONGODB_SERVER_HOST-
+----
+
+Verify
+
+[source]
+----
+oc env dc/nationalparks --list
+----
