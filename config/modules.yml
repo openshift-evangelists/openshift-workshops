@@ -45,6 +45,8 @@ pipelines:
   name: Automating Deployment with CI/CD Pipeline
   requires:
     - java
+    - databases
+    - configmap
 codechanges:
   name: Using Source 2 Image for Code Changes
   requires:

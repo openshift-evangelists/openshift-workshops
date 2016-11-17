@@ -63,8 +63,8 @@ now, be sure to use the following values in their respective fields:
 
 You can leave the rest of the values as their defaults, and then click
 *"Create"*. Then click *Continue to overview*. The MongoDB instance should
-quickly be deployed. If you're interested, take a look at Mongo's logs to see
-what it does when it starts up.
+quickly be deployed.
+
 
 image::/images/mongo-group-db-1.png[Service Groups]
 

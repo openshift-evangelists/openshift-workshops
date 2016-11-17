@@ -103,18 +103,96 @@ oc label svc nationalparks type-
 Before creating the pipeline, you need to create a *Live* container that runs the
 live version of `nationalparks` application. The `parksmap` front-end will use
 the *Live* container for retrieving the geo data so that developers can make frequent
-changes in the *Dev* container without interfering with the live application. Run
-the following CLI command to create the *Live* environment:
+changes in the *Dev* container without interfering with the live application.
+
+First you need to create a new MongoDB container for the *Live* environment. In the
+web console in your `explore{{USER_SUFFIX}}` project,  click the *"Add to
+Project"* button, and then find the `mongodb-ephemeral` template, and click it.
+Use the following values in their respective fields:
+
+* Database Service Name : `mongodb-live`
+* MongoDB Connection Username : `mongodb`
+* MongoDB Connection Password : `mongodb`
+* MongoDB Database Name: `mongodb`
+* MongoB Admin Password : `mongodb`
+
+You can leave the rest of the values as their defaults, and then click
+*"Create"*. Then click *Continue to overview*. The MongoDB instance should
+quickly be deployed. If you're interested, take a look at Mongo's logs to see
+what it does when it starts up.
+
+The database configuration was created through the use of `ConfigMaps` in the previous
+labs. Download the properties file to your local machine and create a new `ConfigMap`
+to configure the *Live* environment :
+https://raw.githubusercontent.com/openshift-roadshow/nationalparks/master/ose3/application-live.properties
 
 [source]
 ----
-oc create -f https://raw.githubusercontent.com/openshift-roadshow/nationalparks/master/ose3/nationalparks-live.yaml
+oc create configmap nationalparks-live --from-file=application.properties=lab/application-live.properties
 ----
 
-A new deployment of `nationalparks` and new MongoDB container is created for the
-*Live* environment.
+Now you can create the *Live* container based on the same `nationalparks` docker image
+created in previous labs. Click on *Builds* &rarr; *Image* and then `nationalparks` to
+inspect the docker images created.
+
+image::/images/pipeline-live-image.png[National Parks Image Stream]
+
+Every new https://docs.openshift.com/container-platform/3.3/architecture/core_concepts/builds_and_image_streams.html[S2I build]
+results in a new docker image which is identified with the `latest` tag. The *Dev*
+and *Live* environments should allow deploying different versions of the `nationalparks`
+application so that developers can keep deploying into the *Dev* environment without
+affecting the *Live* environments. In order to achieve that, create a new tag
+using the following CLI command to reference the docker image that should be deployed
+into the *Live* environment:
+
+[source]
+----
+oc tag nationalparks:latest nationalparks:live
+----
+
+When a new S2I build is triggered, a new docker image gets created and the `latest`
+tag will automatically refer to the newly built docker image. However the `live` tag
+keeps referring to the pervious docker image and therefore leaves the *Live* environment
+intact.
+
+After creating the tag, you are ready to deploy the *Live* `nationalparks`
+container based on the `nationalparks:live` image. In the web console in your
+`explore{{USER_SUFFIX}}` project,  click the *"Add to Project"* button, and
+then *Deploy Image* tab. Choose *Image Stream Tag* radio button and refer to the
+image tag you just created by giving the following values in each respective field:
+
+* Namespace: `explore{{USER_SUFFIX}}`
+* ImageStream: `nationalparks`
+* Tag: `live`
+* Name: `nationalparks-live`
+
+Spring Boot applications look for a `ConfigMap` with the same name as the application
+to find their configuration. Therefore, specify the following environment variable
+to specify the Spring Boot application name:
+
+* `SPRING_APPLICAITON_NAME`: `nationalparks-live`
+
+image::/images/pipeline-live-deploy.png[National Parks Live Deploy]
+
+You can leave the rest of the values as their defaults, and then click
+*"Create"*. Then click *Continue to overview*. Group the *Live* services
+by clicking on the *Group Service* on the right side of *NATIONALPARKS LIVE*
+container and choosing `mongodb-live` from the drop-down list.
 
 image::/images/pipeline-live.png[National Parks Live]
+
+If you look at the web console, you will notice that, when you create the
+application this way, OpenShift doesn't create a *Route* for you. Click on
+*Create Route* on the top right corner of *NATIONALPARKS LIVE* container and
+then *Create* to create a route with the default values.
+
+Similar to the previous labs, populate the database by pointing your browser to the
+`nationalparks-live` route url:
+
+[source]
+----
+http://nationalparks-live-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/data/load/
+----
 
 ### Exercise: Create OpenShift Pipeline
 
@@ -124,9 +202,6 @@ monitored, and managed by OpenShift Container Platform in the same way as any ot
 build type. Pipeline workflows are defined in a Jenkinsfile, either embedded directly
 in the build configuration, or supplied in a Git repository and referenced by the
 build configuration.
-
-
-
 
 In order to create the pipeline, import the pipeline template created for this lab.
 
@@ -186,8 +261,6 @@ image::/images/pipeline-jenkins-input.png[Jenkins Approval,1000,align=center]
 
 Pipeline execution continues to promote and deploy the `nationalparks` docker image
 which was successfully tested in the *Dev* container, to the *Live* container.
-
-image::/images/pipeline-live-deployed.png[National Parks Live Container]
 
 On *Builds* &rarr; *Pipelines*, click on *View History* to go to the pipeline overview
 which shows the pipeline execution history as well as build time metrics so that you can
