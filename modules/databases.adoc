@@ -83,11 +83,8 @@ environment variables, we simply need to modify the *DeploymentConfiguration*
 (DC).  This can easily be done from either the web interface or via the command
 line.
 
-The command line takes a little less time, so let's use that option. Spring Boot
-has a
-https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html[special
-mechanism] for finding database connection information when it comes to Mongo.
-First, find the name of the DC:
+The command line takes a little less time, so let's use that option. First, find
+the name of the DC:
 
 [source]
 ----
@@ -98,7 +95,7 @@ Then, use the `oc env` command to set environment variables directly on the DC:
 
 [source]
 ----
-oc env dc nationalparks -e MONGODB_USER=mongodb -e MONGODB_PASSWORD=mongodb -e MONGODB_DATABASE=mongodb -e MONGODB_HOST=mongodb
+oc env dc nationalparks -e MONGODB_USER=mongodb -e MONGODB_PASSWORD=mongodb -e MONGODB_DATABASE=mongodb -e MONGODB_SERVER_HOST=mongodb
 ----
 
 After you have modified the *DeploymentConfig* object, you can verify the
