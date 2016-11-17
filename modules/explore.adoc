@@ -136,7 +136,7 @@ aggregation. If we don't, then the metrics will not display in the OpenShift UI.
 Visit the following URL in your browser, and be sure to accept the certificate:
 
 ----
-https://metrics.cloudapps.{{ROUTER_ADDRESS}}
+https://metrics.{{ROUTER_ADDRESS}}
 ----
 
 We will be using a mix of command line tooling and the web console for the labs.
