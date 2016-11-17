@@ -278,7 +278,7 @@ If you check your browser now:
 
 [source]
 ----
-http://openshift3nationalparks-nationalparks.{{ROUTER_ADDRESS}}/
+http://parksmap-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/
 ----
 
 image::/images/parksmap-new-parks.png[MongoDB]
