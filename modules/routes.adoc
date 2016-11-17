@@ -63,7 +63,3 @@ Pretty nifty, huh?  This application is now available at the above URL:
 
 image::/images/parksmap-empty.png[Route]
 
-### Exercise: Scale Down
-
-Before we continue, go ahead and scale your application down to a single
-instance. Feel free to do this using whatever method you like.
