@@ -46,6 +46,7 @@ class Application < Sinatra::Base
           @active_modules << m unless @active_modules.include?(m)
         end if @modules[mod]['requires']
       end
+      @active_modules
     end
 
     def process_template(name, revision, source)
@@ -71,7 +72,7 @@ class Application < Sinatra::Base
 
       if @lab['modules']
         if @lab['modules']['activate']
-          variables['modules'] = @lab['modules']['activate'].inject({}) { |c,i| c[i] = true; c }
+          variables['modules'] = list_modules.inject({}) { |c,i| c[i] = true; c }
         end
         if @lab['modules']['revisions']
           variables['revisions'] = @lab['modules']['revisions']
