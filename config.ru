@@ -70,13 +70,14 @@ class Application < Sinatra::Base
         variables[key] = ENV[key]
       end
 
-      if @lab['modules']
-        if @lab['modules']['activate']
-          variables['modules'] = list_modules.inject({}) { |c,i| c[i] = true; c }
-        end
-        if @lab['modules']['revisions']
-          variables['revisions'] = @lab['modules']['revisions']
-        end
+      @lab['modules'] ||= {}
+      @lab['modules']['activate'] = list_modules
+      @lab['modules']['revisions'] ||= {}
+
+      variables['modules'] = @lab['modules']['activate'].inject({}) { |c,i| c[i] = true; c }
+      variables['revisions'] ||= variables['modules'].keys.inject({}) do |c, i|
+        c[i] = @lab['modules']['revisions'][i] || @lab['revision']
+        c
       end
 
       template = Liquid::Template.parse(source)
