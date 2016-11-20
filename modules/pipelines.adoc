@@ -121,6 +121,8 @@ You can leave the rest of the values as their defaults, and then click
 quickly be deployed. If you're interested, take a look at Mongo's logs to see
 what it does when it starts up.
 
+{% if modules.configmap %}
+
 The database configuration was created through the use of `ConfigMaps` in the previous
 labs. Download the properties file to your local machine and create a new `ConfigMap`
 to configure the *Live* environment :
@@ -130,6 +132,7 @@ https://raw.githubusercontent.com/openshift-roadshow/nationalparks/master/ose3/a
 ----
 oc create configmap nationalparks-live --from-file=application.properties=lab/application-live.properties
 ----
+{% endif %}
 
 Now you can create the *Live* container based on the same `nationalparks` docker image
 created in previous labs. Click on *Builds* &rarr; *Image* and then `nationalparks` to
@@ -166,13 +169,28 @@ image tag you just created by giving the following values in each respective fie
 * Tag: `live`
 * Name: `nationalparks-live`
 
+{% if modules.configmap %}
+
 Spring Boot applications look for a `ConfigMap` with the same name as the application
 to find their configuration. Therefore, specify the following environment variable
-to specify the Spring Boot application name:
+to define the Spring Boot application name:
 
 * `SPRING_APPLICAITON_NAME`: `nationalparks-live`
 
-image::/images/pipeline-live-deploy.png[National Parks Live Deploy]
+image::/images/pipeline-live-deploy-config.png[National Parks Live Deploy]
+{% else %}
+
+Specify the following environment variable to wire the *Live* container to the
+*Live* database:
+
+* `MONGODB_SERVER_HOST`: `mongodb-live`
+* `MONGODB_USER`: `mongodb`
+* `MONGODB_PASSWORD`: `mongodb`
+* `MONGODB_DATABASE`: `mongodb`
+
+image::/images/pipeline-live-deploy-env.png[National Parks Live Deploy]
+
+{% endif %}
 
 You can leave the rest of the values as their defaults, and then click
 *"Create"*. Then click *Continue to overview*. Group the *Live* services
