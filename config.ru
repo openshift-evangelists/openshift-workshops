@@ -1,12 +1,13 @@
 require 'sinatra/base'
 
-require 'redcarpet'
 require 'asciidoctor'
 require 'liquid'
 
-require 'oj'
-require 'multi_json'
 require 'yaml'
+require 'kramdown'
+require 'json'
+require 'multi_markdown'
+require 'multi_json'
 
 class Application < Sinatra::Base
 
@@ -45,6 +46,7 @@ class Application < Sinatra::Base
           @active_modules << m unless @active_modules.include?(m)
         end if @modules[mod]['requires']
       end
+      @active_modules
     end
 
     def process_template(name, revision, source)
@@ -66,6 +68,16 @@ class Application < Sinatra::Base
 
       ENV.each_key do |key|
         variables[key] = ENV[key]
+      end
+
+      @lab['modules'] ||= {}
+      @lab['modules']['activate'] = list_modules
+      @lab['modules']['revisions'] ||= {}
+
+      variables['modules'] = @lab['modules']['activate'].inject({}) { |c,i| c[i] = true; c }
+      variables['revisions'] ||= variables['modules'].keys.inject({}) do |c, i|
+        c[i] = @lab['modules']['revisions'][i] || @lab['revision']
+        c
       end
 
       template = Liquid::Template.parse(source)
@@ -100,8 +112,7 @@ class Application < Sinatra::Base
     end
 
     def markdown(content)
-      @markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML)
-      @markdown.render(content)
+      MultiMarkdown.new(content).to_html
     end
 
   end
