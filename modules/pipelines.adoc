@@ -12,9 +12,13 @@ the platform and enables defining truly complex workflows directly within OpenSh
 ### Exercise: Deploy Jenkins
 
 OpenShift provides a certified Jenkins which includes a rich set of plugins that
-enable the full pipeline flow. In the web console in your `explore{{USER_SUFFIX}}`
-project, again click the *"Add to project"* button, and then find the `jenkins-ephemeral`
-template, and click on it.
+enable the full pipeline flow. In the web console, create a new project named
+`cicd{{USER_SUFFIX}}`.
+
+image::/images/pipeline-project.png[CI/CD Project]
+
+In the `cicd{{USER_SUFFIX}}` project, click on the
+*"Add to project"* button, find the `jenkins-ephemeral` template, and click on it.
 
 image::/images/pipeline-jenkins-catalog.png[Jenkins Ephemeral]
 
@@ -40,16 +44,17 @@ image::/images/pipeline-jenkins-console.png[Jenkins Console]
 Jenkins uses the OpenShift REST API in order to integrate into various OpenShift
 operations and therefore you should grant permission to the Jenkins service account
 to invoke these APIs. Run the following CLI command to allow Jenkins to retrieve
-information about state of OpenShift.
+information and invoke action in OpenShift.
 
 [source]
 ----
-oc policy add-role-to-user view system:serviceaccount:explore{{USER_SUFFIX}}:jenkins
+oc policy add-role-to-user edit system:serviceaccount:cicd{{USER_SUFFIX}}:jenkins -n explore{{USER_SUFFIX}}
 ----
 
 ### Exercise: Pipeline Preparation
 
-In a previous lab, you deployed the `nationalparks` application using the https://docs.openshift.com/container-platform/3.3/architecture/core_concepts/builds_and_image_streams.html#source-build[Source-to-Image (S2I)]
+In a previous lab, you deployed the `nationalparks` application using the
+https://docs.openshift.com/container-platform/3.3/architecture/core_concepts/builds_and_image_streams.html#source-build[Source-to-Image (S2I)]
 mechanism. S2I already provides build automation by automatically running builds
 when source code changes, or an underlying image changes. Deployments are also automated
 by S2I and can be triggered when the image they are based on changes. In this lab,
@@ -80,16 +85,120 @@ environment:
 . Wait for the *Deployment Manager*'s to either approve or reject the deployment (e.g. manual tests have revealed an unacceptable number of bugs)
 . If approved, deployed to the _Live_ container
 
-You need to make a few modifications to the `nationalparks` application which is
-deployed in previous labs in order to adjust it to the pipeline described above.
-The deployment of the docker image is triggered automatically whenever a new
-image is built by the S2I process. Since in this lab, the pipeline controls when the
-deployments should take place, you need to remove the automated trigger from the deployment
-configuration. Run the following CLI command to disable the deployment trigger.:
+Let's move on to create this pipeline on OpenShift.
+
+### Exercise: Create Live Environment
+
+Before creating the pipeline, you need to create a *Live* container that runs the
+live version of `nationalparks` application. The `parksmap` front-end will use
+the *Live* container for retrieving the geo data so that developers can make frequent
+changes in the *Dev* container without interfering with the live application.
+
+First you need to create a new MongoDB container for the *Live* environment. In the
+web console in your `explore{{USER_SUFFIX}}` project,  click the *"Add to
+Project"* button, and then find the `mongodb-ephemeral` template, and click it.
+Use the following values in their respective fields:
+
+* Database Service Name : `mongodb-live`
+* MongoDB Connection Username : `mongodb`
+* MongoDB Connection Password : `mongodb`
+* MongoDB Database Name: `mongodb`
+* MongoB Admin Password : `mongodb`
+
+You can leave the rest of the values as their defaults, and then click
+*"Create"*. Then click *Continue to overview*. The MongoDB instance should
+quickly be deployed. If you're interested, take a look at Mongo's logs to see
+what it does when it starts up.
+
+{% if modules.configmap %}
+
+The database configuration was created through the use of `ConfigMaps` in the previous
+labs. Download the properties file to your local machine and create a new `ConfigMap`
+to configure the *Live* environment :
+https://raw.githubusercontent.com/openshift-roadshow/nationalparks/master/ose3/application-live.properties
 
 [source]
 ----
-oc set triggers dc/nationalparks --remove-all
+oc create configmap nationalparks-live --from-file=application.properties=lab/application-live.properties
+----
+{% endif %}
+
+Now you can create the *Live* container based on the same `nationalparks` docker image
+created in previous labs. Click on *Builds* &rarr; *Image* and then `nationalparks` to
+inspect the docker images created.
+
+image::/images/pipeline-live-image.png[National Parks Image Stream]
+
+Every new https://docs.openshift.com/container-platform/3.3/architecture/core_concepts/builds_and_image_streams.html[S2I build]
+results in a new docker image which is identified with the `latest` tag. The *Dev*
+and *Live* environments should allow deploying different versions of the `nationalparks`
+application so that developers can keep deploying into the *Dev* environment without
+affecting the *Live* environments. In order to achieve that, create a new tag
+using the following CLI command to reference the docker image that should be deployed
+into the *Live* environment:
+
+[source]
+----
+oc tag nationalparks:latest nationalparks:live
+----
+
+When a new S2I build is triggered, a new docker image gets created and the `latest`
+tag will automatically refer to the newly built docker image. However the `live` tag
+keeps referring to the pervious docker image and therefore leaves the *Live* environment
+intact.
+
+After creating the tag, you are ready to deploy the *Live* `nationalparks`
+container based on the `nationalparks:live` image. In the web console in your
+`explore{{USER_SUFFIX}}` project,  click the *"Add to Project"* button, and
+then *Deploy Image* tab. Choose *Image Stream Tag* radio button and refer to the
+image tag you just created by giving the following values in each respective field:
+
+* Namespace: `explore{{USER_SUFFIX}}`
+* ImageStream: `nationalparks`
+* Tag: `live`
+* Name: `nationalparks-live`
+
+{% if modules.configmap %}
+
+Spring Boot applications look for a `ConfigMap` with the same name as the application
+to find their configuration. Therefore, specify the following environment variable
+to define the Spring Boot application name:
+
+* `SPRING_APPLICAITON_NAME`: `nationalparks-live`
+
+image::/images/pipeline-live-deploy-config.png[National Parks Live Deploy]
+{% else %}
+
+Specify the following environment variable to wire the *Live* container to the
+*Live* database:
+
+* `MONGODB_SERVER_HOST`: `mongodb-live`
+* `MONGODB_USER`: `mongodb`
+* `MONGODB_PASSWORD`: `mongodb`
+* `MONGODB_DATABASE`: `mongodb`
+
+image::/images/pipeline-live-deploy-env.png[National Parks Live Deploy]
+
+{% endif %}
+
+You can leave the rest of the values as their defaults, and then click
+*"Create"*. Then click *Continue to overview*. Group the *Live* services
+by clicking on the *Group Service* on the right side of *NATIONALPARKS LIVE*
+container and choosing `mongodb-live` from the drop-down list.
+
+image::/images/pipeline-live.png[National Parks Live]
+
+If you look at the web console, you will notice that, when you create the
+application this way, OpenShift doesn't create a *Route* for you. Click on
+*Create Route* on the top right corner of *NATIONALPARKS LIVE* container and
+then *Create* to create a route with the default values.
+
+Similar to the previous labs, populate the database by pointing your browser to the
+`nationalparks-live` route url:
+
+[source]
+----
+http://nationalparks-live-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/data/load/
 ----
 
 As discussed in previous labs, the `parksmap` web app queries the OpenShift API and
@@ -97,12 +206,13 @@ looks for services that have the label `type=parksmap-backend` and interrogates 
 discovered endpoints to visualize their map data. After creating the pipeline,
 `parksmap` should use the *Live* container instead of the *Dev* container so that
 deployments to the *Dev* container does not disrupt the `parksmap` application.
-You can do that by remove the `type` label from the *Dev* service so that the
-`parksmap` web app uses only the *Live* service for the map data.
+You can do that by removing the `type` label from the *Dev* service and adding it
+to the *Live* service:
 
 [source]
 ----
 oc label svc nationalparks type-
+oc label service nationalparks-live type=parksmap-backend
 ----
 
 ### Exercise: Create OpenShift Pipeline
@@ -114,19 +224,22 @@ build type. Pipeline workflows are defined in a Jenkinsfile, either embedded dir
 in the build configuration, or supplied in a Git repository and referenced by the
 build configuration.
 
-In order to create the pipeline, as well as the *Live* container, run the following
-CLI command:
+In order to create the pipeline, import the pipeline template created for this lab.
 
 [source]
 ----
-oc create -f https://raw.githubusercontent.com/openshift-roadshow/nationalparks/master/ose3/pipeline.yaml
+oc project cicd{{USER_SUFFIX}}
+oc create -f https://raw.githubusercontent.com/openshift-roadshow/nationalparks/master/ose3/pipeline-template.yaml
 ----
 
-A new route, service and a pod is created for the *Live* environment as well as an
-OpenShift Pipeline that automates the execution of steps showed in the above pipeline
-diagram.
+In the `cicd{{USER_SUFFIX}}` project, click on the *"Add to project"* button,
+find the `dev-live-pipeline` template, and click on it. Specify the project name
+and click on *Create*
 
-image::/images/pipeline-live.png[National Parks Live]
+NOTE: Specify the name of the project (e.g.`explore{{USER_SUFFIX}}`) where
+`nationalparks` *Dev* and *Live* containers are deployed.
+
+image::/images/pipeline-template.png[Pipeline Template]
 
 In order to trigger the pipeline, Go to *Builds* &rarr; *Pipelines* on the left
 side-bar and click on *Start Pipeline* to start the exection of `nationalparks-pipeline`.
@@ -170,8 +283,6 @@ image::/images/pipeline-jenkins-input.png[Jenkins Approval,1000,align=center]
 Pipeline execution continues to promote and deploy the `nationalparks` docker image
 which was successfully tested in the *Dev* container, to the *Live* container.
 
-image::/images/pipeline-live-deployed.png[National Parks Live Container]
-
 On *Builds* &rarr; *Pipelines*, click on *View History* to go to the pipeline overview
 which shows the pipeline execution history as well as build time metrics so that you can
 iteratively improve the build process as well detect build time anomalies which usually
@@ -181,8 +292,5 @@ NOTE: Build metrics are generated and displayed after a few executions of the pi
 to determine trends.
 
 image::/images/pipeline-history.png[OpenShift History]
-
-
-parksmap-backend
 
 Congratulations! Now you have a CI/CD Pipeline for the `nationalparks` application.

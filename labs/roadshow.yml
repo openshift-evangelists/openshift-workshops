@@ -27,6 +27,7 @@ modules:
     - remote-ops
     - java
     - databases
+    - configmap
     - pipelines
     - codechanges
     - templates

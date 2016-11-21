@@ -9,12 +9,11 @@ lab with configmaps.
 #### Exercise: Create a ConfigMap
 
 Create the `ConfigMap`. Download the properties file to your local machine:
-https://raw.githubusercontent.com/openshift-roadshow/nationalparks/master/ose3/application.properties
+https://raw.githubusercontent.com/openshift-roadshow/nationalparks/master/ose3/application-dev.properties
 
 [source]
 ----
-oc create configmap nationalparks --from-file=application.properties
-configmap "nationalparks" created
+oc create configmap nationalparks --from-file=application.properties=lab/application-dev.properties
 ----
 
 List `ConfigMap`
@@ -92,4 +91,18 @@ Verify
 [source]
 ----
 oc env dc/nationalparks --list
+----
+
+Spring Boot requires access to OpenShift API in order to find the ConfigMap.
+
+[source]
+----
+oc policy add-role-to-user view -z default
+----
+
+Restart the pod by deleting it
+
+[source]
+----
+oc delete pod -l app=nationalparks
 ----

@@ -63,8 +63,19 @@ now, be sure to use the following values in their respective fields:
 
 You can leave the rest of the values as their defaults, and then click
 *"Create"*. Then click *Continue to overview*. The MongoDB instance should
-quickly be deployed. If you're interested, take a look at Mongo's logs to see
-what it does when it starts up.
+quickly be deployed.
+
+
+image::/images/mongo-group-db-1.png[Service Groups]
+
+You can group services in OpenShift Console in order to display related services
+together in one panel. Click on the chain icon on the right-top corner of the
+`nationalparks` service, choose `mongodb` from the drop-down list in the
+*Group Service to nationalparks* dialog and click on *OK*. The `nationalparks` and
+ `mongodb` services are groups and displayed together.
+
+image::/images/mongo-group-db-2.png[Service Groups]
+
 
 #### Exercise: Wiring the Java Application for the Database
 

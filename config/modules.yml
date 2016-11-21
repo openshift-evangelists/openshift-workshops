@@ -45,6 +45,7 @@ pipelines:
   name: Automating Deployment with CI/CD Pipeline
   requires:
     - java
+    - databases
 codechanges:
   name: Using Source 2 Image for Code Changes
   requires:
@@ -55,6 +56,10 @@ codechanges:
     roadshow:
       vars:
         WITH_PIPELINE: true
+canaryrelease:
+  name: Canary Release to Production
+  requires:
+    - pipelines
 templates:
   name: Using Application Templates
   vars:

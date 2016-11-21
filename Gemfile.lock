@@ -1,15 +1,16 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    asciidoctor (1.5.4)
+    asciidoctor (1.5.5)
+    json (2.0.2)
+    kramdown (1.12.0)
     liquid (3.0.6)
     multi_json (1.12.1)
-    oj (2.17.4)
+    multi_markdown (0.2.0)
     puma (3.6.0)
-    rack (1.6.4)
+    rack (1.6.5)
     rack-protection (1.5.3)
       rack
-    redcarpet (3.3.4)
     sinatra (1.4.7)
       rack (~> 1.5)
       rack-protection (~> 1.4)
@@ -21,12 +22,13 @@ PLATFORMS
 
 DEPENDENCIES
   asciidoctor
+  json
+  kramdown
   liquid
   multi_json
-  oj
+  multi_markdown
   puma
-  redcarpet
   sinatra
 
 BUNDLED WITH
-   1.13.1
+   1.13.2

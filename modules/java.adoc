@@ -173,8 +173,8 @@ Where you should see something like the following:
 [source]
 ----
 NAME            HOST/PORT                                                   PATH      SERVICES        PORT       TERMINATION
-nationalparks   nationalparks-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}             nationalparks   8080-tcp   
-parksmap        parksmap-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}                  parksmap        8080-tcp   
+nationalparks   nationalparks-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}             nationalparks   8080-tcp
+parksmap        parksmap-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}                  parksmap        8080-tcp
 ----
 
 In the above example, the URL is:
