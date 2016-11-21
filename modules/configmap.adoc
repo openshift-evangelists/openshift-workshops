@@ -93,16 +93,25 @@ Verify
 oc env dc/nationalparks --list
 ----
 
-Spring Boot requires access to OpenShift API in order to find the ConfigMap.
+The fabric8 spring-cloud-kubernetes integration requires access to the OpenShift
+API in order to find and read the data inside of the ConfigMap. We had already
+given this view permission in the role-based access control lab. But, if you
+hadn't, or you want to re-provide this access again, the following command will
+do it:
 
 [source]
 ----
 oc policy add-role-to-user view -z default
 ----
 
-Restart the pod by deleting it
+Remember that the `-z` flag specifies that the _user_ is actually a service
+account.
+
+Now, Restart the pod by deleting it:
 
 [source]
 ----
 oc delete pod -l app=nationalparks
 ----
+
+If you check its logs, you should see no errors.

@@ -246,7 +246,7 @@ the right *Label*.
 
 #### Exercise: Working With Labels
 
-We explored how *Label*s are just key=value pairs earlier when looking at
+We explored how a *Label* is just a key=value pair earlier when looking at
 *Services* and *Routes* and *Selectors*. In general, a *Label* is simply an
 arbitrary key=value pair. It could be anything.
 
