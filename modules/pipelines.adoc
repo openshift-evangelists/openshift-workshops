@@ -85,18 +85,7 @@ environment:
 . Wait for the *Deployment Manager*'s to either approve or reject the deployment (e.g. manual tests have revealed an unacceptable number of bugs)
 . If approved, deployed to the _Live_ container
 
-As discussed in previous labs, the `parksmap` web app queries the OpenShift API and
-looks for services that have the label `type=parksmap-backend` and interrogates the
-discovered endpoints to visualize their map data. After creating the pipeline,
-`parksmap` should use the *Live* container instead of the *Dev* container so that
-deployments to the *Dev* container does not disrupt the `parksmap` application.
-You can do that by remove the `type` label from the *Dev* service so that the
-`parksmap` web app uses only the *Live* service for the map data.
-
-[source]
-----
-oc label svc nationalparks type-
-----
+Let's move on to create this pipeline on OpenShift.
 
 ### Exercise: Create Live Environment
 
@@ -210,6 +199,20 @@ Similar to the previous labs, populate the database by pointing your browser to 
 [source]
 ----
 http://nationalparks-live-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/data/load/
+----
+
+As discussed in previous labs, the `parksmap` web app queries the OpenShift API and
+looks for services that have the label `type=parksmap-backend` and interrogates the
+discovered endpoints to visualize their map data. After creating the pipeline,
+`parksmap` should use the *Live* container instead of the *Dev* container so that
+deployments to the *Dev* container does not disrupt the `parksmap` application.
+You can do that by removing the `type` label from the *Dev* service and adding it
+to the *Live* service:
+
+[source]
+----
+oc label svc nationalparks type-
+oc label service nationalparks-live type=parksmap-backend
 ----
 
 ### Exercise: Create OpenShift Pipeline
