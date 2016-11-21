@@ -18,6 +18,9 @@ template, and click on it.
 
 image::/images/pipeline-jenkins-catalog.png[Jenkins Ephemeral]
 
+
+TODO: needs update. should oauth stuff work? Is this available in 3.3.1.3?
+
 You can customize the Jenkins properties such as service name, admin password, memory
 allocation, etc through the parameters in the web console. Specify _openshift3_ for
 *Jenkins Password* and leave the rest of parameters with the default values. Click on
@@ -78,7 +81,7 @@ environment:
 . Run automated tests against the *Dev* container
 . Run manual tests against the *Dev* container
 . Wait for the *Deployment Manager*'s to either approve or reject the deployment (e.g. manual tests have revealed an unacceptable number of bugs)
-. If approved, deployed to the _Live_ container
+. If approved, deployed to the *Live* container
 
 You need to make a few modifications to the `nationalparks` application which is
 deployed in previous labs in order to adjust it to the pipeline described above.
@@ -114,40 +117,108 @@ build type. Pipeline workflows are defined in a Jenkinsfile, either embedded dir
 in the build configuration, or supplied in a Git repository and referenced by the
 build configuration.
 
-In order to create the pipeline, as well as the *Live* container, run the following
-CLI command:
+To create your pipeline build configuration, click *Add to Project* at the top
+of the page, and then type "pipe" in the search box:
+
+image::/images/pipeline-template.png[Pipeline Template]
+
+Click on "dev-live-pipeline" and you will be brought to the configuration
+options page. The only thing you need to do is fill out the *Project name* box,
+and be sure to enter your project name, which is `explore{{USER_SUFFIX}}`:
+
+image::/images/pipeline-template-config.png[Pipeline Template Configuration]
+
+Then go ahead and click *Create* at the bottom of the page, and then *Continue
+to Overview*. You will see the notificiation at the top of the page that you
+have created *dev-pipeline-live*.
+
+The overview page will not show anything has changed, but we'll look at what we
+created in just a moment. First, let's go ahead and set up the *Live* resources:
+a *Deployment Configuration* and a *Service* for both the `nationalparks`
+application as well as MongoDB. This is as easy as:
 
 [source]
 ----
-oc create -f https://raw.githubusercontent.com/openshift-roadshow/nationalparks/master/ose3/pipeline.yaml
+oc create -f https://raw.githubusercontent.com/openshift-roadshow/nationalparks/master/ose3/nationalparks-live.yaml
 ----
 
-A new route, service and a pod is created for the *Live* environment as well as an
-OpenShift Pipeline that automates the execution of steps showed in the above pipeline
-diagram.
+You'll notice that new *Live* resources show up in the overview, but no pod
+comes up for `nationalparks-live`. This is because the *Deployment
+Configuration* for it is looking for a particular image tag, which does not yet
+exist.
 
 image::/images/pipeline-live.png[National Parks Live]
 
-In order to trigger the pipeline, Go to *Builds* &rarr; *Pipelines* on the left
-side-bar and click on *Start Pipeline* to start the exection of `nationalparks-pipeline`.
-You can click on *View Log* to take a look at the build logs as they progress
-through the pipeline or on *Build #N* to see the details of this specific pipeline
-execution as well as the pipeline definition using the https://jenkins.io/doc/book/pipeline/overview/[Jenkins DSL].
+### Exercise: Add Health Checks
+As we are going to be implementing a realistic CI/CD pipeline, we will be doing
+some testing of the "development" version of the application. However, in order
+to test the app, it must be ready. This is where OpenShift's application health
+features come in very handy.
+
+We are going to add both a readiness and liveness probe to the existing
+`nationalparks` deployment. This will ensure that OpenShift does not add any
+instances to the service until they pass the readiness checks, and will ensure
+that unhealthy instances are restarted (if they fail the liveness checks).
+
+Click *Applications* &rarr; *Deployments* on the left-side bar. Click
+`nationalparks`. You will see the warning about health checks, with a link to
+click in order to add them. Click *Add health checks* now.
+
+You will want to click both *Add Readiness Probe* and *Add Liveness Probe* and
+then fill them out as follows:
+
+_Readiness Probe_
+
+* Path: `/ws/healthz/`
+* Initial Delay: `20`
+* Timeout: `1`
+
+image::/images/pipeline-readiness.png[Readiness Probe]
+
+_Liveness Probe_
+* Path: `/ws/healthz/`
+* Initial Delay: `120`
+* Timeout: `1`
+
+image::/images/pipeline-liveness.png[Liveness Probe]
+TODO: NEEDS UPDATE
+
+* * examine live resources
+* add to project
+* dev pipeline live (template added by provisioner!)
+* project name -> explore{{USER_SUFFIX}}
+* create
+* overview
+* add health checks for nationalparks (dev)
+
+In order to start the pipeline that you created in a previous step, Go to
+*Builds* &rarr; *Pipelines* on the left side-bar. Click `nationalparks-pipeline`
+and click on *Start Pipeline* to start the exection.  You can click on *View
+Log* to take a look at the build logs as they progress through the pipeline or
+on *Build #N* to see the details of this specific pipeline execution as well as
+the pipeline definition using the
+https://jenkins.io/doc/book/pipeline/overview/[Jenkins DSL].
 
 image::/images/pipeline-details.png[Pipeline Details]
 
-When the pipeline reaches the *Deploy Dev* stage, a new deployment takes place to the *Dev* container
-while leaving the *Live* container intact, not to disrupt the live environment.
+Because of the way the pipeline was defined, if you return to the overview page
+you will also see the pipeline status there, associated with the relevant
+deployments:
 
-NOTE: You will notice there are no containers in the *Live* environment. That is
-because this is the first run of the pipeline and no deployments have taken place
-yet so far in the pipeline in the *Live* container.
+
+When the pipeline reaches the *Deploy Dev* stage, a new deployment takes place
+to the existing `nationalparks` while leaving the *Live* container intact, not
+to disrupt the live/production environment.
+
+NOTE: You will notice on the first execution of the pipeline that there are no
+containers in the *Live* environment. That is because no images have been tagged
+as "live" yet, which the *Live* deployment configuration is looking for.
 
 image::/images/pipeline-deploy-dev.png[Pipeline - Deploy to Dev]
 
 Pipeline execution will pause after running automated tests against the *Dev*
-container. Visit the `nationalparks` web service to query for data and verify the
-service works as expected.
+container. Visit the existing `nationalparks` web service to query for data and
+verify the service works as expected.
 
 [source]
 ----
@@ -167,10 +238,11 @@ this lab, click on *Proceed* button to approve the build.
 
 image::/images/pipeline-jenkins-input.png[Jenkins Approval,1000,align=center]
 
-Pipeline execution continues to promote and deploy the `nationalparks` docker image
-which was successfully tested in the *Dev* container, to the *Live* container.
+Pipeline execution continues to promote and deploy the `nationalparks` image.
+This is achieved by tagging the image that was just built and tested as "live",
+which causes the `imagechange` trigger on the *Live* deployment to act. This
+likely already happened before you finished reading this paragraph.
 
-image::/images/pipeline-live-deployed.png[National Parks Live Container]
 
 On *Builds* &rarr; *Pipelines*, click on *View History* to go to the pipeline overview
 which shows the pipeline execution history as well as build time metrics so that you can
@@ -182,7 +254,13 @@ to determine trends.
 
 image::/images/pipeline-history.png[OpenShift History]
 
+Congratulations! Now you have a CI/CD Pipeline for the `nationalparks`
+application. The last thing you'll need to do is visit the `/data/load` endpoint
+for the *Live* version of `nationalparks`:
 
-parksmap-backend
+[source]
+----
+http://nationalparks-live-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/data/load/
+----
 
-Congratulations! Now you have a CI/CD Pipeline for the `nationalparks` application.
+Now, if you visit the parks map again, you should see the map points!
