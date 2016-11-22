@@ -11,6 +11,23 @@ From the
 https://{{DOCS_URL}}/latest/dev_guide/application_health.html[Application
 Health] section of the documentation, we see the definitions:
 
+[glossary]
+Liveness Probe::
+  A liveness probe checks if the container in which it is configured is still
+  running. If the liveness probe fails, the kubelet kills the container, which
+  will be subjected to its restart policy. Set a liveness check by configuring
+  the `template.spec.containers.livenessprobe` stanza of a pod configuration.
+Readiness Probe::
+  A readiness probe determines if a container is ready to service requests. If
+  the readiness probe fails a container, the endpoints controller ensures the
+  container has its IP address removed from the endpoints of all services. A
+  readiness probe can be used to signal to the endpoints controller that even
+  though a container is running, it should not receive any traffic from a proxy.
+  Set a readiness check by configuring the
+  `template.spec.containers.readinessprobe` stanza of a pod configuration.
+
+It sounds complicated, but it really isn't. We will use the web console to add
+these probes to our `nationalparks` application.
 
 ### Exercise: Add Health Checks
 As we are going to be implementing a realistic CI/CD pipeline, we will be doing
@@ -39,19 +56,17 @@ _Readiness Probe_
 image::/images/pipeline-readiness.png[Readiness Probe]
 
 _Liveness Probe_
+
 * Path: `/ws/healthz/`
 * Initial Delay: `120`
 * Timeout: `1`
 
 image::/images/pipeline-liveness.png[Liveness Probe]
-TODO: NEEDS UPDATE
 
-* * examine live resources
-* add to project
-* dev pipeline live (template added by provisioner!)
-* project name -> explore{{USER_SUFFIX}}
-* create
-* overview
-* add health checks for nationalparks (dev)
+Click *Save* and then click the *Overview* button in the left navigation. You
+will notice that these changes caused a new deployment -- they counted as a
+configuration change.
 
-
+You will also notice that the circle around the new deployment stays light blue
+for a while. This is a sign that the pod(s) have not passed their readiness
+checks -- it's working!

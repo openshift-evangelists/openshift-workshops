@@ -209,7 +209,7 @@ And the result?
 
 [source]
 ----
-Items inserted in database: 5480
+Items inserted in database: 2740
 ----
 
 If you then go back to `/ws/data/all/` you will see tons of JSON data now.
