@@ -288,15 +288,11 @@ image::/images/pipeline-details.png[Pipeline Details]
 When the pipeline reaches the *Deploy Dev* stage, a new deployment takes place to the *Dev* container
 while leaving the *Live* container intact, not to disrupt the live environment.
 
-NOTE: You will notice there are no containers in the *Live* environment. That is
-because this is the first run of the pipeline and no deployments have taken place
-yet so far in the pipeline in the *Live* container.
-
 image::/images/pipeline-deploy-dev.png[Pipeline - Deploy to Dev]
 
 Pipeline execution will pause after running automated tests against the *Dev*
-container. Visit the `nationalparks` web service to query for data and verify the
-service works as expected.
+container. Visit the `nationalparks` *Dev* web service to query for data and
+verify the service works as expected.
 
 [source]
 ----
