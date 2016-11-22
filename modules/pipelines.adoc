@@ -9,6 +9,40 @@ such as staging and production. OpenShift supports CI/CD Pipelines by integratin
 the popular https://jenkins.io/doc/book/pipeline/overview/[Jenkins pipelines] into
 the platform and enables defining truly complex workflows directly within OpenShift.
 
+In a previous lab, you deployed the `nationalparks` application using the
+https://docs.openshift.com/container-platform/3.3/architecture/core_concepts/builds_and_image_streams.html#source-build[Source-to-Image (S2I)]
+mechanism. S2I already provides build automation by automatically running builds
+when source code changes, or an underlying image changes. Deployments are also automated
+by S2I and can be triggered when the image they are based on changes. In this lab,
+you will create a more complex workflow by creating a pipeline that extends the S2I
+functionality by adding more steps to the build and deploy process. The following
+diagram shows the pipeline you will create in this lab.
+
+image::/images/pipeline-diagram.png[CI/CD Pipeline Diagram,800,align="center"]
+
+There are two environments for the `nationalparks` application in this pipeline.
+*Dev* container is the for development and test purposes where all code and
+configuration changes are deployed so that you can run automated tests against it.
+Furthermore, the test teams can run their manual tests on this container and
+report any bugs discovered through their test cases. If the tests are all successful
+and the _Deployment Manager_ in the team approves the change, it is then deployed to the
+*Live* container which is the production environment with defined SLA and is
+critical to function properly at all times.
+
+The pipeline execution starts with a developer making a change in the application
+code or configuration. For every change, the following steps are executed with the
+goal of determining if the change is appropriate for deployment in the *Live*
+environment:
+
+. Clone the code from Git repo, build and run unit tests and build a docker image container the code (S2I)
+. Deploy the docker image into *Dev* container
+. Run automated tests against the *Dev* container
+. Run manual tests against the *Dev* container
+. Wait for the *Deployment Manager*'s to either approve or reject the deployment (e.g. manual tests have revealed an unacceptable number of bugs)
+. If approved, deployed to the _Live_ container
+
+Let's move on to deploy `Jenkins` and create this pipeline on OpenShift.
+
 ### Exercise: Deploy Jenkins
 
 OpenShift provides a certified Jenkins which includes a rich set of plugins that
@@ -50,42 +84,6 @@ information and invoke action in OpenShift.
 ----
 oc policy add-role-to-user edit system:serviceaccount:cicd{{USER_SUFFIX}}:jenkins -n explore{{USER_SUFFIX}}
 ----
-
-### Exercise: Pipeline Preparation
-
-In a previous lab, you deployed the `nationalparks` application using the
-https://docs.openshift.com/container-platform/3.3/architecture/core_concepts/builds_and_image_streams.html#source-build[Source-to-Image (S2I)]
-mechanism. S2I already provides build automation by automatically running builds
-when source code changes, or an underlying image changes. Deployments are also automated
-by S2I and can be triggered when the image they are based on changes. In this lab,
-you will create a more complex workflow by creating a pipeline that extends the S2I
-functionality by adding more steps to the build and deploy process. The following
-diagram shows the pipeline you will create in this lab.
-
-image::/images/pipeline-diagram.png[CI/CD Pipeline Diagram,800,align="center"]
-
-There are two environments for the `nationalparks` application in this pipeline.
-*Dev* container is the for development and test purposes where all code and
-configuration changes are deployed so that you can run automated tests against it.
-Furthermore, the test teams can run their manual tests on this container and
-report any bugs discovered through their test cases. If the tests are all successful
-and the _Deployment Manager_ in the team approves the change, it is then deployed to the
-*Live* container which is the production environment with defined SLA and is
-critical to function properly at all times.
-
-The pipeline execution starts with a developer making a change in the application
-code or configuration. For every change, the following steps are executed with the
-goal of determining if the change is appropriate for deployment in the *Live*
-environment:
-
-. Clone the code from Git repo, build and run unit tests and build a docker image container the code (S2I)
-. Deploy the docker image into *Dev* container
-. Run automated tests against the *Dev* container
-. Run manual tests against the *Dev* container
-. Wait for the *Deployment Manager*'s to either approve or reject the deployment (e.g. manual tests have revealed an unacceptable number of bugs)
-. If approved, deployed to the _Live_ container
-
-Let's move on to create this pipeline on OpenShift.
 
 ### Exercise: Create Live Environment
 
