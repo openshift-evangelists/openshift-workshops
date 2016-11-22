@@ -90,27 +90,29 @@ metadata:
 
 Configuration data can be consumed in pods in a variety of ways. A `ConfigMap`
 can be used to:
+
 * Populate the value of environment variables
 * Set command-line arguments in a container
 * Populate configuration files in a volume
 
 The `nationalparks` Spring Boot application can be configured through a
-properties file called `applicaiton.properties` which should reside in specific
-locations on the container filesystem. Using the following command, to mount the
+properties file called `applicaiton.properties` which should reside in a specific
+location in the container filesystem. Using the following command to mount the
 `ConfigMap` inside the `nationalparks` pod:
 
 [source]
 ----
-oc set volumes dc/nationalparks --add -m /opt/openshift/config --configmap-name=nationalparks
+oc set volumes dc/nationalparks --add -m /opt/openshift/config --configmap-name=nationalparks --overwrite
 ----
 
-The above command makes the content of `ConfigMap`, which is a properties file
-called `application.properties`, available at `/opt/openshift/config` directory. The
-`nationalparks` *DeploymentConfiguration* detects the configuration change,
-and automatically deploys the container with new configuration.
+The above command makes the content of the configmap `ConfigMap`, which you
+created from a file, called `application.properties`, available in the
+`/opt/openshift/config` directory. The `nationalparks` *DeploymentConfiguration*
+detects the configuration change, and automatically deploys the *Pod* with
+the new configuration.
 
-Since we have configured `nationalparks` through `ConfigMap`, you can remove the
-database environment variables set in the link:databases[previous labs]:
+Also, as we have configured `nationalparks` through `ConfigMap`, you can remove
+the database environment variables set in the link:databases[previous labs]:
 
 [source]
 ----
@@ -124,8 +126,5 @@ service to very the database connection is working correctly.:
 ----
 http://nationalparks-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/data/all/
 ----
-
-When deleting a resource (in this case, a *Pod*) the `-l` syntax tells the CLI
-to look for any matching resource with the *Label* `app=nationalparks`.
 
 If you check the new pod's logs once it comes up, you should see no errors.
