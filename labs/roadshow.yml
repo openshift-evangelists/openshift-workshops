@@ -30,6 +30,7 @@ modules:
     - java
     - databases
     - configmap
+    - application-health
     - pipelines
     - codechanges
     - templates

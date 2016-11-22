@@ -41,6 +41,8 @@ configmap:
   requires:
     - java
     - databases
+application-health:
+  name: Application Health
 pipelines:
   name: Automating Deployment with CI/CD Pipeline
   requires:
