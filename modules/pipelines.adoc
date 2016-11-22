@@ -35,11 +35,11 @@ goal of determining if the change is appropriate for deployment in the *Live*
 environment:
 
 . Clone the code from Git repo, build and run unit tests and build a docker image container the code (S2I)
-. Deploy the docker image into *Dev* container
-. Run automated tests against the *Dev* container
-. Run manual tests against the *Dev* container
-. Wait for the *Deployment Manager*'s to either approve or reject the deployment (e.g. manual tests have revealed an unacceptable number of bugs)
-. If approved, deployed to the _Live_ container
+. Deploy the docker image into *Dev* 
+. Run automated tests against the *Dev* deployment
+. Run manual tests against the *Dev* deployment
+. Wait for the *Deployment Manager* to either approve or reject the deployment (e.g. manual tests have revealed an unacceptable number of bugs)
+. If approved, deploy to *Live* 
 
 Let's move on to deploy `Jenkins` and create this pipeline on OpenShift.
 
@@ -85,6 +85,16 @@ information and invoke action in OpenShift.
 oc policy add-role-to-user edit system:serviceaccount:cicd{{USER_SUFFIX}}:jenkins -n explore{{USER_SUFFIX}}
 ----
 
+### Exercise: Remove Dev from `parksmap`
+Since we are going to be replacing the current `nationalparks` application with
+a *Live* version, we should remove the *Dev* version from the `parksmap` by
+taking away the *Service* label:
+
+[source]
+----
+oc label svc nationalparks type-
+----
+
 ### Exercise: Create Live Environment
 
 Before creating the pipeline, you need to create a *Live* deployment that runs
@@ -92,6 +102,7 @@ the live version of `nationalparks` application. The `parksmap` front-end will
 talk to the *Live* `nationalparks`. This allows developers to make frequent
 changes in the *Dev* deployment without interfering with the live application.
 
+#### Live MongoDB
 First you need to create a new MongoDB deployment for the *Live* environment. In the
 web console in your `explore{{USER_SUFFIX}}` project,  click the *"Add to
 Project"* button, and then find the `mongodb-ephemeral` template, and click it.
@@ -110,10 +121,11 @@ what it does when it starts up.
 
 {% if modules.configmap %}
 
-The database configuration for the `nationalparks` webservice was changed to use
-`ConfigMaps` in a previous lab. If you don't still have it, re-download the
-properties file to your local machine and create a distinct `ConfigMap` that
-`nationalparks-live` will use.  The file is located here:
+#### Live ConfigMap
+The database configuration for the *Dev* `nationalparks` webservice was changed
+to use *ConfigMaps* in a previous lab. Similarly, we will use a *ConfigMap* for
+`nationalparks-live`. Download the live properties file to your local machine
+and create a distinct *ConfigMap*. The file is located here:
 https://raw.githubusercontent.com/openshift-roadshow/nationalparks/master/ose3/application-live.properties
 
 [source]
@@ -132,7 +144,7 @@ The default behavior for OpenShift has every
 https://docs.openshift.com/container-platform/3.3/architecture/core_concepts/builds_and_image_streams.html[S2I
 build] creating a new Docker image that is pushed into the internal registry,
 identified with the `latest` tag. Since we do not want to immediately run or
-deploy the *Dev* version of `nationalparks` when the image changes, we want the
+deploy the *Live* version of `nationalparks` when the image changes, we want the
 ability for the *Dev* and *Live* deployments to run different versions of the
 `nationalparks` image simultaneously. This will allow developers to continue
 changing and deploying *Dev* without affecting the *Live* environment. In
@@ -143,6 +155,8 @@ This new tag will be what the *Live* deployment will look for changes to:
 ----
 oc tag nationalparks:latest nationalparks:live
 ----
+
+You should have seen a change on the *ImageStream* page in the UI.
 
 This command says "please use the existing image that the tag
 `nationalparks:latest` points to and also point it at `nationalparks:live`." Or,
@@ -157,7 +171,7 @@ leaves the *Live* environment intact.
 After creating the tag, you are ready to deploy the *Live* `nationalparks` based
 on the `nationalparks:live` image tag. In the web console in your
 `explore{{USER_SUFFIX}}` project,  click the *Add to Project* button, and then
-*Deploy Image* tab. Choose *Image Stream Tag* radio button and use following
+*Deploy Image* tab. Choose the *Image Stream Tag* radio button and use following
 values in each respective field:
 
 * Namespace: `explore{{USER_SUFFIX}}`
@@ -188,15 +202,14 @@ You can leave the rest of the values as their defaults, and then click
 
 {% if modules.configmap %}
 
-The database configuration was created through the use of `ConfigMaps` in the link:configmap[previous
-labs]. Download the properties file to your local machine and create a new `ConfigMap`
-to configure the *Live* environment: +
-https://raw.githubusercontent.com/openshift-roadshow/nationalparks/{{NATIONALPARKS_VERSION}}/ose3/application-live.properties
+Deploying the `nationalparks-live` image through the UI did not utilize the
+*ConfigMap*, so we have one more step -- to tell OpenShift where to put the
+properties file. Since you have already created the *ConfigMap*, all you have to
+do is use the `oc set volumes` command to put it in the right place:
 
 [source]
 ----
-oc create configmap nationalparks-live --from-file=application.properties=lab/application-live.properties
-oc set volumes dc/nationalparks --add -m /opt/openshift/config --configmap-name=nationalparks-live
+oc set volumes dc/nationalparks-live --add -m /opt/openshift/config --configmap-name=nationalparks-live
 ----
 
 {% endif %}
@@ -209,7 +222,7 @@ image::/images/pipeline-live.png[National Parks Live]
 
 If you look at the web console, you will notice that, when you create the
 application this way, OpenShift doesn't create a *Route* for you. Click on
-*Create Route* on the top right corner of *NATIONALPARKS LIVE* container and
+*Create Route* on the top right corner of *NATIONALPARKS LIVE* and
 then *Create* to create a route with the default values.
 
 Similar to the link:databases[previous labs], populate the database by pointing your browser to the
@@ -230,7 +243,6 @@ to the *Live* service:
 
 [source]
 ----
-oc label svc nationalparks type-
 oc label service nationalparks-live type=parksmap-backend
 ----
 
