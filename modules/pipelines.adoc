@@ -11,9 +11,9 @@ the platform and enables defining truly complex workflows directly within OpenSh
 
 ### Exercise: Deploy Jenkins
 
-OpenShift provides a certified Jenkins which includes a rich set of plugins that
-enable the full pipeline flow. In the web console, create a new project named
-`cicd{{USER_SUFFIX}}`.
+OpenShift provides a supported Jenkins image which includes a rich set of
+plugins that enable the full pipeline flow. In the web console, create a new
+project named `cicd{{USER_SUFFIX}}`.
 
 image::/images/pipeline-project.png[CI/CD Project]
 
@@ -89,12 +89,12 @@ Let's move on to create this pipeline on OpenShift.
 
 ### Exercise: Create Live Environment
 
-Before creating the pipeline, you need to create a *Live* container that runs the
-live version of `nationalparks` application. The `parksmap` front-end will use
-the *Live* container for retrieving the geo data so that developers can make frequent
-changes in the *Dev* container without interfering with the live application.
+Before creating the pipeline, you need to create a *Live* deployment that runs
+the live version of `nationalparks` application. The `parksmap` front-end will
+talk to the *Live* `nationalparks`. This allows developers to make frequent
+changes in the *Dev* deployment without interfering with the live application.
 
-First you need to create a new MongoDB container for the *Live* environment. In the
+First you need to create a new MongoDB deployment for the *Live* environment. In the
 web console in your `explore{{USER_SUFFIX}}` project,  click the *"Add to
 Project"* button, and then find the `mongodb-ephemeral` template, and click it.
 Use the following values in their respective fields:
@@ -112,46 +112,55 @@ what it does when it starts up.
 
 {% if modules.configmap %}
 
-The database configuration was created through the use of `ConfigMaps` in the previous
-labs. Download the properties file to your local machine and create a new `ConfigMap`
-to configure the *Live* environment :
+The database configuration for the `nationalparks` webservice was changed to use
+`ConfigMaps` in a previous lab. If you don't still have it, re-download the
+properties file to your local machine and create a distinct `ConfigMap` that
+`nationalparks-live` will use.  The file is located here:
 https://raw.githubusercontent.com/openshift-roadshow/nationalparks/master/ose3/application-live.properties
 
 [source]
 ----
-oc create configmap nationalparks-live --from-file=application.properties=lab/application-live.properties
+oc create configmap nationalparks-live --from-file=application.properties=./application-live.properties
 ----
 {% endif %}
 
-Now you can create the *Live* container based on the same `nationalparks` docker image
-created in previous labs. Click on *Builds* &rarr; *Image* and then `nationalparks` to
-inspect the docker images created.
+Now you can create the *Live* deployment based on the same `nationalparks` Docker image
+created in previous labs. Click on *Builds* &rarr; *Images* and then `nationalparks` to
+inspect the *ImageStream*.
 
 image::/images/pipeline-live-image.png[National Parks Image Stream]
 
-Every new https://docs.openshift.com/container-platform/3.3/architecture/core_concepts/builds_and_image_streams.html[S2I build]
-results in a new docker image which is identified with the `latest` tag. The *Dev*
-and *Live* environments should allow deploying different versions of the `nationalparks`
-application so that developers can keep deploying into the *Dev* environment without
-affecting the *Live* environments. In order to achieve that, create a new tag
-using the following CLI command to reference the docker image that should be deployed
-into the *Live* environment:
+The default behavior for OpenShift has every
+https://docs.openshift.com/container-platform/3.3/architecture/core_concepts/builds_and_image_streams.html[S2I
+build] creating a new Docker image that is pushed into the internal registry,
+identified with the `latest` tag. Since we do not want to immediately run or
+deploy the *Dev* version of `nationalparks` when the image changes, we want the
+ability for the *Dev* and *Live* deployments to run different versions of the
+`nationalparks` image simultaneously. This will allow developers to continue
+changing and deploying *Dev* without affecting the *Live* environment. In
+order to achieve that, you will create a new Docker image tag using the CLI.
+This new tag will be what the *Live* deployment will look for changes to: 
 
 [source]
 ----
 oc tag nationalparks:latest nationalparks:live
 ----
 
-When a new S2I build is triggered, a new docker image gets created and the `latest`
-tag will automatically refer to the newly built docker image. However the `live` tag
-keeps referring to the pervious docker image and therefore leaves the *Live* environment
-intact.
+This command says "please use the existing image that the tag
+`nationalparks:latest` points to and also point it at `nationalparks:live`." Or,
+in other words "create a new tag (`live`) that points to whatever `latest`
+points to.
 
-After creating the tag, you are ready to deploy the *Live* `nationalparks`
-container based on the `nationalparks:live` image. In the web console in your
-`explore{{USER_SUFFIX}}` project,  click the *"Add to Project"* button, and
-then *Deploy Image* tab. Choose *Image Stream Tag* radio button and refer to the
-image tag you just created by giving the following values in each respective field:
+While _new_ builds will update the `latest` tag, only a manual command (or an
+automated workflow, like we will implement with Jenkins) will update the `live`
+tag. The `live` tag keeps referring to the pervious Docker image and therefore
+leaves the *Live* environment intact.
+
+After creating the tag, you are ready to deploy the *Live* `nationalparks` based
+on the `nationalparks:live` image tag. In the web console in your
+`explore{{USER_SUFFIX}}` project,  click the *Add to Project* button, and then
+*Deploy Image* tab. Choose *Image Stream Tag* radio button and use following
+values in each respective field:
 
 * Namespace: `explore{{USER_SUFFIX}}`
 * ImageStream: `nationalparks`
@@ -167,6 +176,7 @@ to define the Spring Boot application name:
 * `SPRING_APPLICAITON_NAME`: `nationalparks-live`
 
 image::/images/pipeline-live-deploy-config.png[National Parks Live Deploy]
+
 {% else %}
 
 Specify the following environment variable to wire the *Live* container to the
