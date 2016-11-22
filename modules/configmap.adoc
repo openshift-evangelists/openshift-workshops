@@ -13,7 +13,7 @@ https://raw.githubusercontent.com/openshift-roadshow/nationalparks/master/ose3/a
 
 [source]
 ----
-oc create configmap nationalparks --from-file=application.properties=lab/application-dev.properties
+oc create configmap nationalparks --from-file=application.properties=./application-dev.properties
 ----
 
 List `ConfigMap`
@@ -114,4 +114,7 @@ Now, Restart the pod by deleting it:
 oc delete pod -l app=nationalparks
 ----
 
-If you check its logs, you should see no errors.
+When deleting a resource (in this case, a *Pod*) the `-l` syntax tells the CLI
+to look for any matching resource with the *Label* `app=nationalparks`.
+
+If you check the new pod's logs once it comes up, you should see no errors.
