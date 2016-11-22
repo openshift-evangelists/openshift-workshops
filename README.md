@@ -6,7 +6,7 @@ Deploying on OpenShift is very simple, use the Ruby s2i builder and you are
 (almost ready to go)
 
 ```
-oc new-app https://github.com/openshift-evangelists/openshift-workshops.git
+oc new-app ruby~https://github.com/openshift-evangelists/openshift-workshops.git
 ```
 
 ## Get started

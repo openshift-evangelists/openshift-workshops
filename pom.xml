@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>eu.mjelen</groupId>
+  <artifactId>openshift-workshops</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>war</packaging>
+
+  <repositories>
+
+    <repository>
+      <id>rubygems-release</id>
+      <url>http://rubygems-proxy.torquebox.org/releases</url>
+    </repository>
+
+  </repositories>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>bundler</artifactId>
+      <version>1.13.6</version>
+      <type>gem</type>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>puma</artifactId>
+      <version>3.6.0</version>
+      <type>gem</type>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>sinatra</artifactId>
+      <version>1.4.7</version>
+      <type>gem</type>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>liquid</artifactId>
+      <version>3.0.6</version>
+      <type>gem</type>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>asciidoctor</artifactId>
+      <version>1.5.5</version>
+      <type>gem</type>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>kramdown</artifactId>
+      <version>1.12.0</version>
+      <type>gem</type>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>multi_markdown</artifactId>
+      <version>0.2.0</version>
+      <type>gem</type>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>json</artifactId>
+      <version>2.0.2</version>
+      <type>gem</type>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>multi_json</artifactId>
+      <version>1.12.1</version>
+      <type>gem</type>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>rubygems</groupId>
+      <artifactId>warbler</artifactId>
+      <version>2.0.4</version>
+      <type>gem</type>
+      <scope>provided</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+
+    <plugins>
+
+      <plugin>
+        <groupId>de.saumya.mojo</groupId>
+        <artifactId>gem-maven-plugin</artifactId>
+        <version>1.1.5</version>
+        <executions>
+          <execution>
+            <id>pack-war</id>
+            <phase>package</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <filename>warble</filename>
+            </configuration>
+          </execution>
+          <execution>
+            <id>move-war</id>
+            <phase>package</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <script>
+                require 'fileutils'
+                FileUtils.mv Dir['*.war'].first, 'deployments/ROOT.war'
+              </script>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+          <outputDirectory>deployments</outputDirectory>
+          <warName>ROOT</warName>
+        </configuration>
+      </plugin>
+
+    </plugins>
+
+  </build>
+
+</project>

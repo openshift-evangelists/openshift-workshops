@@ -1,0 +1,57 @@
+## Lab: Application Health
+
+### Background: Readiness and Liveness Probes
+As we have seen before in the UI via warnings, there is a concept of application
+health checks in OpenShift. These come in two flavors:
+
+* Readiness probe
+* Liveness probe
+
+From the
+https://{{DOCS_URL}}/latest/dev_guide/application_health.html[Application
+Health] section of the documentation, we see the definitions:
+
+
+### Exercise: Add Health Checks
+As we are going to be implementing a realistic CI/CD pipeline, we will be doing
+some testing of the "development" version of the application. However, in order
+to test the app, it must be ready. This is where OpenShift's application health
+features come in very handy.
+
+We are going to add both a readiness and liveness probe to the existing
+`nationalparks` deployment. This will ensure that OpenShift does not add any
+instances to the service until they pass the readiness checks, and will ensure
+that unhealthy instances are restarted (if they fail the liveness checks).
+
+Click *Applications* &rarr; *Deployments* on the left-side bar. Click
+`nationalparks`. You will see the warning about health checks, with a link to
+click in order to add them. Click *Add health checks* now.
+
+You will want to click both *Add Readiness Probe* and *Add Liveness Probe* and
+then fill them out as follows:
+
+_Readiness Probe_
+
+* Path: `/ws/healthz/`
+* Initial Delay: `20`
+* Timeout: `1`
+
+image::/images/pipeline-readiness.png[Readiness Probe]
+
+_Liveness Probe_
+* Path: `/ws/healthz/`
+* Initial Delay: `120`
+* Timeout: `1`
+
+image::/images/pipeline-liveness.png[Liveness Probe]
+TODO: NEEDS UPDATE
+
+* * examine live resources
+* add to project
+* dev pipeline live (template added by provisioner!)
+* project name -> explore{{USER_SUFFIX}}
+* create
+* overview
+* add health checks for nationalparks (dev)
+
+

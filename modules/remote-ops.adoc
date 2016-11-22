@@ -109,5 +109,5 @@ images to run with a USER in the dockerfile].
 #### Exercise: Use the Web Console
 
 You can also access a terminal into a container from the web console. On the
-*Pod* details page, one of the tabs says "Terminal". Try it!
+*Pod* details page, one of the tabs says *Terminal*. Try it!
 
