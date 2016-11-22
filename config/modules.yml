@@ -50,12 +50,6 @@ codechanges:
   name: Using Source 2 Image for Code Changes
   requires:
     - databases
-  vars:
-    WITH_PIPELINE: false
-  revisions:
-    roadshow:
-      vars:
-        WITH_PIPELINE: true
 canaryrelease:
   name: Canary Release to Production
   requires:
