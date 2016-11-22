@@ -64,7 +64,13 @@ metadata:
   uid: 6f4536cf-abdd-11e6-9282-525400c3c0db
 ----
 
-#### Exercise: Re-wire NationalParks App
+#### Exercise: Wire the ConfigMap inside Nationalparks Container
+[source]
+----
+oc set volumes dc/nationalparks --add -m /config --configmap-name=nationalparks
+----
+
+#### Exercise: Clean up Environment Variables
 
 List env vars
 
@@ -92,26 +98,3 @@ Verify
 ----
 oc env dc/nationalparks --list
 ----
-
-The fabric8 spring-cloud-kubernetes integration requires access to the OpenShift
-API in order to find and read the data inside of the ConfigMap. We had already
-given this view permission in the role-based access control lab. But, if you
-hadn't, or you want to re-provide this access again, the following command will
-do it:
-
-[source]
-----
-oc policy add-role-to-user view -z default
-----
-
-Remember that the `-z` flag specifies that the _user_ is actually a service
-account.
-
-Now, Restart the pod by deleting it:
-
-[source]
-----
-oc delete pod -l app=nationalparks
-----
-
-If you check its logs, you should see no errors.
