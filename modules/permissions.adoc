@@ -17,7 +17,7 @@ The **default** service account has its credentials automatically injected into
 every pod that is launched. By changing the permissions for that service
 account, we can do intersting things.
 
-#### Exercise: Grant Service Account View Permissions
+### Exercise: Grant Service Account View Permissions
 The parksmap application wants to talk to the OpenShift API to learn about other
 *Pods*, *Services*, and resources within the *Project*. You'll learn why soon!
 
@@ -30,24 +30,50 @@ Then:
 
 [source]
 ----
-oc policy add-role-to-user view system:serviceaccount:explore{{USER_SUFFIX}}:default
+oc policy add-role-to-user view -z default
 ----
+
+The `oc policy` command above is giving a defined _role_ (`view`) to a user. But
+we are using a special flag, `-z`. What does this flag do? From the `-h` output:
+
+[source]
+----
+-z, --serviceaccount=[]: service account in the current namespace to use as a user
+----
+
+The `-z` syntax is a special one that saves us from having to type out the
+entire string, which, in this case, is
+`system:serviceaccount:explore{{USER_SUFFIX}}:default`. It's a nifty shortcut.
+
+[NOTE]
+====
+The `-z` flag will only work for service accounts in the *current* namespace.
+Beware of this if you attempt to use it in the future.
+====
 
 Now that the default *Service Account* has **view** access, it can query the API
 to see what resources are within the *Project*. This also has the added benefit
 of supressing the error message! Although, in reality, we fixed the application.
 
-#### Exercise: Grant User View Permissions
+### Exercise: Grant User View Permissions
+If you create a project, you are that project's administrator. This means that
+you can grant access to other users, too. If you like, give your neighbor view
+access to your `explore` project using the following command:
 
 [source]
 ----
 oc policy add-role-to-user view user{{USER_SUFFIX}}
 ----
 
+Have them go to the project view by clicking the *Projects* button and verify
+that they can see your project and its resources. This type of arrangement (view
+but not edit) might be ideal for a developer getting visibility into a
+production application's project.
+
+### Exercise: Redeploy Application
 One more step is required. We need to re-deploy the application because it's
 given up trying to query the API.
 
-#### Exercise: Redeploy Application
 This time we'll use the web console. Find your `explore{{USER_SUFFIX}}` project,
 and then click "Applications" and then "Deployments". You'll see your only
 application, `parksmap`, listed. Click that.

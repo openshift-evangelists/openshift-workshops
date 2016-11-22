@@ -14,6 +14,7 @@ vars:
   USER_PASSWORD: "openshift3"
   PARKSMAP_VERSION: "0.5"
   NATIONALPARKS_VERSION: "master"
+  USE_MAVEN: false
 revision: roadshow
 modules:
   activate:
@@ -29,6 +30,7 @@ modules:
     - java
     - databases
     - configmap
+    - application-health
     - pipelines
     - codechanges
     - templates

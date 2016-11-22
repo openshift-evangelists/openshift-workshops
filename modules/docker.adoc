@@ -35,21 +35,6 @@ out to the Docker registry specified and interrogate the image. You then are
 presented with some options to add things like environment variables, labels,
 and etc. -- which we will learn about later.
 
-[NOTE]
-====
-It is important to understand that, for security reasons, OpenShift does not run
-Docker containers as the user specified in the Dockerfile by default. In fact,
-when OpenShift launches a container its user is actually randomized.
-
-If you want or need to allow OpenShift users to deploy Docker images that do
-expect to run as root (or any specific user), a small configuration change is
-needed. You can learn more about the
-https://{{DOCS_URL}}/latest/creating_images/guidelines.html[Docker guidelines]
-for OpenShift, or you can look at the section on
-https://{{DOCS_URL}}/latest/admin_guide/manage_scc.html#enable-images-to-run-with-user-in-the-dockerfile[enabling
-images to run with a USER in the dockerfile].
-====
-
 Hit the blue "Create" button at the bottom of the screen and then click ithe
 "Continue to overview" link. Take a moment to look at the various messages that
 you now see on the overview page.
