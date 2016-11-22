@@ -46,13 +46,8 @@ Let's move on to deploy `Jenkins` and create this pipeline on OpenShift.
 ### Exercise: Deploy Jenkins
 
 OpenShift provides a supported Jenkins image which includes a rich set of
-plugins that enable the full pipeline flow. In the web console, create a new
-project named `cicd{{USER_SUFFIX}}`.
-
-image::/images/pipeline-project.png[CI/CD Project]
-
-In the `cicd{{USER_SUFFIX}}` project, click on the
-*"Add to project"* button, find the `jenkins-ephemeral` template, and click on it.
+plugins that enable the full pipeline flow. Click on the *Add to project*
+button, find the `jenkins-ephemeral` template, and click on it.
 
 image::/images/pipeline-jenkins-catalog.png[Jenkins Ephemeral]
 
@@ -75,14 +70,15 @@ NOTE: The admin credentials for Jenkins are: admin/openshift3
 
 image::/images/pipeline-jenkins-console.png[Jenkins Console]
 
-Jenkins uses the OpenShift REST API in order to integrate into various OpenShift
-operations and therefore you should grant permission to the Jenkins service account
-to invoke these APIs. Run the following CLI command to allow Jenkins to retrieve
+Essentially, the OpenShift Jenkins plugin uses the OpenShift REST API in order
+to integrate into various OpenShift operations and therefore you should grant
+permission to the Jenkins service account (created above automatically) to
+invoke these APIs. Run the following CLI command to allow Jenkins to retrieve
 information and invoke action in OpenShift.
 
 [source]
 ----
-oc policy add-role-to-user edit system:serviceaccount:cicd{{USER_SUFFIX}}:jenkins -n explore{{USER_SUFFIX}}
+oc policy add-role-to-user edit -z jenkins
 ----
 
 ### Exercise: Remove Dev from `parksmap`
@@ -104,8 +100,8 @@ changes in the *Dev* deployment without interfering with the live application.
 
 #### Live MongoDB
 First you need to create a new MongoDB deployment for the *Live* environment. In the
-web console in your `explore{{USER_SUFFIX}}` project,  click the *"Add to
-Project"* button, and then find the `mongodb-ephemeral` template, and click it.
+web console in your `explore{{USER_SUFFIX}}` project,  click the *Add to
+Project* button, and then find the `mongodb-ephemeral` template, and click it.
 Use the following values in their respective fields:
 
 * Database Service Name : `mongodb-live`
@@ -115,7 +111,7 @@ Use the following values in their respective fields:
 * MongoB Admin Password : `mongodb`
 
 You can leave the rest of the values as their defaults, and then click
-*"Create"*. Then click *Continue to overview*. The MongoDB instance should
+*Create*. Then click *Continue to overview*. The MongoDB instance should
 quickly be deployed. If you're interested, take a look at Mongo's logs to see
 what it does when it starts up.
 
@@ -136,7 +132,7 @@ oc create configmap nationalparks-live --from-file=application.properties=./appl
 
 #### Live Deployment
 Now you can create the *Live* deployment based on the same `nationalparks`
-Docker image created in link:java[previous labs].. Click on *Builds* &rarr;
+Docker image created in link:java[previous labs]. Click on *Builds* &rarr;
 *Images* and then `nationalparks` to inspect the *ImageStream*.
 
 image::/images/pipeline-live-image.png[National Parks Image Stream]
@@ -178,7 +174,20 @@ values in each respective field:
 * Namespace: `explore{{USER_SUFFIX}}`
 * ImageStream: `nationalparks`
 * Tag: `live`
+
+Once you make your three dropdown selections in the *Image Stream Tag* area,
+you will see the rest of the standard deployment options "open up". 
+
+There are only a few things to change:
+
 * Name: `nationalparks-live`
+
+[WARNING]
+====
+If you forget to change the name to `nationalparks-live` you will get an error
+about resources already existing -- because they do. `nationalparks` already
+exists as our *Dev* Deployment.
+====
 
 {% if modules.configmap %}
 
@@ -199,7 +208,7 @@ image::/images/pipeline-live-deploy-env.png[National Parks Live Deploy]
 {% endif %}
 
 You can leave the rest of the values as their defaults, and then click
-*"Create"*. Then click *Continue to overview*.
+*Create*. Then click *Continue to overview*.
 
 {% if modules.configmap %}
 
@@ -260,15 +269,7 @@ build type. Pipeline workflows are defined in a Jenkinsfile, either embedded dir
 in the build configuration, or supplied in a Git repository and referenced by the
 build configuration.
 
-In order to create the pipeline, import the pipeline template created for this lab.
-
-[source]
-----
-oc project cicd{{USER_SUFFIX}}
-oc create -f https://raw.githubusercontent.com/openshift-roadshow/nationalparks/{{NATIONALPARKS_VERSION}}/ose3/pipeline-template.yaml
-----
-
-In the `cicd{{USER_SUFFIX}}` project, click on the *"Add to project"* button,
+In order to create the pipeline, click on the *Add to project* button,
 find the `dev-live-pipeline` template, and click on it. Specify the project name
 and click on *Create*
 
