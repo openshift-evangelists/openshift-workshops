@@ -2,34 +2,32 @@
 
 ### Background: Application Configuration with ConfigMaps
 
-TBD: Describe ConfigMaps, mounting options as env vars and files, etc. Also how
-nationalparks app with Spring Boot uses application.properties which is populated in this
-lab with configmaps.
+Most applications require configuration using environment variables, configuration files and command line arguments. These configuration artifacts should be externalized form the application and the docker image content in order to keep the image portable across environments.
+
+In link:databases[previous labs], the `nationalparks` application was configured with database credentials using environment variables. While environment variables is a useful way to configure applications, it is difficult to manage hundreds of environment variables which are scattered across various containers in a project. Fortunately, there is a convenient and platform-independent mechanism in OpenShift to configure applications, which is called `ConfigMap`.
+
+The `ConfigMap` object in OpenShift provides mechanisms to provide configuration data to the application container while keeping the application images both portable across environments and independent of OpenShift Container Platform. A `ConfigMap` can be used to store key-value properties, configuration files, JSON blobs and alike.
+
+In this lab, you will replace the environment variables provided in the link:databases[previous labs] and use a `ConfigMap` instead to configure the `nationalparks` application.
 
 #### Exercise: Create a ConfigMap
 
-Create the `ConfigMap`. Download the properties file to your local machine: +
+You can create a `ConfigMap` by pointing at a file containing the application configuration. Download this properties file to your local machine which contains the database credentials: +
 https://raw.githubusercontent.com/openshift-roadshow/nationalparks/{{NATIONALPARKS_VERSION}}/ose3/application-dev.properties
 
+Create a `ConfigMap` using the following command in the `explore{{USER_SUFFIX}}` project:
 [source]
 ----
 oc create configmap nationalparks --from-file=application.properties=lab/application-dev.properties
 ----
 
-List `ConfigMap`
+The `--from-file` option specifies a key-value pair with the key used as the file name that is provided to the application and value as the content of the file. In the above command, the content of `lab/application-dev.properties` file will be provided to the application container as a properties file called `application.properties`
+
+List and verify that the `ConfigMap` is created successfully containing the database credentials:
 
 [source]
 ----
 oc get configmap
-
-NAME            DATA      AGE
-nationalparks   1         23s
-----
-
-Explore the `ConfigMap`
-
-[source]
-----
 oc describe configmap nationalparks
 
 Name:		nationalparks
@@ -41,6 +39,9 @@ Data
 ====
 application.properties:	123 bytes
 ----
+
+
+You can review the content of the `ConfigMap` using the `oc get` command:
 
 [source]
 ----
@@ -58,43 +59,47 @@ kind: ConfigMap
 metadata:
   creationTimestamp: 2016-11-16T09:17:02Z
   name: nationalparks
-  namespace: demo
+  namespace: explore{{USER_SUFFIX}}
   resourceVersion: "8421"
   selfLink: /api/v1/namespaces/demo/configmaps/nationalparks
   uid: 6f4536cf-abdd-11e6-9282-525400c3c0db
 ----
 
-#### Exercise: Wire the ConfigMap inside Nationalparks Container
+#### Exercise: Wire the ConfigMap inside nationalparks Container
+
+Configuration data can be consumed in pods in a variety of ways. A `ConfigMap`
+can be used to:
+* Populate the value of environment variables
+* Set command-line arguments in a container
+* Populate configuration files in a volume
+
+The `nationalparks` Spring Boot application can be configured through a
+properties file called `applicaiton.properties` which should reside in specific
+locations on the container filesystem. Using the following command, to mount the
+`ConfigMap` inside the `nationalparks` pod:
+
 [source]
 ----
-oc set volumes dc/nationalparks --add -m /config --configmap-name=nationalparks
+oc set volumes dc/nationalparks --add -m /opt/openshift/config --configmap-name=nationalparks
 ----
 
-#### Exercise: Clean up Environment Variables
+The above command makes the content of `ConfigMap`, which is a properties file
+called `application.properties`, available at `/opt/openshift/config` directory. The
+`nationalparks` *DeploymentConfiguration* detects the configuration change,
+and automatically deploys the container with new configuration.
 
-List env vars
-
-[source]
-----
-oc env dc/nationalparks --list
-
-# deploymentconfigs nationalparks, container nationalparks
-MONGODB_USER=mongodb
-MONGODB_PASSWORD=mongodb
-MONGODB_DATABASE=mongodb
-MONGODB_SERVER_HOST=mongodb
-----
-
-Remove env vars
+Since we have configured `nationalparks` through `ConfigMap`, you can remove the
+database environment variables set in the link:databases[previous labs]:
 
 [source]
 ----
 oc env dc/nationalparks MONGODB_USER- MONGODB_PASSWORD- MONGODB_DATABASE- MONGODB_SERVER_HOST-
 ----
 
-Verify
+You have now externalized `nationalparks` configuration. Visit the `nationalparks` web
+service to very the database connection is working correctly.:
 
 [source]
 ----
-oc env dc/nationalparks --list
+http://nationalparks-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/data/all/
 ----

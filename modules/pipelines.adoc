@@ -173,7 +173,7 @@ https://raw.githubusercontent.com/openshift-roadshow/nationalparks/{{NATIONALPAR
 [source]
 ----
 oc create configmap nationalparks-live --from-file=application.properties=lab/application-live.properties
-oc set volumes dc/nationalparks --add -m /config --configmap-name=nationalparks-live
+oc set volumes dc/nationalparks --add -m /opt/openshift/config --configmap-name=nationalparks-live
 ----
 
 {% endif %}
