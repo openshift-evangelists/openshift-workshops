@@ -8,8 +8,8 @@ lab with configmaps.
 
 #### Exercise: Create a ConfigMap
 
-Create the `ConfigMap`. Download the properties file to your local machine:
-https://raw.githubusercontent.com/openshift-roadshow/nationalparks/master/ose3/application-dev.properties
+Create the `ConfigMap`. Download the properties file to your local machine: +
+https://raw.githubusercontent.com/openshift-roadshow/nationalparks/{{NATIONALPARKS_VERSION}}/ose3/application-dev.properties
 
 [source]
 ----

@@ -167,8 +167,8 @@ You can leave the rest of the values as their defaults, and then click
 
 The database configuration was created through the use of `ConfigMaps` in the link:configmap[previous
 labs]. Download the properties file to your local machine and create a new `ConfigMap`
-to configure the *Live* environment :
-https://raw.githubusercontent.com/openshift-roadshow/nationalparks/master/ose3/application-live.properties
+to configure the *Live* environment: +
+https://raw.githubusercontent.com/openshift-roadshow/nationalparks/{{NATIONALPARKS_VERSION}}/ose3/application-live.properties
 
 [source]
 ----
@@ -225,7 +225,7 @@ In order to create the pipeline, import the pipeline template created for this l
 [source]
 ----
 oc project cicd{{USER_SUFFIX}}
-oc create -f https://raw.githubusercontent.com/openshift-roadshow/nationalparks/master/ose3/pipeline-template.yaml
+oc create -f https://raw.githubusercontent.com/openshift-roadshow/nationalparks/{{NATIONALPARKS_VERSION}}/ose3/pipeline-template.yaml
 ----
 
 In the `cicd{{USER_SUFFIX}}` project, click on the *"Add to project"* button,
