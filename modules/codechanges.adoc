@@ -116,7 +116,7 @@ for approving the deployment and then *Proceed* button.
 
 image::/images/pipeline-jenkins-input.png[Pipline Manual Approval,1000,align=center]
 
-Once you pipeline execution is finished, verify your new Docker image was
+Once the pipeline execution is finished, verify your new Docker image was
 automatically deployed by viewing the application in your browser:
 
 {% else %}
@@ -147,8 +147,8 @@ automatically deployed by viewing the application in your browser:
 http://nationalparks-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/info/
 ----
 
-You should see your new name (**OpenShift National Parks**) in the JSON string.
-Winning!
+You actually won't see your new name (**OpenShift National Parks**) in the JSON string.
+Why?
 
 #### Exercise: Rollback
 
