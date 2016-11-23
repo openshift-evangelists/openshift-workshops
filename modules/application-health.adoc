@@ -68,5 +68,7 @@ will notice that these changes caused a new deployment -- they counted as a
 configuration change.
 
 You will also notice that the circle around the new deployment stays light blue
-for a while. This is a sign that the pod(s) have not passed their readiness
+for a while. This is a sign that the pod(s) have not yet passed their readiness
 checks -- it's working!
+
+image::/images/apphealth-status.png[Application Health]

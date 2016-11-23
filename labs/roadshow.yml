@@ -12,9 +12,9 @@ vars:
   JAVA_BUILDER_STRING: "jboss-eap70-openshift:1.4"
   USER_NAME: "userXX"
   USER_PASSWORD: "openshift3"
-  PARKSMAP_VERSION: "0.5"
-  NATIONALPARKS_VERSION: "master"
-  MLBPARKS_VERSION: "master"
+  PARKSMAP_VERSION: "1.0.0"
+  NATIONALPARKS_VERSION: "1.0.0"
+  MLBPARKS_VERSION: "1.0.0"
   USE_MAVEN: false
 revision: roadshow
 modules:

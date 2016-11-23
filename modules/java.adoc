@@ -58,7 +58,7 @@ and located at the following URL:
 
 http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/user{{SUFFIX}}/nationalparks.git[http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/user{{SUFFIX}}/nationalparks.git]
 
-Your GitLab credentials are: {{GITLAB_LOGIN}}
+Your GitLab credentials are: *{{GITLAB_LOGIN}}*
 
 Later in the lab, we want you to make a code change and then rebuild your
 application. This is a fairly simple Spring framework Java application.
@@ -93,16 +93,21 @@ NOTE: All of these runtimes shown are made available via *Templates* and
 
 image::/images/new-national-parks-1.png[Runtimes]
 
+These labs were written against specific points in time for these
+applications. With Git as our version control system (VCS), we are using the
+concept of *Tags*. Click on *Show advanced routing, build, and deployment
+options*. In the *Git Reference* field enter "1.0.0". This will cause the S2I
+process to grab that specific tag in the code repository.
+
+image::/images/nationalparks-tag.png[Runtimes]
+
 {% if USE_MAVEN %}
 
-[NOTE]
-====
-To speed build process, a Sonatype Nexus server is running in the
-environment that will cache your dependencies as you pull them down. To use it,
-you need to click on *Show advanced routing, build, and deployment options*,
-scroll down to *Build Configuration*, add an environment variable named
-*MAVEN_MIRROR_URL* with value `http://nexus.workshop-infra.svc.cluster.local:8081/content/groups/public`
-====
+To speed build process, a Sonatype Nexus server is running in the environment
+that will cache your dependencies as you pull them down. To use it, you need to
+scroll down to *Build Configuration* and add an environment variable named
+*MAVEN_MIRROR_URL* with value
+`http://nexus.workshop-infra.svc.cluster.local:8081/content/groups/public`
 
 image::/images/new-national-parks-2.png[Runtimes]
 {% endif %}

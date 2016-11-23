@@ -333,12 +333,4 @@ to determine trends.
 image::/images/pipeline-history.png[OpenShift History]
 
 Congratulations! Now you have a CI/CD Pipeline for the `nationalparks`
-application. The last thing you'll need to do is visit the `/data/load` endpoint
-for the *Live* version of `nationalparks`:
-
-[source]
-----
-http://nationalparks-live-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/data/load/
-----
-
-Now, if you visit the parks map again, you should see the map points!
+application. If you visit the parks map again, you should see the map points!
