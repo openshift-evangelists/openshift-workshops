@@ -23,7 +23,7 @@ select the "Image Name" option, and copy/paste the following into the box:
 
 [source]
 ----
-docker.io/openshiftdemos/parksmap:{{PARKSMAP_VERSION}}
+docker.io/openshiftroadshow/parksmap:{{PARKSMAP_VERSION}}
 ----
 
 Your screen will end up looking something like this:
