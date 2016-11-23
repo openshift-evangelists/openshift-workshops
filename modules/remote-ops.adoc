@@ -72,7 +72,7 @@ In order to show just the JAR file, run the following:
 ----
 $ oc exec parksmap-2-tegp4 -- ls -l /parksmap.jar
 
--rw-rw-r--. 1 root root 21486607 Oct  4 18:26 /parksmap.jar
+-rw-r--r--. 1 root root 21753918 Nov 23 15:54 /parksmap.jar
 ----
 
 [NOTE]
