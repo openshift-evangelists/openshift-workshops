@@ -255,7 +255,7 @@ arbitrary key=value pair. It could be anything.
 * `openshift=awesome`
 
 In the case of the parks map, the application is actually querying the OpenShift
-API and asking about the *Services* in the project. If any of them have a
+API and asking about the *Routes* in the project. If any of them have a
 *Label* that is `type=parksmap-backend`, the application knows to interrogate
 that service's endpoints to look for map data.
 
@@ -264,25 +264,30 @@ labels. `describe` the `nationalparks` service:
 
 [source]
 ----
-oc describe service nationalparks
+oc describe route nationalparks
+
 Name:                   nationalparks
 Namespace:              explore{{USER_SUFFIX}}
+Created:                2 hours ago
 Labels:                 app=nationalparks
-Selector:               deploymentconfig=nationalparks
-Type:                   ClusterIP
-IP:                     172.30.36.48
-Port:                   8080-tcp        8080/TCP
-Endpoints:              10.1.3.4:8080
-Session Affinity:       None
-No events.
+Requested Host:         nationalparks-explore{{USER_SUFFIX}}.10.2.2.15.xip.io
+                        exposed on router router 2 hours ago
+Path:                   <none>
+TLS Termination:        <none>
+Insecure Policy:        <none>
+Endpoint Port:          8080-tcp
+
+Service:                nationalparks
+Weight:                 100 (100%)
+Endpoints:              10.1.9.8:8080
 ----
 
 You see that it only has one label: `app=nationalparks`. Now, use `oc label`:
 
 [source]
 ----
-oc label service nationalparks type=parksmap-backend
-service "nationalparks" labeled
+oc label route nationalparks type=parksmap-backend
+route "nationalparks" labeled
 ----
 
 If you check your browser now:
