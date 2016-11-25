@@ -35,11 +35,11 @@ goal of determining if the change is appropriate for deployment in the *Live*
 environment:
 
 . Clone the code from Git repo, build and run unit tests and build a docker image container the code (S2I)
-. Deploy the docker image into *Dev* 
+. Deploy the docker image into *Dev*
 . Run automated tests against the *Dev* deployment
 . Run manual tests against the *Dev* deployment
 . Wait for the *Deployment Manager* to either approve or reject the deployment (e.g. manual tests have revealed an unacceptable number of bugs)
-. If approved, deploy to *Live* 
+. If approved, deploy to *Live*
 
 Let's move on to deploy `Jenkins` and create this pipeline on OpenShift.
 
@@ -84,11 +84,11 @@ oc policy add-role-to-user edit -z jenkins
 ### Exercise: Remove Dev from `parksmap`
 Since we are going to be replacing the current `nationalparks` application with
 a *Live* version, we should remove the *Dev* version from the `parksmap` by
-taking away the *Service* label:
+taking away the *Route* label:
 
 [source]
 ----
-oc label svc nationalparks type-
+oc label route nationalparks type-
 ----
 
 ### Exercise: Create Live Environment
@@ -146,7 +146,7 @@ ability for the *Dev* and *Live* deployments to run different versions of the
 `nationalparks` image simultaneously. This will allow developers to continue
 changing and deploying *Dev* without affecting the *Live* environment. In
 order to achieve that, you will create a new Docker image tag using the CLI.
-This new tag will be what the *Live* deployment will look for changes to: 
+This new tag will be what the *Live* deployment will look for changes to:
 
 [source]
 ----
@@ -176,7 +176,7 @@ values in each respective field:
 * Tag: `live`
 
 Once you make your three dropdown selections in the *Image Stream Tag* area,
-you will see the rest of the standard deployment options "open up". 
+you will see the rest of the standard deployment options "open up".
 
 There are only a few things to change:
 
@@ -249,16 +249,16 @@ http://nationalparks-live-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/data/load
 
 #### Label Service
 As discussed in link:databases[previous labs], the `parksmap` web app queries the OpenShift API and
-looks for services that have the label `type=parksmap-backend` and interrogates the
+looks for routes that have the label `type=parksmap-backend` and interrogates the
 discovered endpoints to visualize their map data. After creating the pipeline,
 `parksmap` should use the *Live* container instead of the *Dev* container so that
 deployments to the *Dev* container does not disrupt the `parksmap` application.
-You can do that by removing the `type` label from the *Dev* service and adding it
-to the *Live* service:
+You can do that by removing the `type` label from the *Dev* route and adding it
+to the *Live* route:
 
 [source]
 ----
-oc label service nationalparks-live type=parksmap-backend
+oc label route nationalparks-live type=parksmap-backend
 ----
 
 ### Exercise: Create OpenShift Pipeline
