@@ -63,8 +63,19 @@ now, be sure to use the following values in their respective fields:
 
 You can leave the rest of the values as their defaults, and then click
 *"Create"*. Then click *Continue to overview*. The MongoDB instance should
-quickly be deployed. If you're interested, take a look at Mongo's logs to see
-what it does when it starts up.
+quickly be deployed.
+
+
+image::/images/mongo-group-db-1.png[Service Groups]
+
+You can group services in OpenShift Console in order to display related services
+together in one panel. Click on the chain icon on the right-top corner of the
+`nationalparks` service, choose `mongodb` from the drop-down list in the
+*Group Service to nationalparks* dialog and click on *OK*. The `nationalparks` and
+ `mongodb` services are groups and displayed together.
+
+image::/images/mongo-group-db-2.png[Service Groups]
+
 
 #### Exercise: Wiring the Java Application for the Database
 
@@ -83,11 +94,8 @@ environment variables, we simply need to modify the *DeploymentConfiguration*
 (DC).  This can easily be done from either the web interface or via the command
 line.
 
-The command line takes a little less time, so let's use that option. Spring Boot
-has a
-https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html[special
-mechanism] for finding database connection information when it comes to Mongo.
-First, find the name of the DC:
+The command line takes a little less time, so let's use that option. First, find
+the name of the DC:
 
 [source]
 ----
@@ -98,7 +106,7 @@ Then, use the `oc env` command to set environment variables directly on the DC:
 
 [source]
 ----
-oc env dc nationalparks -e MONGODB_USER=mongodb -e MONGODB_PASSWORD=mongodb -e MONGODB_DATABASE=mongodb -e MONGODB_HOST=mongodb
+oc env dc nationalparks -e MONGODB_USER=mongodb -e MONGODB_PASSWORD=mongodb -e MONGODB_DATABASE=mongodb -e MONGODB_SERVER_HOST=mongodb
 ----
 
 After you have modified the *DeploymentConfig* object, you can verify the
@@ -113,15 +121,15 @@ You should see the following section:
 
 [source]
 ----
-  - env:
-    - name: MONGODB_USER
-      value: mongodb
-    - name: MONGODB_PASSWORD
-      value: mongodb
-    - name: MONGODB_DATABASE
-      value: mongodb
-    - name: MONGODB_HOST
-      value: mongodb
+- env:
+  - name: MONGODB_USER
+    value: mongodb
+  - name: MONGODB_PASSWORD
+    value: mongodb
+  - name: MONGODB_DATABASE
+    value: mongodb
+  - name: MONGODB_SERVER_HOST
+    value: mongodb
 ----
 
 You can also just ask OpenShift to tell you about the environment variables on
@@ -134,7 +142,7 @@ oc env dc/nationalparks --list
 MONGODB_USER=mongodb
 MONGODB_PASSWORD=mongodb
 MONGODB_DATABASE=mongodb
-MONGODB_HOST=mongodb
+MONGODB_SERVER_HOST=mongodb
 ----
 
 #### Exercise: Exploring OpenShift Magic
@@ -148,7 +156,7 @@ can verify this by looking at the output of `oc get dc`:
 NAME            REVISION   DESIRED   CURRENT   TRIGGERED BY
 mongodb         1          1         1         config,image(mongodb:3.2)
 nationalparks   2          1         1         config,image(nationalparks:latest)
-parksmap        1          1         1         config,image(parksmap:0.4)
+parksmap        1          1         1         config,image(parksmap:0.5)
 ----
 
 Something that increments the version of a *DeploymentConfiguration*, by default,
@@ -238,7 +246,7 @@ the right *Label*.
 
 #### Exercise: Working With Labels
 
-We explored how *Label*s are just key=value pairs earlier when looking at
+We explored how a *Label* is just a key=value pair earlier when looking at
 *Services* and *Routes* and *Selectors*. In general, a *Label* is simply an
 arbitrary key=value pair. It could be anything.
 
@@ -247,7 +255,7 @@ arbitrary key=value pair. It could be anything.
 * `openshift=awesome`
 
 In the case of the parks map, the application is actually querying the OpenShift
-API and asking about the *Services* in the project. If any of them have a
+API and asking about the *Routes* in the project. If any of them have a
 *Label* that is `type=parksmap-backend`, the application knows to interrogate
 that service's endpoints to look for map data.
 
@@ -256,32 +264,37 @@ labels. `describe` the `nationalparks` service:
 
 [source]
 ----
-oc describe service nationalparks
+oc describe route nationalparks
+
 Name:                   nationalparks
 Namespace:              explore{{USER_SUFFIX}}
+Created:                2 hours ago
 Labels:                 app=nationalparks
-Selector:               deploymentconfig=nationalparks
-Type:                   ClusterIP
-IP:                     172.30.36.48
-Port:                   8080-tcp        8080/TCP
-Endpoints:              10.1.3.4:8080
-Session Affinity:       None
-No events.
+Requested Host:         nationalparks-explore{{USER_SUFFIX}}.10.2.2.15.xip.io
+                        exposed on router router 2 hours ago
+Path:                   <none>
+TLS Termination:        <none>
+Insecure Policy:        <none>
+Endpoint Port:          8080-tcp
+
+Service:                nationalparks
+Weight:                 100 (100%)
+Endpoints:              10.1.9.8:8080
 ----
 
 You see that it only has one label: `app=nationalparks`. Now, use `oc label`:
 
 [source]
 ----
-oc label service nationalparks type=parksmap-backend
-service "nationalparks" labeled
+oc label route nationalparks type=parksmap-backend
+route "nationalparks" labeled
 ----
 
 If you check your browser now:
 
 [source]
 ----
-http://openshift3nationalparks-nationalparks.{{ROUTER_ADDRESS}}/
+http://parksmap-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/
 ----
 
 image::/images/parksmap-new-parks.png[MongoDB]

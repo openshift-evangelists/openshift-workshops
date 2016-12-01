@@ -41,20 +41,22 @@ configmap:
   requires:
     - java
     - databases
+application-health:
+  name: Application Health
 pipelines:
   name: Automating Deployment with CI/CD Pipeline
   requires:
     - java
+    - databases
+    - application-health
 codechanges:
   name: Using Source 2 Image for Code Changes
   requires:
     - databases
-  vars:
-    WITH_PIPELINE: false
-  revisions:
-    roadshow:
-      vars:
-        WITH_PIPELINE: true
+canaryrelease:
+  name: Canary Release to Production
+  requires:
+    - pipelines
 templates:
   name: Using Application Templates
   vars:

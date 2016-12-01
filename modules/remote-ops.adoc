@@ -72,22 +72,8 @@ In order to show just the JAR file, run the following:
 ----
 $ oc exec parksmap-2-tegp4 -- ls -l /parksmap.jar
 
--rw-rw-r--. 1 root root 21486607 Oct  4 18:26 /parksmap.jar
+-rw-r--r--. 1 root root 21753918 Nov 23 15:54 /parksmap.jar
 ----
-
-You can also specify the shell commands to run directly with the *oc rsh* command:
-
-[source]
-----
-$ oc rsh parksmap-2-tegp4 ls -l /parksmap.jar
-
--rw-rw-r--. 1 root root 21486607 Oct  4 18:26 /parksmap.jar
-----
-
-#### Exercise: Use the Web Console
-
-You can also access a terminal into a container from the web console. On the
-*Pod* details page, one of the tabs says "Terminal". Try it!
 
 [NOTE]
 ====
@@ -95,3 +81,33 @@ The `--` syntax in the `oc exec` command delineates where exec's options
 end and where the actual command to execute begins. Take a look at `oc exec
 --help` for more details.
 ====
+
+You can also specify the shell commands to run directly with the *oc rsh* command:
+
+[source]
+----
+$ oc rsh parksmap-2-tegp4 whoami
+whoami: cannot find name for user ID 1000060000
+error: error executing remote command: error executing command in container: Error executing in Docker Container: 1
+----
+
+[WARNING]
+====
+It is important to understand that, for security reasons, OpenShift does not run
+Docker containers as the user specified in the Dockerfile by default. In fact,
+when OpenShift launches a container its user is actually randomized.
+
+If you want or need to allow OpenShift users to deploy Docker images that do
+expect to run as root (or any specific user), a small configuration change is
+needed. You can learn more about the
+https://{{DOCS_URL}}/latest/creating_images/guidelines.html[Docker guidelines]
+for OpenShift, or you can look at the section on
+https://{{DOCS_URL}}/latest/admin_guide/manage_scc.html#enable-images-to-run-with-user-in-the-dockerfile[enabling
+images to run with a USER in the dockerfile].
+====
+
+#### Exercise: Use the Web Console
+
+You can also access a terminal into a container from the web console. On the
+*Pod* details page, one of the tabs says *Terminal*. Try it!
+

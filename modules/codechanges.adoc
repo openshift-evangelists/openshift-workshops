@@ -11,7 +11,7 @@ achieved.
 #### Exercise: Configuring GitLab Web Hooks
 
 
-{% if WITH_PIPELINE == true %}
+{% if modules.pipelines %}
 In previous labs, you created a CI/CD Pipeline to automate build, test and deployment of
 the `nationalparks` application. In this lab you can use the pipline webhook to
 trigger a pipeline execution every time there is a change in the `nationalparks` GitLab
@@ -102,7 +102,7 @@ return new Backend("nationalparks","OpenShift National Parks", new Coordinates("
 Click on Commit changes at the bottom of the screen. Feel free to enter a commit
 message.
 
-{% if WITH_PIPELINE == true %}
+{% if modules.pipelines %}
 
 Once you have committed your changes, the `nationalparks-pipeline` should almost
 instantaneously be triggered in OpenShift. Look at the *Builds* &rarr; *Pipelines*
@@ -116,7 +116,7 @@ for approving the deployment and then *Proceed* button.
 
 image::/images/pipeline-jenkins-input.png[Pipline Manual Approval,1000,align=center]
 
-Once you pipeline execution is finished, verify your new Docker image was
+Once the pipeline execution is finished, verify your new Docker image was
 automatically deployed by viewing the application in your browser:
 
 {% else %}
@@ -147,8 +147,8 @@ automatically deployed by viewing the application in your browser:
 http://nationalparks-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/info/
 ----
 
-You should see your new name (**OpenShift National Parks**) in the JSON string.
-Winning!
+You actually won't see your new name (**OpenShift National Parks**) in the JSON string.
+Why?
 
 #### Exercise: Rollback
 

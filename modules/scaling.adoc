@@ -176,9 +176,9 @@ oc get pods
 ----
 
 Did you notice anything different? The names of the *Pods* are slightly changed.
-That's because OpenShift almost immediately detected that the current state (2
-Pods) didn't match the desired state (3 Pods), and it fixed it by scheduling
-another pod.
+That's because OpenShift almost immediately detected that the current state (1
+*Pod*) didn't match the desired state (2 *Pods*), and it fixed it by scheduling
+another *Pod*.
 
 Additionally, OpenShift provides rudimentary capabilities around checking the
 liveness and/or readiness of application instances. If the basic checks are
@@ -193,3 +193,8 @@ it, always ensuring that the desired number of replicas was in place.
 More information on probing applications is available in the
 https://{{DOCS_URL}}/latest/dev_guide/application_health.html[Application
 Health] section of the documentation.
+
+### Exercise: Scale Down
+
+Before we continue, go ahead and scale your application down to a single
+instance. Feel free to do this using whatever method you like.
