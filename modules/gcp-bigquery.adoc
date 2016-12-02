@@ -91,7 +91,7 @@ application code!
 The repository that we are going to use is already cloned in the internal GitLab repository
 and located at the following URL:
 
-http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/publicweatherdata.git[http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/publicweatherdata.git]
+http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/publicweatherdata/tree/{{PUBLICWEATHER_VERSION}}[http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/publicweatherdata/tree/{{PUBLICWEATHER_VERSION}}]
 
 #### Build and deploy the Application on OpenShift
 
@@ -101,7 +101,7 @@ can choose from, but you will want to select, so let's filter using `gcp`.
 
 image:/images/gcp_template_filter.png[Runtimes]
 
-After you click `publicweatherdata`, on the next screen you will need to enter some configuration for the template. For the Git repository URL, enter:
+After you click `publicweatherdata`, on the next screen you will need to enter some configuration for the template. Leave the actual value, or to use your local clone of the Git repository, enter:
 
 [source]
 ----
@@ -120,11 +120,13 @@ image:/images/gcp_project_id.png[Google Project Id]
 * *GCP Credentials dir*: This is where the application will find the google credentials json file that we have mounted as a secret. Use the value provided.
 * *GCP Credentials filename*: This is the name of the google's credentials file that has been stored in the secret. Use the default value.
 
+{% if USE_MAVEN %}
 [NOTE]
 ====
 To speed build process, a Sonatype Nexus server is running in the
 environment that will cache your dependencies as you pull them down. To use it add an environment variable named *MAVEN_MIRROR_URL* with value `http://nexus.workshop-infra:8081/content/groups/public`
 ====
+{% endif %}
 
 image:/images/gcp_template_use.png[]
 

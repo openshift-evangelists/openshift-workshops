@@ -225,10 +225,9 @@ performs the connection as well as creates the database schema can be viewed
 here:
 
 {% if PARKSMAP_PY %}
-http://gitlab.{{ROUTER_ADDRESS}}/dev/openshift3nationalparks/blob/master/src/main/java/org/openshift/parks/mongo/DBConnection.java
-http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks-py/blob/{{NATIONALPARKS_VERSION}}/wsgi.py#L11-18[Database connection]
+http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks-py/blob/{{NATIONALPARKS_VERSION}}/wsgi.py#L11-18[http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks-py/blob/{{NATIONALPARKS_VERSION}}/wsgi.py]
 {% else %}
-http://gitlab.{{ROUTER_ADDRESS}}/dev/openshift3nationalparks/blob/{{NATIONALPARKS_VERSION}}/src/main/java/org/openshift/parks/mongo/DBConnection.java[DBConnection.java]
+http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks/blob/{{NATIONALPARKS_VERSION}}/src/main/java/org/openshift/parks/mongo/DBConnection.java[DBConnection.java]
 {% endif %}
 
 In short summary: By referring to environment variables to connect to services
