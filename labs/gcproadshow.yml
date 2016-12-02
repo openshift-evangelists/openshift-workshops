@@ -1,4 +1,5 @@
 name: OpenShift Google Roadshow
+logo: gcp.jpg
 vars:
   CONSOLE_ADDRESS: "console.gcp-roadshow.openshift.com"
   USER_NAME: "userXXX"
