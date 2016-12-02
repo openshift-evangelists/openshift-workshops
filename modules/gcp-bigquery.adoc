@@ -78,22 +78,10 @@ google-creds.json:   2338 bytes
 
 #### Deploy a template to connect to BigTable
 Because the `publicweatherdata` application is a back-end to serve data that our
-existing front-end will consume, we are going to build it inside the existing
+existing front-end will consume, we are going to deploy it inside the existing
 `{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}` project. And, we will do it from the web console.
 
-##### Using application code on embedded GitLab
-
-OpenShift can work with any accessible Git repository. This could be GitHub,
-GitLab, or any other server that speaks Git. You can even register webhooks in
-your Git server to initiate OpenShift builds triggered by any update to the
-application code!
-
-The repository that we are going to use is already cloned in the internal GitLab repository
-and located at the following URL:
-
-http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/publicweatherdata/tree/{{PUBLICWEATHER_VERSION}}[http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/publicweatherdata/tree/{{PUBLICWEATHER_VERSION}}]
-
-#### Build and deploy the Application on OpenShift
+#### Deploy the Application on OpenShift
 
 In the OpenShift web console, find your `{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}` project, and then
 click the *"Add to Project"* button. You will see a number of runtimes and templates that you
@@ -101,13 +89,7 @@ can choose from, but you will want to select, so let's filter using `gcp`.
 
 image:/images/gcp_template_filter.png[Runtimes]
 
-After you click `publicweatherdata`, on the next screen you will need to enter some configuration for the template. Leave the actual value, or to use your local clone of the Git repository, enter:
-
-[source]
-----
-http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/publicweatherdata.git
-----
-
+After you click `publicweatherdata`, on the next screen you will need to enter some configuration for the template.
 Also, you will need to provide some configuration for the application to connect to the Google BigQuery service.
 
 The values required are:
@@ -120,14 +102,6 @@ image:/images/gcp_project_id.png[Google Project Id]
 * *GCP Credentials dir*: This is where the application will find the google credentials json file that we have mounted as a secret. Use the value provided.
 * *GCP Credentials filename*: This is the name of the google's credentials file that has been stored in the secret. Use the default value.
 
-{% if USE_MAVEN %}
-[NOTE]
-====
-To speed build process, a Sonatype Nexus server is running in the
-environment that will cache your dependencies as you pull them down. To use it add an environment variable named *MAVEN_MIRROR_URL* with value `http://nexus.workshop-infra:8081/content/groups/public`
-====
-{% endif %}
-
 image:/images/gcp_template_use.png[]
 
 You can then hit the button labeled *"Create"*. Then click *Continue to
@@ -135,7 +109,7 @@ overview*. Once the application has been succesfully built and deployed, you wil
 
 image:/images/gcp_publicweatherdata.png[]
 
-#### Build and deploy the Application on OpenShift
+#### Viewing the Application on OpenShift
 
 Once the application is deployed, you'll see in the map a new service added. As this service provides too much information, it's only enabled when zoomed in to the map, otherwise you will see a message in the bottom left corner indicating that data retrieval is disabled.
 
