@@ -1,4 +1,4 @@
-## Lab: Deploying Java Code
+## Lab: Deploying Python Code
 
 ### Background: Source-to-Image (S2I)
 
@@ -32,10 +32,10 @@ https://{{DOCS_URL}}/latest/creating_images/s2i.html[OpenShift S2I documentation
 or on GitHub (following the link above). The only key concept you need to
 remember about S2I is that it's magic.
 
-### Exercise: Creating a Java application
+### Exercise: Creating a Python application
 
 The sample application that we will be deploying as part of this exercise is
-called `nationalparks`.  This is a Java Spring Boot application that performs 2D
+called `nationalparks`.  This is a Python application that performs 2D
 geo-spatial queries against a MongoDB database to locate and return map
 coordinates of all National Parks in the world. That was just a fancy way of
 saying that we are going to deploy a webservice that returns a JSON list of
@@ -56,12 +56,12 @@ application code!
 The repository that we are going to use is already cloned in the internal GitLab repository
 and located at the following URL:
 
-http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks.git[http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks.git]
+http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks-py.git[http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks-py.git]
 
 Your GitLab credentials are: *{{GITLAB_USER}}/{{GITLAB_PASSWORD}}*
 
 Later in the lab, we want you to make a code change and then rebuild your
-application. This is a fairly simple Spring framework Java application.
+application. This is a fairly simple Python application.
 
 #### Build the Code on OpenShift
 
@@ -70,28 +70,28 @@ from a GitHub/GitLab repository into a Docker image, we can also use the web con
 do the same thing. Similar to how we used "Add to project" before with a
 Docker-formatted image, we can do the same for specifying a source code
 repository. Since for this lab you have your own GitLab repository let's use it with
-a simple Java S2I image.
+a simple Python S2I image.
 
 In the OpenShift web console, find your `{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}` project, and then
 click the *"Add to Project"* button. You will see a number of runtimes that you
 can choose from, but you will want to select the one titled
-`simple-java-s2i:latest`.
+`python:3.5`.
 
-image::/images/ocp-runtimes.png[Runtimes]
+image::/images/ocp-runtimes-python.png[Runtimes]
 
-After you click `simple-java-s2i:latest`, on the next screen you will need to enter a
+After you click `python:3.5`, on the next screen you will need to enter a
 name and a Git repository URL. For the name, enter `nationalparks`, and for
 the Git repository URL, enter:
 
 [source]
 ----
-http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks.git
+http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks-py.git
 ----
 
 NOTE: All of these runtimes shown are made available via *Templates* and
 *ImageStreams*, which will be discussed in a later lab.
 
-image::/images/new-national-parks-1.png[Runtimes]
+image::/images/new-national-parks-1-py.png[Runtimes]
 
 These labs were written against specific points in time for these
 applications. With Git as our version control system (VCS), we are using the
@@ -99,7 +99,7 @@ concept of *Branches/Tags*. Click on *Show advanced routing, build, and deployme
 options*. In the *Git Reference* field enter "1.0.0". This will cause the S2I
 process to grab that specific tag in the code repository.
 
-image::/images/nationalparks-tag.png[Runtimes]
+image::/images/nationalparks-tag-py.png[Runtimes]
 
 {% if USE_MAVEN %}
 
@@ -121,10 +121,7 @@ Build nationalparks, #1 Running. A new deployment will be created automatically
 once the build completes.  a few seconds ago View Log
 ----
 
-Go ahead and click *"View Log"*. This is a Java-based application that uses
-Maven as the build and dependency system.  For this reason, the initial build
-will take a few minutes as Maven downloads all of the dependencies needed for
-the application. You can see all of this happening in real time!
+Go ahead and click *"View Log"*.
 
 From the command line, you can also see the *Builds*:
 
@@ -215,7 +212,7 @@ Earlier we said:
 
 [source]
 ----
-This is a Java Spring Boot application that performs 2D geo-spatial queries
+This is a Python application that performs 2D geo-spatial queries
 against a MongoDB database
 ----
 

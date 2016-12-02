@@ -79,7 +79,7 @@ google-creds.json:   2338 bytes
 #### Deploy a template to connect to BigTable
 Because the `publicweatherdata` application is a back-end to serve data that our
 existing front-end will consume, we are going to build it inside the existing
-`explore{{USER_SUFFIX}}` project. And, we will do it from the web console.
+`{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}` project. And, we will do it from the web console.
 
 ##### Using application code on embedded GitLab
 
@@ -91,11 +91,11 @@ application code!
 The repository that we are going to use is already cloned in the internal GitLab repository
 and located at the following URL:
 
-http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/user{{SUFFIX}}/publicweatherdata.git[http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/user{{SUFFIX}}/publicweatherdata.git]
+http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/publicweatherdata.git[http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/publicweatherdata.git]
 
 #### Build and deploy the Application on OpenShift
 
-In the OpenShift web console, find your `explore{{USER_SUFFIX}}` project, and then
+In the OpenShift web console, find your `{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}` project, and then
 click the *"Add to Project"* button. You will see a number of runtimes and templates that you
 can choose from, but you will want to select, so let's filter using `gcp`.
 
@@ -105,7 +105,7 @@ After you click `publicweatherdata`, on the next screen you will need to enter s
 
 [source]
 ----
-http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/user{{SUFFIX}}/publicweatherdata.git
+http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/publicweatherdata.git
 ----
 
 Also, you will need to provide some configuration for the application to connect to the Google BigQuery service.

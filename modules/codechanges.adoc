@@ -15,7 +15,7 @@ achieved.
 In previous labs, you created a CI/CD Pipeline to automate build, test and deployment of
 the `nationalparks` application. In this lab you can use the pipline webhook to
 trigger a pipeline execution every time there is a change in the `nationalparks` GitLab
-repository. In the OpenShift web console, navigate to your `explore{{USER_SUFFIX}}` *Project*, and
+repository. In the OpenShift web console, navigate to your `{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}` *Project*, and
 then mouse-over *Browse* and then *Pipelines*. Click the `nationalparks-pipeline` and
 then *Configuration* tab.
 
@@ -24,7 +24,7 @@ in the following image:
 
 image::/images/ocp-webhook1-pipeline.png[Webhook]
 {% else %}
-In the OpenShift web console, navigate to your `explore{{USER_SUFFIX}}` *Project*, and
+In the OpenShift web console, navigate to your `{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}` *Project*, and
 then mouse-over *Browse* and then *Builds*. Click the `nationalparks` build.
 
 On this screen you will see the option to copy the *generic* webhook URL as shown
@@ -42,7 +42,7 @@ that you have on your local GitLab:
     http://gitlab.{{ROUTER_ADDRESS}}/dev/openshift3nationalparks
 ----
 
-NOTE: The credentials for this GitLab are: username: {{GITLAB_LOGIN}}
+NOTE: The credentials for this GitLab are: {{GITLAB_USER}}/{{GITLAB_PASSWORD}}
 
 Click the Settings link on the top right of the screen, and then click "Webhooks":
 
@@ -144,7 +144,7 @@ automatically deployed by viewing the application in your browser:
 
 [source]
 ----
-http://nationalparks-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/info/
+http://nationalparks-{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/info/
 ----
 
 You actually won't see your new name (**OpenShift National Parks**) in the JSON string.
@@ -192,7 +192,7 @@ original header by viewing the application in your browser.
 
 [source]
 ----
-http://nationalparks-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/info/
+http://nationalparks-{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/info/
 ----
 
 [NOTE]

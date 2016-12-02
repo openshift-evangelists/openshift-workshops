@@ -67,7 +67,7 @@ and located at the following URL:
 
 http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/user{{USER_SUFFIX}}/nationalparks.git[http://gitlab.{{ROUTER_ADDRESS}}/dev/openshift3nationalparks.git]
 
-Your GitLab credentials are: {{GITLAB_LOGIN}}
+Your GitLab credentials are: {{GITLAB_USER}}/{{GITLAB_PASSWORD}}
 
 Later in the lab, we want you to make a code change and then rebuild your application.
 If you are familiar with Java EE applications, you will notice that there is

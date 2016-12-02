@@ -4,3 +4,4 @@ target
 *.war
 *.jar
 deployments
+.DS_Store

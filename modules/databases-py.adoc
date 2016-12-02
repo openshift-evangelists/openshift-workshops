@@ -91,7 +91,7 @@ If you think way back to the beginning of the labs, you will recall that a
 *DeploymentConfiguration* tells OpenShift how to deploy something. This includes
 things like what environment variables to configure. So, to set up the right
 environment variables, we simply need to modify the *DeploymentConfiguration*
-(DC).  This can easily be done from either the web interface or via the command
+(DC). This can easily be done from either the web interface or via the command
 line.
 
 The command line takes a little less time, so let's use that option. First, find
@@ -106,8 +106,10 @@ Then, use the `oc env` command to set environment variables directly on the DC:
 
 [source]
 ----
-oc env dc nationalparks -e MONGODB_USER=mongodb -e MONGODB_PASSWORD=mongodb -e MONGODB_DATABASE=mongodb -e MONGODB_SERVER_HOST=mongodb
+oc env dc nationalparks -e DB_USERNAME=mongodb -e DB_PASSWORD=mongodb -e DB_NAME=mongodb -e DB_HOST=mongodb
 ----
+
+NOTE: Note that environment variables in this application are named different than in the database.
 
 After you have modified the *DeploymentConfig* object, you can verify the
 environment variables have been added by viewing the YAML for it:
@@ -122,13 +124,13 @@ You should see the following section:
 [source]
 ----
 - env:
-  - name: MONGODB_USER
+  - name: DB_USERNAME
     value: mongodb
-  - name: MONGODB_PASSWORD
+  - name: DB_PASSWORD
     value: mongodb
-  - name: MONGODB_DATABASE
+  - name: DB_NAME
     value: mongodb
-  - name: MONGODB_SERVER_HOST
+  - name: DB_HOST
     value: mongodb
 ----
 
@@ -139,10 +141,10 @@ the DC:
 ----
 oc env dc/nationalparks --list
 # deploymentconfigs nationalparks, container nationalparks
-MONGODB_USER=mongodb
-MONGODB_PASSWORD=mongodb
-MONGODB_DATABASE=mongodb
-MONGODB_SERVER_HOST=mongodb
+DB_USER=mongodb
+DB_PASSWORD=mongodb
+DB_NAME=mongodb
+DB_HOST=mongodb
 ----
 
 #### Exercise: Exploring OpenShift Magic

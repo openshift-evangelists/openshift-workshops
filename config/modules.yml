@@ -32,27 +32,31 @@ remote-ops:
   name: Remote Operations
 java:
   name: Deploying Java Code
+python:
+  name: Deploying Python Code
 databases:
   name: Adding a Database (MongoDB)
-  requires:
-    - java
+#  requires:
+#    - java
+databases-py:
+  name: Adding a Database (MongoDB)
 configmap:
   name: Externalizing Application Configurations
   requires:
-    - java
-    - databases
+#    - java
+#    - databases
 application-health:
   name: Application Health
 pipelines:
   name: Automating Deployment with CI/CD Pipeline
   requires:
-    - java
-    - databases
+#    - java
+#    - databases
     - application-health
 codechanges:
   name: Using Source 2 Image for Code Changes
   requires:
-    - databases
+#    - databases
 canaryrelease:
   name: Canary Release to Production
   requires:

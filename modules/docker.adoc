@@ -9,12 +9,9 @@ web console.
 
 Return to the web console:
 
-[source]
-----
-https://{{CONSOLE_ADDRESS}}
-----
+*link:https://{{CONSOLE_ADDRESS}}[]*
 
-Find your *explore{{USER_SUFFIX}}" project and click it. Next, click "Add to
+Find your *{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}* project and click it. Next, click "Add to
 project" at the top of the screen.
 
 There are several options, but we are only concerned with "Deploy Image". Click
@@ -23,12 +20,20 @@ select the "Image Name" option, and copy/paste the following into the box:
 
 [source]
 ----
-docker.io/openshiftroadshow/parksmap:{{PARKSMAP_VERSION}}
+docker.io/openshiftroadshow/{{PARKSMAP_IMAGENAME}}:{{PARKSMAP_VERSION}}
 ----
 
 Your screen will end up looking something like this:
 
 image::/images/parksmap-image.png[Explore Project]
+
+{% if PARKSMAP_PY %}
+
+Change the application name:
+
+image::/images/parksmap-image-options.png[Explore Project]
+
+{% endif %}
 
 Either press *enter* or click on the magnifying glass. OpenShift will then go
 out to the Docker registry specified and interrogate the image. You then are
@@ -114,7 +119,7 @@ kind: Pod
 metadata:
   annotations:
     kubernetes.io/created-by: |
-      {"kind":"SerializedReference","apiVersion":"v1","reference":{"kind":"ReplicationController","namespace":"explore{{USER_SUFFIX}}","name":"parksmap-1","uid":"b5ae65e9-897e-11e6-bdaa-2cc2602f8794","apiVersion":"v1","resourceVersion":"6924"}}
+      {"kind":"SerializedReference","apiVersion":"v1","reference":{"kind":"ReplicationController","namespace":"{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}","name":"parksmap-1","uid":"b5ae65e9-897e-11e6-bdaa-2cc2602f8794","apiVersion":"v1","resourceVersion":"6924"}}
     openshift.io/deployment-config.latest-version: "1"
     openshift.io/deployment-config.name: parksmap
     openshift.io/deployment.name: parksmap-1
@@ -222,9 +227,9 @@ metadata:
   labels:
     app: parksmap
   name: parksmap
-  namespace: explore{{USER_SUFFIX}}
+  namespace: {{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}
   resourceVersion: "6893"
-  selfLink: /api/v1/namespaces/explore{{USER_SUFFIX}}/services/parksmap
+  selfLink: /api/v1/namespaces/{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}/services/parksmap
   uid: b51260a9-897e-11e6-bdaa-2cc2602f8794
 spec:
   clusterIP: 172.30.169.213
@@ -297,7 +302,7 @@ You should see something like the following output:
 [source]
 ----
 Name:                   parksmap
-Namespace:              explore{{USER_SUFFIX}}
+Namespace:              {{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}
 Labels:                 app=parksmap
 Selector:               deploymentconfig=parksmap
 Type:                   ClusterIP
