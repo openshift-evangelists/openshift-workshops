@@ -18,6 +18,8 @@ install:
         OC_VERSION: <status>
 explore:
   name: Exploring the CLI and Web Console
+parksmap-architecture:
+  name: Sample application architecture
 docker:
   name: Deploying our First Docker Image
 scaling:

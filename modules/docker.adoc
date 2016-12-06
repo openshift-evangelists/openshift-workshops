@@ -1,5 +1,10 @@
 ## Lab: Deploy a Docker Image
 
+### Application description
+In this lab, we're going to deploy the main application, that is a map viewer app, that will show different map data as backends are discovered.
+
+image::/images/roadshow-app-architecture-parksmap-1.png[Application architecture,800,align="center"]
+
 ### Exercise: Deploying your first Image
 
 Let's start by doing the simplest thing possible - get a plain old

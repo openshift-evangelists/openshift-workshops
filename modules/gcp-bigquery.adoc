@@ -1,9 +1,13 @@
 ## Lab: Integrating with Google Compute Service BigQuery
 
-### Background: Integrating with external services
+### Application description
+In this lab, we're going to deploy a complete backend application, consisting of an REST API backend that will query information though using Google's Cloud BigQuery service. The complete application will already be wired together and described as a backend for the map visualization tool, so that once the application is build and deployed, you will be able to see the new map.
 
-TODO: Write some content here on external services
+The information displayed by this map is the average temperature registered by every public weather sensor in the link:https://cloud.google.com/bigquery/public-data/noaa-gsod[NOAA Global Surface Summary of the Day Weather Data].
 
+image::/images/roadshow-app-architecture-publicweatherdata.png[Application architecture,800,align="center"]
+
+NOTE: As the information provided by this backend is really extensive, query and visualization has been limited to certain level of zooms, so in order to see information, you will probably need to `zoom in`.
 
 #### Exercise: Integrating with Google Compute BigQuery
 

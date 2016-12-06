@@ -1,6 +1,10 @@
 name: OpenShift Google Roadshow
 logo: gcp.jpg
 vars:
+  DOWNLOAD_CLIENT_WINDOWS: "https://s3.amazonaws.com/oso-preview-docker-registry/client-tools/3.3/oc-3.3.1.3-1-windows.zip"
+  DOWNLOAD_CLIENT_MAC: "https://s3.amazonaws.com/oso-preview-docker-registry/client-tools/3.3/oc-3.3.1.3-1-macosx.tar.gz"
+  DOWNLOAD_CLIENT_LIN32: ""
+  DOWNLOAD_CLIENT_LIN64: "https://s3.amazonaws.com/oso-preview-docker-registry/client-tools/3.3/oc-3.3.1.3-1-linux.tar.gz"
   CONSOLE_ADDRESS: "console.gcp-roadshow.openshift.com"
   USER_NAME: "userXXX"
   USER_PASSWORD: "**********"
@@ -28,6 +32,7 @@ modules:
   activate:
     - install
     - explore
+    - parksmap-architecture
     - docker
     - routes
 #    - permissions

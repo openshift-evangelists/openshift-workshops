@@ -1,0 +1,5 @@
+## Lab: Sample Application Architecture Overview
+
+This lab introduces you to the architecture of the sample application used throughout the workshop, to get a better understanding from a developer perspective of the things you'll be doing.
+
+image::/images/roadshow-app-architecture.png[Application architecture,800,align="center"]
