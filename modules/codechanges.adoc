@@ -44,7 +44,7 @@ that you have on your local GitLab:
 *link:http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks/tree/{{NATIONALPARKS_VERSION}}[]*
 {% endif %}
 
-NOTE: The credentials for this GitLab are: {{GITLAB_USER}}/{{GITLAB_PASSWORD}}
+NOTE: The credentials for this GitLab instance are: {{GITLAB_USER}}/{{GITLAB_PASSWORD}}. Remember to use you proper username.
 
 Click the Settings link on the top right of the screen, and then click "Webhooks":
 
@@ -178,8 +178,8 @@ automatically deployed by viewing the application in your browser:
 http://nationalparks-{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/info
 ----
 
-You actually won't see your new name (**OpenShift National Parks**) in the JSON string.
-Why?
+You should now see the new name you have set in the JSON string returned.
+
 
 #### Exercise: Rollback
 
