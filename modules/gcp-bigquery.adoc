@@ -11,7 +11,7 @@ NOTE: As the information provided by this backend is really extensive, query and
 
 #### Exercise: Integrating with Google Compute BigQuery
 
-The sample application that we will be deploying as part of this exercise is
+The backend service we will be deploying as part of this exercise is
 called `publicweatherdata`.  This is a Java Spring Boot application that performs
 data queries against a Google Compute BigQuery to locate and return map
 coordinates of public weather sensors, with average temperature information for a given month.

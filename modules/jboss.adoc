@@ -31,7 +31,7 @@ remember about S2I is that it's magic.
 
 #### Exercise: Creating a WildFly application
 
-The sample application that we will be deploying as part of this exercise is
+The backend service we will be deploying as part of this exercise is
 called `nationalparks`.  This application is a Java EE-based application that
 performs 2D geo-spatial queries against a MongoDB database to locate and map all
 National Parks in the world. That was just a fancy way

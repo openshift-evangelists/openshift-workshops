@@ -1,8 +1,9 @@
 ## Lab: Adding a Database
 
-### Application description
-In this lab, we're going to deploy a database that will be used to store the data for the `nationalparks` application. We will also make these 2 components collaborate by linking them together, so that the `nationalparks` can load and query the database for the corresponding information.
-Finally, we will mark the `nationalparks` application as a backend for the map visualization tool, so that it can be dynamically discovered and the map will be displayed automatically.
+### Application Description
+In this lab, we're going to deploy a Mongo database that will be used to store the data for the `nationalparks` application. We will also connect the `nationalparks` service with the newly deployed Mongo database, so that the `nationalparks` service can load and query the database for the corresponding information.
+
+Finally, we will mark the `nationalparks` application as a backend for the map visualization tool, so that it can be dynamically discovered by the `parksmap` component using the OpenShift discovery mechanism and the map will be displayed automatically.
 
 image::/images/roadshow-app-architecture-nationalparks-2.png[Application architecture,800,align="center"]
 
