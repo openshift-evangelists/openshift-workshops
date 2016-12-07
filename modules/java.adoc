@@ -34,7 +34,7 @@ remember about S2I is that it's magic.
 
 ### Exercise: Creating a Java application
 
-The sample application that we will be deploying as part of this exercise is
+The backend service that we will be deploying as part of this exercise is
 called `nationalparks`.  This is a Java Spring Boot application that performs 2D
 geo-spatial queries against a MongoDB database to locate and return map
 coordinates of all National Parks in the world. That was just a fancy way of
