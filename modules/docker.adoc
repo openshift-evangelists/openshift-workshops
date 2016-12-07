@@ -32,20 +32,20 @@ Your screen will end up looking something like this:
 
 image::/images/parksmap-image.png[Explore Project]
 
-{% if PARKSMAP_PY %}
-
-Change the application name:
-
-image::/images/parksmap-image-options.png[Explore Project]
-
-{% endif %}
-
 Either press *enter* or click on the magnifying glass. OpenShift will then go
 out to the Docker registry specified and interrogate the image. You then are
 presented with some options to add things like environment variables, labels,
 and etc. -- which we will learn about later.
 
-Hit the blue "Create" button at the bottom of the screen and then click ithe
+{% if PARKSMAP_PY %}
+
+For now, change the application name:
+
+image::/images/parksmap-image-options.png[Explore Project]
+
+{% endif %}
+
+Hit the blue "Create" button at the bottom of the screen and then click the
 "Continue to overview" link. Take a moment to look at the various messages that
 you now see on the overview page.
 
