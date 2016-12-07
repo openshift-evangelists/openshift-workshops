@@ -1,14 +1,12 @@
-## Lab: Sample Application Architecture Overview
+## Lab: Architecture Overview of the Sample Application
 
-This lab introduces you to the architecture of the sample application used throughout the workshop, to get a better understanding from a developer perspective of the things you'll be doing.
+This lab introduces you to the architecture of the sample application used throughout this workshop, to get a better understanding of the things you'll be doing from a developer perspective. This application is a polyglot geo-spatial data visualization application built using the microservices architecture and is composed of a set of services which are developed using different programming languages and frameworks.
 
 image::/images/roadshow-app-architecture.png[Application architecture,800,align="center"]
 
-The set of applications used throughout this workshop are microservices styled applications developer in different languages and using different frameworks.
+The main service is a web application called `parksmap` which has a server-side component in charge of aggregating the geo-spatial APIs provided by multiple independent backend services and a client-side component in Javascript that is responsible for visualizing the geo-spatial data on the map. The client-side component which runs in your browser communicates with the server-side via WebSockets protocol in order to update the map in real-time.
 
-The main application is a map visualization application. This application will be a web application with some server code that will display information provided by all of the available backends deployed along. The web part will communicate with the server side part using websockets, and the server side part of the application will act as communication gateway to all the available backends. These backends will be dynamically discovered by using Service discovery mechanisms provided by OpenShift.
-
-There will be a set of backend applications deployed that will provide different mapping information. There is a set of applications that display geolocated information of:
+There will be a set of independent backend services deployed that will provide different mapping and geo-spatial information. The set of available backend services that provide geo-spatial information are:
 
 * WorldWide National Parks
 * Major League Baseball Stadiums in the US
@@ -16,4 +14,6 @@ There will be a set of backend applications deployed that will provide different
 * Earthquakes epicenters in New Zealand in November 2017
 * Aussie Dunnies
 
-The original source for this applications is located link:https://github.com/openshift-roadshow/[here]
+The original source code for this applications is located link:https://github.com/openshift-roadshow/[here]
+
+The server-side component of `parksmap` service acts as a communication gateway to all the available backends. These backends will be dynamically discovered by using Service Discovery mechanisms provided by OpenShift which will be discussed in more details in the following labs.

@@ -19,7 +19,7 @@ install:
 explore:
   name: Exploring the CLI and Web Console
 parksmap-architecture:
-  name: Sample application architecture
+  name: Architecture Overview of the Sample Application
 docker:
   name: Deploying our First Docker Image
 scaling:
