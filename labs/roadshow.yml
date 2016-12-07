@@ -1,5 +1,13 @@
 name: "OpenShift 3 Roadshow"
 vars:
+  ENVIRONMENT: "Amazon Web Services"
+  USE_MAVEN: false
+  METRICS_ENABLED: true
+  LOGGING_ENABLED: true
+  NFS_ENABLED: true
+  MASTERS: "1"
+  INFRA: "1"
+  NODES: "24"
   DOCS_URL: "docs.openshift.com/container-platform"
   USER_SUFFIX: "-XX"
   OPENSHIFT_NAME: "OpenShift Container Platform"
@@ -17,8 +25,7 @@ vars:
   PARKSMAP_PY: false
   NATIONALPARKS_VERSION: "1.0.0"
   MLBPARKS_VERSION: "1.0.0"
-  USE_MAVEN: false
-  METRICS_ENABLED: true
+
 revision: roadshow
 modules:
   activate:
