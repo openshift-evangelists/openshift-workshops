@@ -1,7 +1,7 @@
 ## Lab: Deploying Python Code
 
-### Application description
-In this lab, we're going to deploy a backend application, developed in Python language that will expose 2 main endpoints to the main visualizer application (frontend). The application will query for national parks information (including it's coordinates) that is stored in a mongo database.
+### Application Description
+In this lab, we're going to deploy a backend service, developed in Python programming language that will expose 2 main REST endpoints to the visualizer application (`parksmap` web component that was deployed in the previous labs). The application will query for national parks information (including it's coordinates) that is stored in a Mongo database.
 This application will also provide an external access point, so that the API provided can be directly used by the end user.
 
 image::/images/roadshow-app-architecture-nationalparks-1.png[Application architecture,800,align="center"]
