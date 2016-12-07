@@ -44,7 +44,14 @@ that you have on your local GitLab:
 *link:http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks/tree/{{NATIONALPARKS_VERSION}}[]*
 {% endif %}
 
-NOTE: The credentials for this GitLab instance are: {{GITLAB_USER}}/{{GITLAB_PASSWORD}}. Remember to use you proper username.
+[NOTE]
+====
+The credentials for this GitLab instance are:
+
+Username: {{GITLAB_USER}}
+
+Password: {{GITLAB_PASSWORD}}
+====
 
 Click the Settings link on the top right of the screen, and then click "Webhooks":
 
