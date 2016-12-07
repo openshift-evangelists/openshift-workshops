@@ -50,8 +50,8 @@ though, so `mongodb-ephemeral` is what you should choose.
 
 image::/images/ocp-mongodb-template.png[MongoDB]
 
-When we performed the application build, there was no template. Rather, we selected the
-builder image directly and OpenShift presented only the standard build workflow.
+When we performed the application build we selected the
+builder image to use and OpenShift presented us the standard build workflow.
 Now we are using a template - a preconfigured set of resources that includes
 parameters that can be customized. In our case, the parameters we are concerned
 with are the environment variables discussed -- user, password, database, and
