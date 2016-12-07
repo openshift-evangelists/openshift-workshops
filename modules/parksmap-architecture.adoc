@@ -3,3 +3,17 @@
 This lab introduces you to the architecture of the sample application used throughout the workshop, to get a better understanding from a developer perspective of the things you'll be doing.
 
 image::/images/roadshow-app-architecture.png[Application architecture,800,align="center"]
+
+The set of applications used throughout this workshop are microservices styled applications developer in different languages and using different frameworks.
+
+The main application is a map visualization application. This application will be a web application with some server code that will display information provided by all of the available backends deployed along. The web part will communicate with the server side part using websockets, and the server side part of the application will act as communication gateway to all the available backends. These backends will be dynamically discovered by using Service discovery mechanisms provided by OpenShift.
+
+There will be a set of backend applications deployed that will provide different mapping information. There is a set of applications that display geolocated information of:
+
+* WorldWide National Parks
+* Major League Baseball Stadiums in the US
+* International Airports
+* Earthquakes epicenters in New Zealand in November 2017
+* Aussie Dunnies
+
+The original source for this applications is located link:https://github.com/openshift-roadshow/[here]

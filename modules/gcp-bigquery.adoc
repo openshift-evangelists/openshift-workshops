@@ -17,9 +17,40 @@ data queries against a Google Compute BigQuery to locate and return map
 coordinates of public weather sensors, with average temperature information for a given month.
 That was just a fancy way of saying that we are going to deploy, yet again, a webservice that returns a JSON list of places.
 
+#### Before you begin
+Before you start, make sure you have already done the following steps:
+
+1. link:https://console.cloud.google.com/project?_ga=1.132090187.550669370.1466440172[Select or create a Cloud Platform project].
+2. link:https://support.google.com/cloud/answer/6293499#enable-billing[Enable billing for your project]
+3. link:https://console.cloud.google.com/flows/enableapi?apiid=bigquery&_ga=1.103140804.550669370.1466440172[BigQuery is automatically enabled in new projects. To activate BigQuery in a pre-existing project, go to Enable the BigQuery API]
+
+The BigQuery web UI provides an interface to query tables, including public tables offered by BigQuery, and link:https://bigquery.cloud.google.com/table/top-amplifier-139909:gsod.temp_20xx[the one used in this lab].
+
+To take a peek into the data you will be using, you can:
+
+1.  link:https://bigquery.cloud.google.com/table/top-amplifier-139909:gsod.temp_20xx[Log in to our BigQuery dataset]
+
+2. Click the QUERY TABLE button.
+Copy and paste the following query into the New Query text area:
++
+[source]
+----
+SELECT * FROM [top-amplifier-139909:gsod.temp_20xx];
+----
+
+3. Click the circular icon to activate the query validator.
++
+A green or red section displays above the buttons depending on whether the query is valid or invalid. If valid, the validator also describes the amount of data that will be processed once you run the query. This is helpful for determining how much a query will cost to run.
++
+image:/images/bigquery-query-validate.png[Big Query Validate]
+
+4. Click the RUN QUERY button. The query results display below the buttons.
++
+image:/images/bigquery-query.png[Big Query]
+
 #### Create web application credentials
 
-First, you need to allow the server side code to connect to your Google API. For this
+You need to allow the server side code to connect to your Google API. For this
 you will need a *service account*, which is an account that belongs to your application
 instead of to an individual end user. The application calls Google APIs on behalf of the
 service account, so users aren't directly involved.
