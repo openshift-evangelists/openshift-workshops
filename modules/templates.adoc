@@ -235,5 +235,9 @@ resources for our *mlbparks* application.
 
 [source]
 ----
+{% if PARKSMAP_PY %}
+oc get template mlbparks-py -o yaml
+{% else %}
 oc get template mlbparks -o yaml
+{% endif %}
 ----
