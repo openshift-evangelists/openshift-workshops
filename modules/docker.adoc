@@ -104,7 +104,7 @@ NOTE: Make sure you use the correct *Pod* name from your output.
 oc get pod parksmap-1-hx0kv -o yaml
 ----
 
-You should see something like the following output (which is have truncated due
+You should see something like the following output (which has been truncated due
 to space considerations of this workshop manual):
 
 [source]
