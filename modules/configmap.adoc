@@ -39,7 +39,7 @@ oc create configmap nationalparks --from-file=application.properties=./applicati
 
 The `--from-file` option specifies a key-value pair with the key used as the
 file name that is provided to the application and value as the content of the
-file. In the above command, the content of `lab/application-dev.properties` file
+file. In the above command, the content of `application-dev.properties` file
 will be provided to the application container as a properties file called
 `application.properties`
 
