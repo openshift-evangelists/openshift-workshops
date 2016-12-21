@@ -22,8 +22,9 @@ operating system as linked below:
 - {{DOWNLOAD_CLIENT_WINDOWS}}[Microsoft Windows]
 - {{DOWNLOAD_CLIENT_MAC}}[Apple OS X]
 - {{DOWNLOAD_CLIENT_LIN64}}[Linux 64]
+{% if DOWNLOAD_CLIENT_LIN32.empty? %}
 - {{DOWNLOAD_CLIENT_LIN32}}[Linux 32]
-
+{% endif %}
 
 Once the file has been downloaded, you will need to extract the contents as it
 is a compressed archive.  I would suggest saving this file to the following

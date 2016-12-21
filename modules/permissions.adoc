@@ -23,7 +23,7 @@ The parksmap application wants to talk to the OpenShift API to learn about other
 
 [source]
 ----
-oc project explore{{USER_SUFFIX}}
+oc project {{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}
 ----
 
 Then:
@@ -43,7 +43,7 @@ we are using a special flag, `-z`. What does this flag do? From the `-h` output:
 
 The `-z` syntax is a special one that saves us from having to type out the
 entire string, which, in this case, is
-`system:serviceaccount:explore{{USER_SUFFIX}}:default`. It's a nifty shortcut.
+`system:serviceaccount:{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}:default`. It's a nifty shortcut.
 
 [NOTE]
 ====
@@ -74,7 +74,7 @@ production application's project.
 One more step is required. We need to re-deploy the application because it's
 given up trying to query the API.
 
-This time we'll use the web console. Find your `explore{{USER_SUFFIX}}` project,
+This time we'll use the web console. Find your `{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}` project,
 and then click "Applications" and then "Deployments". You'll see your only
 application, `parksmap`, listed. Click that.
 

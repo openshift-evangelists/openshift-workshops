@@ -15,7 +15,7 @@ achieved.
 In previous labs, you created a CI/CD Pipeline to automate build, test and deployment of
 the `nationalparks` application. In this lab you can use the pipline webhook to
 trigger a pipeline execution every time there is a change in the `nationalparks` GitLab
-repository. In the OpenShift web console, navigate to your `explore{{USER_SUFFIX}}` *Project*, and
+repository. In the OpenShift web console, navigate to your `{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}` *Project*, and
 then mouse-over *Browse* and then *Pipelines*. Click the `nationalparks-pipeline` and
 then *Configuration* tab.
 
@@ -24,7 +24,7 @@ in the following image:
 
 image::/images/ocp-webhook1-pipeline.png[Webhook]
 {% else %}
-In the OpenShift web console, navigate to your `explore{{USER_SUFFIX}}` *Project*, and
+In the OpenShift web console, navigate to your `{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}` *Project*, and
 then mouse-over *Browse* and then *Builds*. Click the `nationalparks` build.
 
 On this screen you will see the option to copy the *generic* webhook URL as shown
@@ -37,12 +37,21 @@ image::/images/ocp-webhook1.png[Webhook]
 Once you have the URL copied to your clipboard, navigate to the code repository
 that you have on your local GitLab:
 
-[source]
-----
-    http://gitlab.{{ROUTER_ADDRESS}}/dev/openshift3nationalparks
-----
 
-NOTE: The credentials for this GitLab are: username: {{GITLAB_LOGIN}}
+{% if PARKSMAP_PY %}
+*link:http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks-py/tree/{{NATIONALPARKS_VERSION}}[]*
+{% else %}
+*link:http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks/tree/{{NATIONALPARKS_VERSION}}[]*
+{% endif %}
+
+[NOTE]
+====
+The credentials for this GitLab instance are:
+
+Username: {{GITLAB_USER}}
+
+Password: {{GITLAB_PASSWORD}}
+====
 
 Click the Settings link on the top right of the screen, and then click "Webhooks":
 
@@ -68,6 +77,33 @@ repository, a new build and deploy will occur inside of OpenShift.  Let's try
 this out.
 
 #### Exercise: Using GitLab Web Hooks
+
+{% if PARKSMAP_PY %}
+
+Click "Project" at the top of the GitLab page, and then "Files" towards the
+middle of the page. This is GitLab's repository view. Navigate to the root
+path and click on the `wsgi.py` file.
+
+Once you have the file on the screen, click the edit button in the top right
+hand corner as shown here:
+
+image::/images/ocp-webhook5-py.png[Webhook]
+
+Change line number 35:
+
+[source]
+----
+'displayName': 'National Parks (PY)'
+----
+
+To
+
+[source]
+----
+'displayName': 'World National Parks (PY)'
+----
+
+{% else %}
 
 Click "Project" at the top of the GitLab page, and then "Files" towards the
 middle of the page. This is GitLab's repository view. Navigate to the following
@@ -98,6 +134,8 @@ To
 ----
 return new Backend("nationalparks","OpenShift National Parks", new Coordinates("47.039304", "14.505178"), 4);
 ----
+
+{% endif %}
 
 Click on Commit changes at the bottom of the screen. Feel free to enter a commit
 message.
@@ -144,11 +182,11 @@ automatically deployed by viewing the application in your browser:
 
 [source]
 ----
-http://nationalparks-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/info/
+http://nationalparks-{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/info
 ----
 
-You actually won't see your new name (**OpenShift National Parks**) in the JSON string.
-Why?
+You should now see the new name you have set in the JSON string returned.
+
 
 #### Exercise: Rollback
 
@@ -172,8 +210,8 @@ The output will be similar to the following:
 ----
 NAME            REVISION   DESIRED   CURRENT   TRIGGERED BY
 mongodb         1          1         1         config,image(mongodb:3.2)
-nationalparks   2          1         1         config,image(nationalparks:latest)
-parksmap        1          1         1         config,image(parksmap:0.4)
+nationalparks   2          1         1         config,image(nationalparks:{{NATIONALPARKS_VERSION}})
+parksmap        1          1         1         config,image(parksmap:{{PARKSMAP_VERSION}})
 ----
 
 Now run the following command to rollback the latest code change:
@@ -192,7 +230,7 @@ original header by viewing the application in your browser.
 
 [source]
 ----
-http://nationalparks-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/info/
+http://nationalparks-{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/info
 ----
 
 [NOTE]

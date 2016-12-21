@@ -8,7 +8,6 @@ Finally, we will mark the `nationalparks` application as a backend for the map v
 image::/images/roadshow-app-architecture-nationalparks-2.png[Application architecture,800,align="center"]
 
 ### Background: Storage
-
 Most useful applications are "stateful" or "dynamic" in some way, and this is
 usually achieved with a database or other data storage. In this next lab we are
 going to add MongoDB to our `nationalparks` application and then rewire it to
@@ -52,12 +51,12 @@ though, so `mongodb-ephemeral` is what you should choose.
 
 image::/images/ocp-mongodb-template.png[MongoDB]
 
-When we performed the application build, there was no template. Rather, we selected the
-builder image directly and OpenShift presented only the standard build workflow.
-Now we are using a template - a preconfigured set of resources that includes
+When we performed the application build we selected the
+builder image to use and OpenShift presented us the standard build workflow.
+Now we are using a template, a preconfigured set of resources that includes
 parameters that can be customized. In our case, the parameters we are concerned
-with are the environment variables discussed -- user, password, database, and
-admin password.
+with are the environment variables discussed before (user, password, database, and
+admin password).
 
 image::/images/ocp-mongo-template-deploy.png[MongoDB]
 
@@ -100,7 +99,7 @@ If you think way back to the beginning of the labs, you will recall that a
 *DeploymentConfiguration* tells OpenShift how to deploy something. This includes
 things like what environment variables to configure. So, to set up the right
 environment variables, we simply need to modify the *DeploymentConfiguration*
-(DC).  This can easily be done from either the web interface or via the command
+(DC). This can easily be done from either the web interface or via the command
 line.
 
 The command line takes a little less time, so let's use that option. First, find
@@ -115,8 +114,10 @@ Then, use the `oc env` command to set environment variables directly on the DC:
 
 [source]
 ----
-oc env dc nationalparks -e MONGODB_USER=mongodb -e MONGODB_PASSWORD=mongodb -e MONGODB_DATABASE=mongodb -e MONGODB_SERVER_HOST=mongodb
+oc env dc nationalparks -e DB_USERNAME=mongodb -e DB_PASSWORD=mongodb -e DB_NAME=mongodb -e DB_HOST=mongodb
 ----
+
+NOTE: Note that environment variables in this application are named different than in the database.
 
 After you have modified the *DeploymentConfig* object, you can verify the
 environment variables have been added by viewing the YAML for it:
@@ -131,13 +132,13 @@ You should see the following section:
 [source]
 ----
 - env:
-  - name: MONGODB_USER
+  - name: DB_USERNAME
     value: mongodb
-  - name: MONGODB_PASSWORD
+  - name: DB_PASSWORD
     value: mongodb
-  - name: MONGODB_DATABASE
+  - name: DB_NAME
     value: mongodb
-  - name: MONGODB_SERVER_HOST
+  - name: DB_HOST
     value: mongodb
 ----
 
@@ -148,10 +149,10 @@ the DC:
 ----
 oc env dc/nationalparks --list
 # deploymentconfigs nationalparks, container nationalparks
-MONGODB_USER=mongodb
-MONGODB_PASSWORD=mongodb
-MONGODB_DATABASE=mongodb
-MONGODB_SERVER_HOST=mongodb
+DB_USER=mongodb
+DB_PASSWORD=mongodb
+DB_NAME=mongodb
+DB_HOST=mongodb
 ----
 
 #### Exercise: Exploring OpenShift Magic
@@ -276,7 +277,6 @@ You can see the code that does this link:https://github.com/openshift-roadshow/p
 {% else %}
 You can see the code that does this link:https://github.com/openshift-roadshow/parksmap-web/blob/1.0.0/src/main/java/com/openshift/evg/roadshow/rest/ServiceWatcher.java#L20[here].
 {% endif %}
-
 
 Fortunately, the command line provides a convenient way for us to manipulate
 labels. `describe` the `nationalparks` service:
