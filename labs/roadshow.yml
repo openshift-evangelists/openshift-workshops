@@ -32,6 +32,7 @@ modules:
     - environment
     - install
     - explore
+    - parksmap-architecture
     - docker
     - scaling
     - routes
