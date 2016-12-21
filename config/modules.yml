@@ -1,5 +1,5 @@
 environment:
-  name: Lab Environment Overview
+  name: Environment Overview
 install:
   name: Installing the *oc* client tool
   vars:

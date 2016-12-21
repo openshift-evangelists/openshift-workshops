@@ -95,8 +95,7 @@ is a known bug having to do with your first time visiting the Kibana interface.
 Close your browser, and then re-open it. At this point you should be good.
 ====
 
-
-The archive link takes you to a default view with a specific search term
+The "View Archive" link that you clicked takes you to a default view with a specific search term
 pre-populated. Kibana will only show you logs where the pod name is
 `parksmap-1-hx0kv` and in the *Project* (namespace) {{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}. 
 
@@ -108,7 +107,7 @@ kubernetes_pod_name:"parksmap-1-hx0kv" AND kubernetes_namespace_name:"{{EXPLORE_
 If you want to see all the historical logs for this *Project*, simply remove the
 pod name reference and click the magnifying glass.
 
-[source]
+[source,role=copypaste]
 ----
 kubernetes_namespace_name:"{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}"
 ----
@@ -122,7 +121,7 @@ image::/images/kibana-parksmap-headers.png[Kibana Interface]
 
 Try the following search string:
 
-[source]
+[source,role=copypaste]
 ----
 kubernetes_namespace_name:"{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}" AND message:"Failure executing"
 ----

@@ -14,7 +14,7 @@ web console.
 
 Return to the web console:
 
-*link:https://{{CONSOLE_ADDRESS}}[]*
+link:https://{{CONSOLE_ADDRESS}}[]
 
 Find your *{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}* project and click it. Next, click "Add to
 project" at the top of the screen.
