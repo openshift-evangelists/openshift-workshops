@@ -1,3 +1,8 @@
+/* copy paste warning */
+div.listingblock.copypaste div.content pre.highlight {
+  border: 1px solid #FF0000
+}
+
 .navbar.navbar-default.navbar-openshift.navbar-origin {
   background:
     linear-gradient(
@@ -679,3 +684,4 @@ b.conum * { color: inherit !important; }
   .print-only { display: block !important; }
   .hide-for-print { display: none !important; }
   .show-for-print { display: inherit !important; } }
+

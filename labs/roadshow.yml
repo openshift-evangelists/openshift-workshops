@@ -9,6 +9,7 @@ vars:
   INFRA: "1"
   NODES: "24"
   DOCS_URL: "docs.openshift.com/container-platform"
+  SUFFIX: "XX"
   USER_SUFFIX: "-XX"
   OPENSHIFT_NAME: "OpenShift Container Platform"
   OPENSHIFT_SHORTNAME: "OCP"

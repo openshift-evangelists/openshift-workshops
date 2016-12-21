@@ -28,8 +28,12 @@ link:databases[previous labs] and use a `ConfigMap` instead to configure the
 
 You can create a `ConfigMap` by pointing at a file containing the application
 configuration. Download this properties file to your local machine which
-contains the database credentials: +
-https://raw.githubusercontent.com/openshift-roadshow/nationalparks/{{NATIONALPARKS_VERSION}}/ose3/application-dev.properties
+contains the database credentials: 
+
+[source,role=copypaste]
+----
+http://gitlab-ce-workshop-infra.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks/raw/1.0.0/ose3/application-dev.properties
+----
 
 Create a `ConfigMap` using the following command in the `{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}` project:
 [source]
@@ -127,4 +131,4 @@ service to very the database connection is working correctly.:
 http://nationalparks-{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/data/all/
 ----
 
-If you check the new pod's logs once it comes up, you should see no errors.
+If you check the new *Pod's* logs once it comes up, you should see no errors.

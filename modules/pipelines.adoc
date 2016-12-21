@@ -10,7 +10,7 @@ the popular https://jenkins.io/doc/book/pipeline/overview/[Jenkins pipelines] in
 the platform and enables defining truly complex workflows directly within OpenShift.
 
 In a previous lab, you deployed the `nationalparks` application using the
-https://docs.openshift.com/container-platform/3.3/architecture/core_concepts/builds_and_image_streams.html#source-build[Source-to-Image (S2I)]
+https://{{DOCS_URL}}/latest/architecture/core_concepts/builds_and_image_streams.html#source-build[Source-to-Image (S2I)]
 mechanism. S2I already provides build automation by automatically running builds
 when source code changes, or an underlying image changes. Deployments are also automated
 by S2I and can be triggered when the image they are based on changes. In this lab,
@@ -124,7 +124,13 @@ The database configuration for the *Dev* `nationalparks` webservice was changed
 to use *ConfigMaps* in a previous lab. Similarly, we will use a *ConfigMap* for
 `nationalparks-live`. Download the live properties file to your local machine
 and create a distinct *ConfigMap*. The file is located here:
-https://raw.githubusercontent.com/openshift-roadshow/nationalparks/master/ose3/application-live.properties
+
+[source,role=copypaste]
+----
+http://gitlab-ce-workshop-infra.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks/raw/1.0.0/ose3/application-live.properties
+----
+
+Then, run the following command to create the live *ConfigMap*:
 
 [source]
 ----
@@ -140,7 +146,7 @@ Docker image created in link:java[previous labs]. Click on *Builds* &rarr;
 image::/images/pipeline-live-image.png[National Parks Image Stream]
 
 The default behavior for OpenShift has every
-https://docs.openshift.com/container-platform/3.3/architecture/core_concepts/builds_and_image_streams.html[S2I
+https://{{DOCS_URL}}/latest/architecture/core_concepts/builds_and_image_streams.html[S2I
 build] creating a new Docker image that is pushed into the internal registry,
 identified with the `latest` tag. Since we do not want to immediately run or
 deploy the *Live* version of `nationalparks` when the image changes, we want the
@@ -282,7 +288,7 @@ image::/images/pipeline-template.png[Pipeline Template]
 
 In order to start the pipeline that you created in a previous step, Go to
 *Builds* &rarr; *Pipelines* on the left side-bar. Click `nationalparks-pipeline`
-and click on *Start Pipeline* to start the execution.  You can click on *View
+and click on *Start Build* to start the execution.  You can click on *View
 Log* to take a look at the build logs as they progress through the pipeline or
 on *Build #N* to see the details of this specific pipeline execution as well as
 the pipeline definition using the

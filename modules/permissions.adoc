@@ -21,7 +21,7 @@ account, we can do intersting things.
 The parksmap application wants to talk to the OpenShift API to learn about other
 *Pods*, *Services*, and resources within the *Project*. You'll learn why soon!
 
-[source]
+[source,role=copypaste]
 ----
 oc project {{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}
 ----
@@ -60,7 +60,7 @@ If you create a project, you are that project's administrator. This means that
 you can grant access to other users, too. If you like, give your neighbor view
 access to your `explore` project using the following command:
 
-[source]
+[source,role=copypaste]
 ----
 oc policy add-role-to-user view user{{SUFFIX}}
 ----
