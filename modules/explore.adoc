@@ -57,7 +57,7 @@ following confirmation message:
 ----
 Login successful.
 
-Using project "explore{{USER_SUFFIX}}".
+Using project "{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}".
 ----
 
 Congratulations, you are now authenticated to the OpenShift server. The
@@ -81,19 +81,19 @@ During this lab, we are going to use a few different commands to make sure that
 things in the environment are working as expected.  Don't worry if you don't
 understand all of the terminology as we will cover it in detail in later labs.
 
-The first thing we want to do is switch to the *explore{{USER_SUFFIX}}* project. You
+The first thing we want to do is switch to the *{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}* project. You
 can do this with the following command:
 
 [source]
 ----
-$ oc project explore{{USER_SUFFIX}}
+$ oc project {{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}
 ----
 
 You will see the following confirmation message:
 
 [source]
 ----
-Now using project "explore{{USER_SUFFIX}}" on server "https://{{CONSOLE_ADDRESS}}".
+Now using project "{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}" on server "https://{{CONSOLE_ADDRESS}}".
 ----
 
 ### The Web Console
@@ -102,10 +102,7 @@ OpenShift ships with a web-based console that will allow users to
 perform various tasks via a browser.  To get a feel for how the web console
 works, open your browser and go to the following URL:
 
-[source]
-----
-https://{{CONSOLE_ADDRESS}}
-----
+*link:https://{{CONSOLE_ADDRESS}}[]*
 
 The first screen you will see is the authentication screen.  Enter in the following credentials:
 
@@ -123,13 +120,15 @@ something that looks like the following image:
 
 image::/images/explore-webconsole1.png[Web Console]
 
-Click on the *explore{{USER_SUFFIX}}* project. When you click on the
-*explore{{USER_SUFFIX}}* project, you will be taken to the project overview page
+Click on the *{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}* project. When you click on the
+*{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}* project, you will be taken to the project overview page
 which will list all of the routes, services, deployments, and pods that you have
 running as part of your project. There's nothing there now, but that's about to
 change.
 
 image::/images/explore-webconsole2.png[Explore Project]
+
+{% if METRICS_ENABLED %}
 
 Lastly, we need to accept another self-signed certificate for OpenShift's metrics
 aggregation. If we don't, then the metrics will not display in the OpenShift UI.
@@ -138,6 +137,8 @@ Visit the following URL in your browser, and be sure to accept the certificate:
 ----
 https://metrics.{{ROUTER_ADDRESS}}
 ----
+
+{% endif %}
 
 We will be using a mix of command line tooling and the web console for the labs.
 Get ready!

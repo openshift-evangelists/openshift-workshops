@@ -1,5 +1,10 @@
 ## Lab: Deploy a Docker Image
 
+### Application description
+In this lab, we're going to deploy the web component of the ParksMap application which is also called `parksmap` and uses OpenShift service discovery mechanism to discover the backend services deployed and shows their data on the map.
+
+image::/images/roadshow-app-architecture-parksmap-1.png[Application architecture,800,align="center"]
+
 ### Exercise: Deploying your first Image
 
 Let's start by doing the simplest thing possible - get a plain old
@@ -9,12 +14,9 @@ web console.
 
 Return to the web console:
 
-[source]
-----
-https://{{CONSOLE_ADDRESS}}
-----
+*link:https://{{CONSOLE_ADDRESS}}[]*
 
-Find your *explore{{USER_SUFFIX}}" project and click it. Next, click "Add to
+Find your *{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}* project and click it. Next, click "Add to
 project" at the top of the screen.
 
 There are several options, but we are only concerned with "Deploy Image". Click
@@ -23,7 +25,7 @@ select the "Image Name" option, and copy/paste the following into the box:
 
 [source]
 ----
-docker.io/openshiftroadshow/parksmap:{{PARKSMAP_VERSION}}
+docker.io/openshiftroadshow/{{PARKSMAP_IMAGENAME}}:{{PARKSMAP_VERSION}}
 ----
 
 Your screen will end up looking something like this:
@@ -35,7 +37,15 @@ out to the Docker registry specified and interrogate the image. You then are
 presented with some options to add things like environment variables, labels,
 and etc. -- which we will learn about later.
 
-Hit the blue "Create" button at the bottom of the screen and then click ithe
+{% if PARKSMAP_PY %}
+
+For now, change the application name:
+
+image::/images/parksmap-image-options.png[Explore Project]
+
+{% endif %}
+
+Hit the blue "Create" button at the bottom of the screen and then click the
 "Continue to overview" link. Take a moment to look at the various messages that
 you now see on the overview page.
 
@@ -114,7 +124,7 @@ kind: Pod
 metadata:
   annotations:
     kubernetes.io/created-by: |
-      {"kind":"SerializedReference","apiVersion":"v1","reference":{"kind":"ReplicationController","namespace":"explore{{USER_SUFFIX}}","name":"parksmap-1","uid":"b5ae65e9-897e-11e6-bdaa-2cc2602f8794","apiVersion":"v1","resourceVersion":"6924"}}
+      {"kind":"SerializedReference","apiVersion":"v1","reference":{"kind":"ReplicationController","namespace":"{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}","name":"parksmap-1","uid":"b5ae65e9-897e-11e6-bdaa-2cc2602f8794","apiVersion":"v1","resourceVersion":"6924"}}
     openshift.io/deployment-config.latest-version: "1"
     openshift.io/deployment-config.name: parksmap
     openshift.io/deployment.name: parksmap-1
@@ -222,9 +232,9 @@ metadata:
   labels:
     app: parksmap
   name: parksmap
-  namespace: explore{{USER_SUFFIX}}
+  namespace: {{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}
   resourceVersion: "6893"
-  selfLink: /api/v1/namespaces/explore{{USER_SUFFIX}}/services/parksmap
+  selfLink: /api/v1/namespaces/{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}/services/parksmap
   uid: b51260a9-897e-11e6-bdaa-2cc2602f8794
 spec:
   clusterIP: 172.30.169.213
@@ -297,7 +307,7 @@ You should see something like the following output:
 [source]
 ----
 Name:                   parksmap
-Namespace:              explore{{USER_SUFFIX}}
+Namespace:              {{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}
 Labels:                 app=parksmap
 Selector:               deploymentconfig=parksmap
 Type:                   ClusterIP

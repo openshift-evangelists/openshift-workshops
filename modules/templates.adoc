@@ -1,5 +1,10 @@
 ## Lab: Using Templates
 
+### Application description
+In this lab, we're going to deploy a complete backend application, consisting of an REST API backend and a mongo database. The complete application will already be wired together and described as a backend for the map visualization tool, so that once the application is build and deployed, you will be able to see the new map.
+
+image::/images/roadshow-app-architecture-mlbparks.png[Application architecture,800,align="center"]
+
 ### Background: Templates
 Running all these individual commands can be tedious and error prone.
 Fortunately for you, all of this configuration can be put together into a single
@@ -34,13 +39,17 @@ as many back end services' data as are created. Adding more stuff with the right
 
 Now you will deploy a map of Major League Baseball stadiums in the US by using a
 template. It is pre-configured to build the back end Java application, and
-deploy the Mongo database. It also uses a *Hook* to call the `/ws/data/load/`
+deploy the Mongo database. It also uses a *Hook* to call the `/ws/data/load`
 endpoint to cause the data to be loaded into the database from a JSON file in
 the source code repository. Execute the following command:
 
 [source]
 ----
+{% if PARKSMAP_PY %}
+oc create -f https://raw.githubusercontent.com/openshift-roadshow/mlbparks-py/{{MLBPARKS_VERSION}}/ose3/application-template.json
+{% else %}
 oc create -f https://raw.githubusercontent.com/openshift-roadshow/mlbparks/{{MLBPARKS_VERSION}}/ose3/application-template-{{MW_NAME}}.json
+{% endif %}
 ----
 
 What just happened? What did you just `create`? The item that we passed to the `create`
@@ -49,9 +58,13 @@ your *Project*. You can see this with the following command:
 
 [source]
 ----
+{% if PARKSMAP_PY %}
 oc get template
-NAME       DESCRIPTION                                                                  PARAMETERS     OBJECTS
-mlbparks   Application template MLBParks backend running on {{MW_TEXT}} and using MongoDB 15 (5 blank)   8
+NAME          DESCRIPTION                                                                      PARAMETERS     OBJECTS
+mlbparks-py   Application template MLB Parks backend running on Python/Flask and using mongodb 14 (4 blank)   8
+{% else %}
+mlbparks      Application template MLBParks backend running on {{MW_TEXT}} and using MongoDB   15 (5 blank)   8
+{% endif %}
 ----
 
 Are you ready for the magic command?  Here it is:
@@ -65,7 +78,11 @@ oc new-app mlbparks --name=mlbparks -p GIT_URI=https://github.com/openshift-road
 {% else %}
 [source]
 ----
-oc new-app mlbparks --name=mlbparks -p GIT_URI=https://github.com/openshift-roadshow/mlbparks -p GIT_REF={{MLBPARKS_VERSION}}
+{% if PARKSMAP_PY %}
+oc new-app mlbparks-py -p APPLICATION_NAME=mlbparks -p GIT_URI=https://github.com/openshift-roadshow/mlbparks-py -p GIT_REF={{MLBPARKS_VERSION}}
+{% else %}
+oc new-app mlbparks -p APPLICATION_NAME -p GIT_URI=https://github.com/openshift-roadshow/mlbparks -p GIT_REF={{MLBPARKS_VERSION}}
+{% endif %}
 ----
 
 {% endif %}
@@ -112,6 +129,45 @@ You will see the following output:
     Run 'oc status' to view your app.
 ----
 {% else %}
+{% if PARKSMAP_PY %}
+[source]
+----
+--> Deploying template "{{USER_NAME}}/mlbparks-py" to project {{USER_NAME}}
+
+     mlbparks-py
+     ---------
+     Application template MLB Parks backend running on Python/Flask and using mongodb
+
+     * With parameters:
+        * Application Name=mlbparks
+        * Application route=
+        * Mongodb App=mongodb-mlbparks
+        * Git source repository=https://github.com/openshift-roadshow/mlbparks-py
+        * Git branch/tag reference=1.0.0
+        * Database name=mongodb
+        * MONGODB_NOPREALLOC=
+        * MONGODB_SMALLFILES=
+        * MONGODB_QUIET=
+        * Database user name=userxmt # generated
+        * Database user password=lk8hYPOe # generated
+        * Database admin password=uuvr7vRG # generated
+        * GitHub Trigger=hbJ8Fdw7 # generated
+        * Generic Trigger=ho4s1c6f # generated
+
+--> Creating resources ...
+    configmap "mlbparks" created
+    service "mongodb-mlbparks" created
+    deploymentconfig "mongodb-mlbparks" created
+    imagestream "mlbparks" created
+    buildconfig "mlbparks" created
+    deploymentconfig "mlbparks" created
+    service "mlbparks" created
+    route "mlbparks" created
+--> Success
+    Build scheduled, use 'oc logs -f bc/mlbparks' to track its progress.
+    Run 'oc status' to view your app.
+----
+{% else %}
 [source]
 ----
 --> Deploying template mlbparks
@@ -150,6 +206,7 @@ You will see the following output:
     Run 'oc status' to view your app.
 ----
 {% endif %}
+{% endif %}
 
 OpenShift will now:
 
@@ -178,5 +235,9 @@ resources for our *mlbparks* application.
 
 [source]
 ----
+{% if PARKSMAP_PY %}
+oc get template mlbparks-py -o yaml
+{% else %}
 oc get template mlbparks -o yaml
+{% endif %}
 ----

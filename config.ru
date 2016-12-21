@@ -119,7 +119,10 @@ class Application < Sinatra::Base
 
   get '/' do
     if ENV['DEFAULT_LAB']
-      redirect "/#{ENV['DEFAULT_LAB']}"
+      @id = ENV['DEFAULT_LAB']
+      @lab = labs[@id]
+      list_modules
+      erb :lab
     else
       @labs = labs
       erb :index

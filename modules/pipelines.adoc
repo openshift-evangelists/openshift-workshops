@@ -102,7 +102,7 @@ changes in the *Dev* deployment without interfering with the live application.
 
 #### Live MongoDB
 First you need to create a new MongoDB deployment for the *Live* environment. In the
-web console in your `explore{{USER_SUFFIX}}` project,  click the *Add to
+web console in your `{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}` project,  click the *Add to
 Project* button, and then find the `mongodb-ephemeral` template, and click it.
 Use the following values in their respective fields:
 
@@ -169,11 +169,11 @@ leaves the *Live* environment intact.
 
 After creating the tag, you are ready to deploy the *Live* `nationalparks` based
 on the `nationalparks:live` image tag. In the web console in your
-`explore{{USER_SUFFIX}}` project,  click the *Add to Project* button, and then
+`{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}` project,  click the *Add to Project* button, and then
 *Deploy Image* tab. Choose the *Image Stream Tag* radio button and use following
 values in each respective field:
 
-* Namespace: `explore{{USER_SUFFIX}}`
+* Namespace: `{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}`
 * ImageStream: `nationalparks`
 * Tag: `live`
 
@@ -245,7 +245,7 @@ Similar to the link:databases[previous labs], populate the database by pointing 
 
 [source]
 ----
-http://nationalparks-live-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/data/load/
+http://nationalparks-live-{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/data/load/
 ----
 
 #### Label Service
@@ -275,7 +275,7 @@ In order to create the pipeline, click on the *Add to project* button,
 find the `dev-live-pipeline` template, and click on it. Specify the project name
 and click on *Create*
 
-NOTE: Specify the name of the project (e.g. `explore{{USER_SUFFIX}}`) where
+NOTE: Specify the name of the project (e.g. `{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}`) where
 `nationalparks` *Dev* and *Live* containers are deployed.
 
 image::/images/pipeline-template.png[Pipeline Template]
@@ -302,7 +302,7 @@ verify the service works as expected.
 
 [source]
 ----
-http://nationalparks-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/data/all/
+http://nationalparks-{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/data/all/
 ----
 
 After the test stage, pipeline waits for manual approval in order to deploy to the

@@ -1,17 +1,22 @@
 ## Lab: Environment Overview
 
-You will be interacting with an OpenShift environment that is running on Amazon
-Web Services. The environment consists of the following systems:
+You will be interacting with an OpenShift environment that is running on {{ENVIRONMENT}}. The environment consists of the following systems:
 
-* One master
-* One infrastructure node
-* 24 "application" nodes
+* {{MASTERS}} master nodes
+* {{INFRA}} infrastructure nodes
+* {{NODES}} "application" nodes
+{% if NFS_ENABLED %}
 * An NFS server
+{% endif %}
 
 The infrastructure node is providing several services:
 
+{% if LOGGING_ENABLED %}
 * Aggregated logging
+{% endif %}
+{% if METRICS_ENABLED %}
 * Cluster metrics
+{% endif %}
 * GitLab
 * This lab manual
 * The OpenShift Docker registry

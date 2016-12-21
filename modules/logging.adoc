@@ -12,10 +12,17 @@ captured via standardized Docker mechanisms. When exploring the *Pod*'s logs
 directly, you are essentially going through the Docker daemon to access the
 container's logs, through OpenShift's API. Neat!
 
-If you have an application that does not log to `STDOUT`, either because it
+[NOTE]
+====
+In some cases, applications may not have been designed to send all of their
+information to `STDOUT` and `STDERR`. In many cases, multiple local log files
+are used. While OpenShift cannot parse any information from these files, nothing
+prevents them from being created, either. In other cases, log information is
+sent to some external system using. Here, too, OpenShift does not prohibit these
+behaviors. If you have an application that does not log to `STDOUT`, either because it
 already sends log information to some "external" system or because it writes
-various log information to various files, fear not. These options are still
-workable, although outside the scope of this workshop.
+various log information to various files, fear not.
+====
 
 #### Exercise: Examining Logs
 
@@ -91,11 +98,11 @@ Close your browser, and then re-open it. At this point you should be good.
 
 The archive link takes you to a default view with a specific search term
 pre-populated. Kibana will only show you logs where the pod name is
-`parksmap-1-hx0kv` and in the *Project* (namespace) explore{{USER_SUFFIX}}. 
+`parksmap-1-hx0kv` and in the *Project* (namespace) {{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}. 
 
 [source]
 ----
-kubernetes_pod_name:"parksmap-1-hx0kv" AND kubernetes_namespace_name:"explore{{USER_SUFFIX}}"
+kubernetes_pod_name:"parksmap-1-hx0kv" AND kubernetes_namespace_name:"{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}"
 ----
 
 If you want to see all the historical logs for this *Project*, simply remove the
@@ -103,7 +110,7 @@ pod name reference and click the magnifying glass.
 
 [source]
 ----
-kubernetes_namespace_name:"explore{{USER_SUFFIX}}"
+kubernetes_namespace_name:"{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}"
 ----
 
 If you click the "x" in the column for the container name, and, in the left bar,
@@ -117,7 +124,7 @@ Try the following search string:
 
 [source]
 ----
-kubernetes_namespace_name:"explore{{USER_SUFFIX}}" AND message:"Failure executing"
+kubernetes_namespace_name:"{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}" AND message:"Failure executing"
 ----
 
 Service account? What's that?

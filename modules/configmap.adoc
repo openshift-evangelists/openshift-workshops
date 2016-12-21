@@ -31,7 +31,7 @@ configuration. Download this properties file to your local machine which
 contains the database credentials: +
 https://raw.githubusercontent.com/openshift-roadshow/nationalparks/{{NATIONALPARKS_VERSION}}/ose3/application-dev.properties
 
-Create a `ConfigMap` using the following command in the `explore{{USER_SUFFIX}}` project:
+Create a `ConfigMap` using the following command in the `{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}` project:
 [source]
 ----
 oc create configmap nationalparks --from-file=application.properties=./application-dev.properties
@@ -80,7 +80,7 @@ kind: ConfigMap
 metadata:
   creationTimestamp: 2016-11-16T09:17:02Z
   name: nationalparks
-  namespace: explore{{USER_SUFFIX}}
+  namespace: {{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}
   resourceVersion: "8421"
   selfLink: /api/v1/namespaces/demo/configmaps/nationalparks
   uid: 6f4536cf-abdd-11e6-9282-525400c3c0db
@@ -124,7 +124,7 @@ service to very the database connection is working correctly.:
 
 [source]
 ----
-http://nationalparks-explore{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/data/all/
+http://nationalparks-{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/data/all/
 ----
 
 If you check the new pod's logs once it comes up, you should see no errors.
