@@ -25,6 +25,7 @@ vars:
   PARKSMAP_PY: false
   NATIONALPARKS_VERSION: "1.0.0"
   MLBPARKS_VERSION: "1.0.0"
+  EXPLORE_PROJECT_NAME: "explore"
 
 revision: roadshow
 modules:
