@@ -1,7 +1,7 @@
 ## Lab: Deploy a Docker Image
 
 ### Application description
-In this lab, we're going to deploy the main application, that is a map viewer app, that will show different map data as backends are discovered.
+In this lab, we're going to deploy the web component of the ParksMap application which is also called `parksmap` and uses OpenShift service discovery mechanism to discover the backend services deployed and shows their data on the map.
 
 image::/images/roadshow-app-architecture-parksmap-1.png[Application architecture,800,align="center"]
 
