@@ -81,7 +81,7 @@ oc new-app mlbparks --name=mlbparks -p GIT_URI=https://github.com/openshift-road
 {% if PARKSMAP_PY %}
 oc new-app mlbparks-py -p APPLICATION_NAME=mlbparks -p GIT_URI=https://github.com/openshift-roadshow/mlbparks-py -p GIT_REF={{MLBPARKS_VERSION}}
 {% else %}
-oc new-app mlbparks -p APPLICATION_NAME -p GIT_URI=https://github.com/openshift-roadshow/mlbparks -p GIT_REF={{MLBPARKS_VERSION}}
+oc new-app mlbparks -p APPLICATION_NAME=mlbparks -p GIT_URI=https://github.com/openshift-roadshow/mlbparks -p GIT_REF={{MLBPARKS_VERSION}}
 {% endif %}
 ----
 
