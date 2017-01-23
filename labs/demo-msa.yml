@@ -1,4 +1,4 @@
-name: "Multi-product Demos - Modern Application Architecture"
+name: "Multi-product Demos: Modern Application Architecture"
 vars:
   GOGS_URL: "http://gogs-ci-USERNAME.cloudapps.na.openshift.opentlc.com"
   JENKINS_URL: "http://jenkins-ci-USERNAME.cloudapps.na.openshift.opentlc.com"
