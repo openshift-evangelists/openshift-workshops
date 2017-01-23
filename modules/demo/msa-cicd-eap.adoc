@@ -1,11 +1,22 @@
 ## Increasing Delivery Speed with CI/CD
 
+[format="csv",cols="2"]
+|======
+*Length*,TBD
+*Difficulty*,Medium
+*Slides*,https://docs.google.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit#slide=id.g1b95a791a8_0_0
+*Video*,TBD
+*Simulation (Mac)*,TBD
+|======
+
+### Explain the Demo Concepts
+
 * Explain Continuous Integration and Continuous Delivery using the
 https://docs.google.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit#slide=id.g1b95a791a8_0_4[slides]
 * Explain the CoolStore pipeline
 using https://docs.google.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit#slide=id.g1b95a791a8_0_9[the slides]
 
-## Demonstrate Automated Deployments via CI/CD Pipelines
+### Demonstrate Automated Deployments via CI/CD Pipelines
 * In the OpenShift web console, go to *CI/CD* project
 * On the left sidebar menu, click on *Builds* and then *Pipelines*
 * Explain that *inventory-pipeline* is an OpenShift pipeline that takes

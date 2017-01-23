@@ -1,13 +1,25 @@
 ## Increase Developer Productivity with Container
 
+[format="csv",cols="2"]
+|======
+*Length*,TBD
+*Difficulty*,Hard
+*Slides*,TBD
+*Video*,TBD
+*Simulation (Mac)*,TBD
+|======
+
 ====
 IMPORTANT: JBoss Developer Studio (JBDS) should be installed on your
-local laptop for a better demo experience in this module. JBDS 10.2.0.GA is
-used at the time of writing these instructions.
+workstation laptop for this module. JBDS 10.2.0.GA is used at the time of writing
+these instructions.
 ====
 
+### Explain the Demo Concepts
+
 * Explain the use case: TBD.
-* Demonstrate connecting to OpenShift from JBoss Developer Studio (JBDS)
+
+### Demonstrate connecting to OpenShift from JBoss Developer Studio (JBDS)
 * Explain that to be able to use the OpenShift 3 tooling in JBDS, you
 must first create an OpenShift 3 connection.
 * In the *OpenShift Explorer* view, click *New Connection Wizard*. In case
@@ -77,7 +89,7 @@ the configuration (Ctrl+S or Cmd+S)
 
 image::/images/demo/msa-jbds-publish-config.png[Server Configuration,width=920,align=center]
 
-## Demonstrate Changing Code and Live Testing on OpenShift with JBDS
+### Demonstrate Changing Code and Live Testing on OpenShift with JBDS
 
 * Explain the use-case: since backoffice system is an old ERP and takes
 longer to update, temporarily we update the inventory microservice to

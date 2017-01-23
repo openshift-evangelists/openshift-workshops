@@ -1,7 +1,18 @@
 ## Creating On-Demand Environment
 
+[format="csv",cols="2"]
+|======
+*Length*,5 min
+*Difficulty*,Easy
+*Slides*,https://docs.google.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit#slide=id.g1b64d8284a_0_15
+*Video*,https://drive.google.com/open?id=0B630TpgzAhO_ZXg2TnF0UnZIX0U
+*Simulation (Mac)*,https://drive.google.com/open?id=0B630TpgzAhO_N190WDBZTnowdVk
+|======
+
+### Explain the Demo Concepts
+
 * Explain the use-case: a JIRA issue is assigned to the developer to fix
-a bug in the Inventorymicroservice which runs on JBoss EAP 7. He needs
+a bug in the *Inventory* microservice which runs on JBoss EAP 7. He needs
 to deploy the exact version of the source code containing the issue in a
 environment to investigate and possibly correct the problem. Since
 ordering new servers used to take 6 weeks, he usually repurposed one of
@@ -10,7 +21,7 @@ up the server, installing JDK and middleware and deploy the application
 on it so that he can start investigating. Taking advantage of containers
 and self-service, all that is reduced to a few minutes.
 
-## Demonstrate Creating Personal Repository from Project Repository
+### Demonstrate Creating Personal Repository from Project Repository
 
 ====
 NOTE: *Gogs* git server is used in this demo as the Git repository and it is deployed in the *CI/CD* project and accessible at {{GOGS_URL}}. Open *Gogs* in your browser in a new tab by entering the correct URL. Alternatively, click on *OpenShift Container Platform* logo in the header,
@@ -60,7 +71,7 @@ used in the next steps.
 
 image::/images/demo/msa-ondemand-gogs-copyurl.png[Copy Git URL,width=920,align=center]
 
-## Demonstrate On-demand Deployment in Developer Project
+### Demonstrate On-demand Deployment in Developer Project
 
 * Click on *OpenShift Container Platform* logo in the header to list projects
 * Explain that if admin allows a user to create projects, a button with

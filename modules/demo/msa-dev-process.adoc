@@ -1,8 +1,19 @@
 ## Building Quality into Development Process
 
+[format="csv",cols="2"]
+|======
+*Length*,TBD
+*Difficulty*,Easy
+*Slides*,TBD
+*Video*,TBD
+*Simulation (Mac)*,TBD
+|======
+
+### Explain the Demo Concepts
+
 * Explain the quality process with fork, PR and code-review
 
-## Demonstrate Storing Code Changes in Git Repository
+### Demonstrate Storing Code Changes in Git Repository
 * Explain that the developer should commit the code changes to his Git
 repository to be able to shared them for code-review with the team
 * Right-click on inventory in the *Project Explorer* in JBDS, click on
@@ -27,7 +38,7 @@ password and then click on *OK* and *OK* again.
 * Explain that the code change is stored in the developers Git
 repository
 
-## Demonstrate Submitting Changes for Code Review
+### Demonstrate Submitting Changes for Code Review
 
 * Go to *Gogs* web.
 
@@ -56,7 +67,7 @@ to the Git repository in the previous steps
 can discuss the changes with code-reviewers in form of comments on this
 _Pull Request_ page
 
-## Demonstrate Code Review Process
+### Demonstrate Code Review Process
 
 * Click on *User profile and more* icon and then *Sign Out*
 

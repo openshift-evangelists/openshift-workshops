@@ -1,5 +1,16 @@
 ## Service Resilience and Fault Tolerance
 
+[format="csv",cols="2"]
+|======
+*Length*,TBD
+*Difficulty*,Medium
+*Slides*,https://docs.google.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit#slide=id.g1b95a791a8_0_24
+*Video*,TBD
+*Simulation (Mac)*,TBD
+|======
+
+### Explain the Demo Concepts
+
 * Explain the use-case: services do fail. Sometimes there are temporary
 shortages in the infrastructure and sometimes its a severe application
 error that leads to failure. Its not a question if that happens, its a
@@ -12,7 +23,7 @@ placing orders. When build for failure, Inventory failure would be
 limited to the inventory status and would allow users to keep placing
 orders without knowing about the inventory.
 
-## Demonstrate Container Lifecycle Management
+### Demonstrate Container Lifecycle Management
 
 * Explain OpenShift container health management using
 https://docs.google.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit#slide=id.g1b95a791a8_0_24[the slides]
@@ -55,7 +66,7 @@ containers
 
 
 
-## Demonstrate Service Resilience and Preventing Cascading Failures [Work-In-Progress]
+### Demonstrate Service Resilience and Preventing Cascading Failures [Work-In-Progress]
 
 * Explain service resilience using
 https://docs.google.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit#slide=id.g1b95a791a8_0_24[the slides]
