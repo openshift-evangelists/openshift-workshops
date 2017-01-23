@@ -12,3 +12,4 @@ modules:
   activate:
     - demo_msa-overview
     - demo_msa-agile-integration
+    - demo_msa-service-resilience

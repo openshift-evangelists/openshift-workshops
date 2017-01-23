@@ -87,3 +87,5 @@ demo_msa-overview:
   name: Containerized Microservices
 demo_msa-agile-integration:
   name: Agile Integration for Microservices
+demo_msa-service-resilience:
+  name: Service Resilience and Fault Tolerance
