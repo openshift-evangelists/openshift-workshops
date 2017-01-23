@@ -1,0 +1,14 @@
+name: "Multi-product Demos - Modern Application Architecture"
+vars:
+  GOGS_URL: "http://gogs-ci-USERNAME.cloudapps.na.openshift.opentlc.com"
+  JENKINS_URL: "http://jenkins-ci-USERNAME.cloudapps.na.openshift.opentlc.com"
+  COOLSTORE_WEB_PROD_URL: "http://web-ui-coolstore-prod-USERNAME.cloudapps.na.openshift.opentlc.com"
+  PROJECT_SUFFIX: "-USERNAME"
+  GIT_DEV_USER: "developer"
+  GIT_DEV_PASSWORD: "developer"
+  GIT_REVIEWER_USER: "team"
+  GIT_REVIEWER_PASSWORD: "team"
+modules:
+  activate:
+    - demo_msa-overview
+    - java
