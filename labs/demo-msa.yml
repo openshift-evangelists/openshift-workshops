@@ -15,3 +15,4 @@ modules:
     - demo_msa-agile-integration
     - demo_msa-service-resilience
     - demo_msa-on-demand-env
+    - demo_msa-dev-productivity

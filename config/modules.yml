@@ -91,3 +91,5 @@ demo_msa-service-resilience:
   name: Service Resilience and Fault Tolerance
 demo_msa-on-demand-env:
   name: Creating On-Demand Environment
+demo_msa-dev-productivity:
+  name: Increase Developer Productivity with Containers
