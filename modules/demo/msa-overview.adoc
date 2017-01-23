@@ -1,6 +1,4 @@
-# Module: Containerized Microservices
-
-## Explain Microservices
+## Containerized Microservices
 
 * Explain microservices architecture concept using the link:https://docs.google.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit#slide=id.g19ddf4bec2_0_514[demo slides]
 * Explain the CoolStore application architecture using the link:https://docs.google.com/a/redhat.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit?usp=sharing[demo slides]
@@ -16,7 +14,7 @@ clicking on *CoolStore PROD* project, and in the *Web UI* service group, clickin
 
 * Explain the catalog and inventory microservices in the *CoolStore Web UI*
 
-image::/images/demo/msa-coolstore-web.png[CoolStore Web UI,width=920,align=center]
+image::/images/demo/msa-overview-coolstore-web.png[CoolStore Web UI,width=920,align=center]
 
 * Click on *Add to Cart* on a product
 * Click on *Your Shopping Cart* tab and show the shopping cart
@@ -42,7 +40,7 @@ image::/images/demo/msa-coolstore-web.png[CoolStore Web UI,width=920,align=cente
 * Click on *Logs* tab and show the logs
 * Point out JBoss EAP in the logs
 
-image::/images/demo/msa-eap-logs.png[JBoss EAP Container Logs,width=920,align=center]
+image::/images/demo/msa-overview-eap-logs.png[JBoss EAP Container Logs,width=920,align=center]
 
 * Explain the central log management with Elastic and Kibana
 * Click on *Terminal* and explain remote shell access to the container
@@ -67,7 +65,7 @@ image::/images/demo/msa-eap-logs.png[JBoss EAP Container Logs,width=920,align=ce
 * Click on *Logs* tab and show the logs
 * Point out JBoss Web Server in the logs
 
-image::/images/demo/msa-jws-logs.png[JBoss Web Server Container Logs,width=920,align=center]
+image::/images/demo/msa-overview-jws-logs.png[JBoss Web Server Container Logs,width=920,align=center]
 
 ## Demonstrate CoolStore Gateway container (Fuse Integration Services, Camel and Netflix OSS)
 

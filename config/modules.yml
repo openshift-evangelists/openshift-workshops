@@ -85,3 +85,5 @@ gcp-bigquery:
   name: Integrating with Google Compute Service BigQuery
 demo_msa-overview:
   name: Containerized Microservices
+demo_msa-agile-integration:
+  name: Agile Integration for Microservices

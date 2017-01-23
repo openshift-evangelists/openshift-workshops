@@ -11,4 +11,4 @@ vars:
 modules:
   activate:
     - demo_msa-overview
-    - java
+    - demo_msa-agile-integration
