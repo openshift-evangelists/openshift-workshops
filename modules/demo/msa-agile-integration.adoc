@@ -1,11 +1,11 @@
 ## Agile Integration
 * Explain agile integration using the
-https://www.google.com/url?q=https://docs.google.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit%23slide%3Did.g1b64d8284a_0_5&sa=D&ust=1485174478480000&usg=AFQjCNHa53q6APZVUCjOIZdBxlJd-egDow[demo slides]
+https://docs.google.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit#slide=id.g1b64d8284a_0_5[demo slides]
 
 ## Demonstrate API Aggregation with Camel (Fuse Integration Services)
 
 * Explain API aggregation using the
-https://www.google.com/url?q=https://docs.google.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit%23slide%3Did.g1b64d8284a_0_5&sa=D&ust=1485174478482000&usg=AFQjCNFBykhogm8lJY9hy02zJEzBAK8EYg[demo
+https://docs.google.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit#slide=id.g1b64d8284a_0_5[demo
 slides]
 * In the OpenShift web console, go to *CoolStore PROD* project
 * In the *Coolstore GW* service group, click on the route url to go to the Swagger UI

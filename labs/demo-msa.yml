@@ -17,3 +17,4 @@ modules:
     - demo_msa-on-demand-env
     - demo_msa-dev-productivity
     - demo_msa-dev-process
+    - demo_msa-cicd-eap

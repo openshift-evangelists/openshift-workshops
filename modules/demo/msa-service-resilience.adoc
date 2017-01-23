@@ -15,7 +15,7 @@ orders without knowing about the inventory.
 ## Demonstrate Container Lifecycle Management
 
 * Explain OpenShift container health management using
-https://www.google.com/url?q=https://docs.google.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit%23slide%3Did.g1b95a791a8_0_24&sa=D&ust=1485174478505000&usg=AFQjCNFNT9OktXz4Ih9XVpbn20T971Z6mA[the slides]
+https://docs.google.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit#slide=id.g1b95a791a8_0_24[the slides]
 * In the OpenShift web console, go to *CoolStore PROD* project
 * Scroll down to find the *Inventory* service group
 * Explain that the blue circle shows the number containers that back *CoolStore GW* service
@@ -58,9 +58,9 @@ containers
 ## Demonstrate Service Resilience and Preventing Cascading Failures [Work-In-Progress]
 
 * Explain service resilience using
-https://www.google.com/url?q=https://docs.google.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit%23slide%3Did.g1b95a791a8_0_24&sa=D&ust=1485174478520000&usg=AFQjCNHrcghRj2Xo_dl3CxcYguCAGp_c_A[the slides]
+https://docs.google.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit#slide=id.g1b95a791a8_0_24[the slides]
 * Explain Netflix OSS using
-https://www.google.com/url?q=https://docs.google.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit%23slide%3Did.g1b95a791a8_0_24&sa=D&ust=1485174478522000&usg=AFQjCNFrINebwTxYGUg_HfNzpW1ikq-bIw[the slides]
+https://docs.google.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit#slide=id.g1b95a791a8_0_24[the slides]
 * Click twice on the down arrow on *Coolstore GW* pods blue circle. Click
 on *Scale Down* button when it asks for confirmation in order to scale to 0
 * Explain that the Coo

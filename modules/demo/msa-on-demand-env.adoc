@@ -36,7 +36,7 @@ image::/images/demo/msa-ondemand-gogs-explore.png[Gogs Web,width=920,align=cente
 image::/images/demo/msa-ondemand-gogs-team.png[Team Repository,width=920,align=center]
 
 * Explain the teams quality process using the
-https://www.google.com/url?q=https://docs.google.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit%23slide%3Did.g1b64d8284a_0_24&sa=D&ust=1485174478548000&usg=AFQjCNEFODOR_sq1mt0n4Dv8ZS59LXO5Ag[slides]:
+https://docs.google.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit#slide=id.g1b64d8284a_0_24[slides]:
 no change is allowed to be directly committed in the team code
 repository. Team members should create a copy of the the source repo via
 forking the repo, make the changes in their personal repository and send
@@ -104,7 +104,7 @@ repository in the previous steps: {{GOGS_DEV_REPO_URL}}
 * Paste the Git repository URL forked in previous steps for the *Git repository* parameter
 * Click on *Create* button to deploy the *inventory* service
 * Explain the Source-to-Image mechanism using the
-https://www.google.com/url?q=https://docs.google.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit%23slide%3Did.g1b64d8284a_0_29&sa=D&ust=1485174478582000&usg=AFQjCNGnDWn7TiBDVZdmkmFNVKav-9Q0oA[slides] and
+https://docs.google.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit#slide=id.g1b64d8284a_0_29[slides] and
 that it gets started, clones the source code from developers forked Git
 repository and starts building the application.
 

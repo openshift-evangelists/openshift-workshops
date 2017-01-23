@@ -1,7 +1,7 @@
 ## Containerized Microservices
 
-* Explain microservices architecture concept using the link:https://docs.google.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit#slide=id.g19ddf4bec2_0_514[demo slides]
-* Explain the CoolStore application architecture using the link:https://docs.google.com/a/redhat.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit?usp=sharing[demo slides]
+* Explain microservices architecture concept using the https://docs.google.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit#slide=id.g19ddf4bec2_0_514[demo slides]
+* Explain the CoolStore application architecture using the https://docs.google.com/a/redhat.com/presentation/d/1bt4k9yB0wDOj0d5WzDCWqftPxIizQ7f5S15LysEGFyQ/edit?usp=sharing[demo slides]
 
 ## Demonstrate the CoolStore web application
 
