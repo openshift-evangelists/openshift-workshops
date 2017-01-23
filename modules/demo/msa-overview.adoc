@@ -7,10 +7,10 @@
 
 * Go to *CoolStore Web UI* in the *CoolStore PROD* project: {{COOLSTORE_WEB_PROD_URL}}
 
-****
-You can find the *CoolStore Web UI* url by going to the OpenShift web console,
+====
+TIP: You can find the *CoolStore Web UI* url by going to the OpenShift web console,
 clicking on *CoolStore PROD* project, and in the *Web UI* service group, clicking on the route url
-****
+====
 
 * Explain the catalog and inventory microservices in the *CoolStore Web UI*
 

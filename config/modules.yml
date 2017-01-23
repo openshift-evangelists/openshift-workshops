@@ -89,3 +89,5 @@ demo_msa-agile-integration:
   name: Agile Integration for Microservices
 demo_msa-service-resilience:
   name: Service Resilience and Fault Tolerance
+demo_msa-on-demand-env:
+  name: Creating On-Demand Environment
