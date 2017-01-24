@@ -7,8 +7,11 @@
 
 <div class="row">
 
-  <div class="col-lg-6">
-    <h2>Lab contents</h2>
+  <div class="col-lg-10">
+    <% if @lab && @lab['name'] %>
+        <h2><%= @lab['name']%></h2>
+    <% end %>
+    <h3>Modules</h3>
     <ol>
       <% @modules.each_key do |mod| %>
           <% next unless @active_modules.include?(mod) %>
