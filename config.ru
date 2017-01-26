@@ -100,6 +100,8 @@ class Application < Sinatra::Base
         filename = tmp if File.exists?(tmp)
       end
 
+      filename = filename.gsub('_', '/')
+      
       case
         when File.exists?(filename)
           src = File.read(filename)

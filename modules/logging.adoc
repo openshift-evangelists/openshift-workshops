@@ -90,7 +90,7 @@ image::/images/kibana-parksmap.png[Kibana Interface]
 
 [WARNING]
 ====
-Kibana is sometimes flaky and may give you an error about a default index. This
+Kibana may give you an error about a default index. This
 is a known bug having to do with your first time visiting the Kibana interface.
 Close your browser, and then re-open it. At this point you should be good.
 ====

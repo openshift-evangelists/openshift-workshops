@@ -100,7 +100,7 @@ can be used to:
 * Populate configuration files in a volume
 
 The `nationalparks` Spring Boot application can be configured through a
-properties file called `applicaiton.properties` which should reside in a specific
+properties file called `application.properties` which should reside in a specific
 location in the container filesystem. Using the following command to mount the
 `ConfigMap` inside the `nationalparks` pod:
 

@@ -15,7 +15,7 @@ wish for non-users to be able to perform actions against the API. These
 OpenShift automatically creates a few special service accounts in every project.
 The **default** service account has its credentials automatically injected into
 every pod that is launched. By changing the permissions for that service
-account, we can do intersting things.
+account, we can do interesting things.
 
 ### Exercise: Grant Service Account View Permissions
 The parksmap application wants to talk to the OpenShift API to learn about other
