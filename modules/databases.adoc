@@ -289,7 +289,8 @@ that service's endpoints to look for map data.
 {% if PARKSMAP_PY %}
 You can see the code that does this link:https://github.com/openshift-roadshow/parksmap-web-py/blob/1.0.0/app.py#L85[here].
 {% else %}
-You can see the code that does this link:https://github.com/openshift-roadshow/parksmap-web/blob/1.0.0/src/main/java/com/openshift/evg/roadshow/rest/ServiceWatcher.java#L20[here].
+You can see the code that does this
+link:https://github.com/openshift-roadshow/parksmap-web/blob/{{PARKSMAP_VERSION}}/src/main/java/com/openshift/evg/roadshow/rest/ServiceWatcher.java#L20[here].
 {% endif %}
 
 
