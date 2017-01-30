@@ -52,7 +52,6 @@ database credentials:
 
 [source]
 ----
-oc get configmap
 oc describe configmap nationalparks
 
 Name:		nationalparks
