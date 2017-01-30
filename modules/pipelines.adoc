@@ -140,7 +140,7 @@ and create a distinct *ConfigMap*. The file is located here:
 
 [source,role=copypaste]
 ----
-http://gitlab-ce-workshop-infra.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks/raw/1.0.0/ose3/application-live.properties
+http://gitlab-ce-workshop-infra.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks/raw/{{NATIONALPARKS_VERSION}}/ose3/application-live.properties
 ----
 
 Then, run the following command to create the live *ConfigMap*:
