@@ -67,12 +67,15 @@ application code!
 The repository that we are going to use is already cloned in the internal GitLab repository
 and located at the following URL:
 
-*http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks/tree/{{NATIONALPARKS_VERSION}}[http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks/tree/{{NATIONALPARKS_VERSION}}]*
+[source,role=copypaste]
+----
+http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks/tree/{{NATIONALPARKS_VERSION}}
+----
 
 [NOTE]
-----
+====
 Your GitLab credentials are: *{{GITLAB_USER}}/{{GITLAB_PASSWORD}}*
-----
+====
 
 Later in the lab, we want you to make a code change and then rebuild your
 application. This is a fairly simple Spring framework Java application.
