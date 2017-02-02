@@ -294,7 +294,7 @@ simple CLI statement:
 
 [source]
 ----
-oc set triggers dc/nationalparks --from-image --remove
+oc set triggers dc/nationalparks --from-image=nationalparks:latest --remove
 ----
 
 {% endif %}
