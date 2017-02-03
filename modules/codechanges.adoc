@@ -53,7 +53,7 @@ Username: {{GITLAB_USER}}
 Password: {{GITLAB_PASSWORD}}
 ====
 
-Click the Settings link on the top right of the screen, and then click "Webhooks":
+Click the Settings link on the top right of the screen, and then click "Integrations":
 
 image::/images/ocp-webhook2.png[Webhook]
 
@@ -79,6 +79,9 @@ this out.
 #### Exercise: Using GitLab Web Hooks
 
 {% if PARKSMAP_PY %}
+Be sure you return to the proper tag in the git repository:
+
+*link:http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks-py/tree/{{NATIONALPARKS_VERSION}}[]*
 
 Click "Project" at the top of the GitLab page, and then "Files" towards the
 middle of the page. This is GitLab's repository view. Navigate to the root
