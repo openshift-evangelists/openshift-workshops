@@ -15,13 +15,13 @@ wish for non-users to be able to perform actions against the API. These
 OpenShift automatically creates a few special service accounts in every project.
 The **default** service account has its credentials automatically injected into
 every pod that is launched. By changing the permissions for that service
-account, we can do intersting things.
+account, we can do interesting things.
 
 ### Exercise: Grant Service Account View Permissions
 The parksmap application wants to talk to the OpenShift API to learn about other
 *Pods*, *Services*, and resources within the *Project*. You'll learn why soon!
 
-[source]
+[source,role=copypaste]
 ----
 oc project {{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}
 ----
@@ -60,7 +60,7 @@ If you create a project, you are that project's administrator. This means that
 you can grant access to other users, too. If you like, give your neighbor view
 access to your `explore` project using the following command:
 
-[source]
+[source,role=copypaste]
 ----
 oc policy add-role-to-user view user{{SUFFIX}}
 ----

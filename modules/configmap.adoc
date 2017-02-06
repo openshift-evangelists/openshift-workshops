@@ -28,8 +28,12 @@ link:databases[previous labs] and use a `ConfigMap` instead to configure the
 
 You can create a `ConfigMap` by pointing at a file containing the application
 configuration. Download this properties file to your local machine which
-contains the database credentials: +
-https://raw.githubusercontent.com/openshift-roadshow/nationalparks/{{NATIONALPARKS_VERSION}}/ose3/application-dev.properties
+contains the database credentials: 
+
+[source,role=copypaste]
+----
+http://gitlab-ce-workshop-infra.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks/raw/{{NATIONALPARKS_VERSION}}/ose3/application-dev.properties
+----
 
 Create a `ConfigMap` using the following command in the `{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}` project:
 [source]
@@ -39,7 +43,7 @@ oc create configmap nationalparks --from-file=application.properties=./applicati
 
 The `--from-file` option specifies a key-value pair with the key used as the
 file name that is provided to the application and value as the content of the
-file. In the above command, the content of `lab/application-dev.properties` file
+file. In the above command, the content of `application-dev.properties` file
 will be provided to the application container as a properties file called
 `application.properties`
 
@@ -48,7 +52,6 @@ database credentials:
 
 [source]
 ----
-oc get configmap
 oc describe configmap nationalparks
 
 Name:		nationalparks
@@ -96,7 +99,7 @@ can be used to:
 * Populate configuration files in a volume
 
 The `nationalparks` Spring Boot application can be configured through a
-properties file called `applicaiton.properties` which should reside in a specific
+properties file called `application.properties` which should reside in a specific
 location in the container filesystem. Using the following command to mount the
 `ConfigMap` inside the `nationalparks` pod:
 
@@ -127,4 +130,4 @@ service to very the database connection is working correctly.:
 http://nationalparks-{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}/ws/data/all/
 ----
 
-If you check the new pod's logs once it comes up, you should see no errors.
+If you check the new *Pod's* logs once it comes up, you should see no errors.

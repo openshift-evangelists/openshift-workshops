@@ -100,6 +100,8 @@ class Application < Sinatra::Base
         filename = tmp if File.exists?(tmp)
       end
 
+      filename = filename.gsub('_', '/')
+      
       case
         when File.exists?(filename)
           src = File.read(filename)
@@ -119,7 +121,10 @@ class Application < Sinatra::Base
 
   get '/' do
     if ENV['DEFAULT_LAB']
-      redirect "/#{ENV['DEFAULT_LAB']}"
+      @id = ENV['DEFAULT_LAB']
+      @lab = labs[@id]
+      list_modules
+      erb :lab
     else
       @labs = labs
       erb :index

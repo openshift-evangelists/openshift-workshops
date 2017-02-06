@@ -2,7 +2,7 @@
 
 ## Deploying
 
-Deploying on OpenShift is very simple, use the Ruby s2i builder and you are 
+Deploying on OpenShift is very simple, use the Ruby s2i builder and you are
 (almost ready to go)
 
 ```
@@ -22,8 +22,8 @@ oc new-app ruby~https://github.com/openshift-evangelists/openshift-workshops.git
 
 ## Adding labs
 
-In the terminology of this app `lab` is a workshop or some other kind of event. 
-All events are configured through YAML files in `labs` directory. Simply create 
+In the terminology of this app `lab` is a workshop or some other kind of event.
+All events are configured through YAML files in `labs` directory. Simply create
 a new file and add required information, e.g. `labs/test.yml`
 
 ```
@@ -36,7 +36,7 @@ vars:
   USER_PASSWORD: "dev"
 ```
 
-defines new lab with id `test` and display name `Testing workshop`. It also 
+defines new lab with id `test` and display name `Testing workshop`. It also
 defines variables that are then substitued in the content itself. Variables are
 set either in the config files or using environment variables. Environment
 variables take precedence over variables in config file.
@@ -44,8 +44,8 @@ variables take precedence over variables in config file.
 Lab can have a logo, it is displayed next to the lab content. In the example above
 the logo file name is `test.png` and logos are always in `public/logos/` directory.
 
-By default all modules are added to the workshops. In case you want just a 
-subset of the workshops, add `activate` section to the `modules` section of 
+By default all modules are added to the workshops. In case you want just a
+subset of the workshops, add `activate` section to the `modules` section of
 your lab and list the ids of modules you want to use.
 
 ```
@@ -55,7 +55,7 @@ modules:
     - environment
 ```
 
-With this configuration, there will be only one module in the lab. 
+With this configuration, there will be only one module in the lab.
 
 Modules may have multiple revisions. In case you want to specific revision,
 add `revisions` section to the `modules` section and specify revision per module.
@@ -69,10 +69,10 @@ modules:
 
 ## Modules
 
-Modules are content sections that you go through during your workshop and are 
-configured in the `config/modules.yml` file. Most of the time you should not need to 
-change this file, but in case you want to change the structure of your lab, you 
-will need to know the ids of the modules you want ot use, and those are 
+Modules are content sections that you go through during your workshop and are
+configured in the `config/modules.yml` file. Most of the time you should not need to
+change this file, but in case you want to change the structure of your lab, you
+will need to know the ids of the modules you want ot use, and those are
 configured in this file. The content files itself live in `modules/` directory.
 
 ```
@@ -80,8 +80,8 @@ environment:
   name: Lab Environment Overview
 ```
 
-defines one module with id `environment` and display name 
-`Lab Environment Overview`. Module may require other modules, when such module is 
+defines one module with id `environment` and display name
+`Lab Environment Overview`. Module may require other modules, when such module is
 added to a lab, it also adds all required modules.
 
 ```
@@ -98,9 +98,9 @@ in the example module `databases` requires module `jboss`.
 Module may provide multiple revisions. There are two approaches to revisions.
 
 First option is to use revision id to provide different module source. In that case
-revision id is appended to the module name. For example to define revision `extra` 
-for module `sourcecode` create file `modules/sourcecode_extra.adoc` instead of 
-`modules/sourcecode.adoc`. 
+revision id is appended to the module name. For example to define revision `extra`
+for module `sourcecode` create file `modules/sourcecode_extra.adoc` instead of
+`modules/sourcecode.adoc`.
 
 Second approach is to use the same file name as for the main content. In that case
 the system automatically falls back to non-suffixed source file. The content is then
@@ -124,11 +124,35 @@ be `extra value`.
 
 Revisions are then chosen as described in the previous section.
 
+### Folders
+Modules can be grouped in folders (one level) inside `modules` folder and be references using the underscore syntax.
+
+Example modules folder structure:
+```
+
+modules
+  ├── java
+  │     ├── jboss.adoc
+  │     └── pipeline.adoc
+  └── ops
+        ├── quotas.adoc
+        └── storage.adoc
+
+```
+
+You can refer to modules in the folders by prepending the name of the folder and underscore:
+```
+  java_jboss
+  java_pipeline
+  ops_quotas
+  ops_storage
+```
+
 ## Defaulting lab
 
-In case you do not want to show the lab selection screen, set environment 
-variable called `DEFAULT_LAB` with id of the lab as it's value. With this 
-configuration, when you enter the selection screen, the user is automatically 
+In case you do not want to show the lab selection screen, set environment
+variable called `DEFAULT_LAB` with id of the lab as it's value. With this
+configuration, when you enter the selection screen, the user is automatically
 redirected to the defined lab.
 
 ```
@@ -147,12 +171,12 @@ to the Test lab at `/test`.
 
 ### DISPLAY_SOURCE
 
-If this environment variables is set, source of the module is displayed below the rendered 
+If this environment variables is set, source of the module is displayed below the rendered
 content.
 
 ## Workshop content as a service
 
-The system can provide you with workshop content without commiting your yml files to the 
+The system can provide you with workshop content without commiting your yml files to the
 application itself. You upload the YAML definition as a file to the `_custom` endpoint and
 the system give you embeddable version of your workshop.
 
@@ -163,7 +187,7 @@ $ curl -XPOST -F "lab=@labs/mods.yml" http://localhost:9292/_custom
 ```
 
 and you will receive JSON with your modules
- 
+
  ```
 [
   {"id":"install","name":"Installing the *oc* client tool"},
@@ -172,12 +196,12 @@ and you will receive JSON with your modules
   {"id":"codechanges","name":"Using Source 2 Image for Code Changes"}
 ]
  ```
- 
+
  To get the module content, upload the same file to the `/_custom/:module` path, where
  `:module` is the module name. E.g.
- 
+
  ```
  $ curl -XPOST -F "lab=@labs/mods.yml" http://localhost:9292/_custom/install
  ```
- 
+
  to get the HTML of the `Installing the *oc* client tool` module.

@@ -1,9 +1,16 @@
 ## Lab: Adding a Database
 
 ### Application Description
-In this lab, we're going to deploy a Mongo database that will be used to store the data for the `nationalparks` application. We will also connect the `nationalparks` service with the newly deployed Mongo database, so that the `nationalparks` service can load and query the database for the corresponding information.
+In this lab, we're going to deploy a Mongo database that will be used to store
+the data for the `nationalparks` application. We will also connect the
+`nationalparks` service with the newly deployed Mongo database, so that the
+`nationalparks` service can load and query the database for the corresponding
+information.
 
-Finally, we will mark the `nationalparks` application as a backend for the map visualization tool, so that it can be dynamically discovered by the `parksmap` component using the OpenShift discovery mechanism and the map will be displayed automatically.
+Finally, we will mark the `nationalparks` application as a backend for the map
+visualization tool, so that it can be dynamically discovered by the `parksmap`
+component using the OpenShift discovery mechanism and the map will be displayed
+automatically.
 
 image::/images/roadshow-app-architecture-nationalparks-2.png[Application architecture,800,align="center"]
 
@@ -44,11 +51,16 @@ persistent storage!). The image will ensure that:
 - A user exists with the specified name
 - The user can access the specified database with the specified password
 
-In the web console in your `{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}` project, again click the *"Add to
-Project"* button, and then find the `mongodb-ephemeral` template, and click it.
-You will notice that there are several MongoDB templates available, some of
-which come with application servers pre-configured. We just need a database,
-though, so `mongodb-ephemeral` is what you should choose.
+In the web console in your `{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}` project,
+again click the *"Add to Project"* button. Click the *Data Stores* category.
+
+image::/images/mongodb-datastores.png[Data Stores]
+
+Type `mongodb` in the search box, and then scroll down to find the *MongoDB
+(Ephemeral)* template, and click it.  You will notice that there are several
+MongoDB templates available, some of which come with application servers
+pre-configured.  We just need a database, though, so the ephemeral Mongo
+template is what you should choose.
 
 image::/images/ocp-mongodb-template.png[MongoDB]
 
@@ -224,6 +236,15 @@ Items inserted in database: 2740
 If you then go back to `/ws/data/all` you will see tons of JSON data now.
 That's great. Our parks map should finally work!
 
+[source]
+----
+http://parksmap-{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}
+----
+
+Hmm... There's just one thing. The main map **STILL** isn't displaying the parks.
+That's because the front end parks map only tries to talk to services that have
+the right *Label*.
+
 [NOTE]
 ====
 You are probably wondering how the database connection magically started
@@ -233,29 +254,23 @@ for application portability across different environments.  The source file that
 performs the connection as well as creates the database schema can be viewed
 here:
 
+[source,role=copypaste]
+----
 {% if PARKSMAP_PY %}
-http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks-py/blob/{{NATIONALPARKS_VERSION}}/wsgi.py#L11-18[http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks-py/blob/{{NATIONALPARKS_VERSION}}/wsgi.py]
+http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks-py/blob/{{NATIONALPARKS_VERSION}}/wsgi.py#L11-18
 {% else %}
-http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks/blob/{{NATIONALPARKS_VERSION}}/src/main/java/org/openshift/parks/mongo/DBConnection.java[DBConnection.java]
+http://{{GITLAB_URL_PREFIX}}.{{ROUTER_ADDRESS}}/{{GITLAB_USER}}/nationalparks/blob/{{NATIONALPARKS_VERSION}}/src/main/java/org/openshift/parks/mongo/DBConnection.java#L44-l48
 {% endif %}
+----
 
 In short summary: By referring to environment variables to connect to services
 (like databases), it can be trivial to promote applications throughout different
 lifecycle environments on OpenShift without having to modify application code.
 
 You can learn more about environment variables in the
-https://docs.openshift.org/latest/dev_guide/environment_variables.html[environment
+https://{{DOCS_URL}}/latest/dev_guide/environment_variables.html[environment
 variables] section of the Developer Guide.
 ====
-
-[source]
-----
-http://parksmap-{{EXPLORE_PROJECT_NAME}}{{USER_SUFFIX}}.{{ROUTER_ADDRESS}}
-----
-
-Hmm... There's just one thing. The main map **STILL** isn't displaying the parks.
-That's because the front end parks map only tries to talk to services that have
-the right *Label*.
 
 #### Exercise: Working With Labels
 
@@ -274,7 +289,8 @@ that service's endpoints to look for map data.
 {% if PARKSMAP_PY %}
 You can see the code that does this link:https://github.com/openshift-roadshow/parksmap-web-py/blob/1.0.0/app.py#L85[here].
 {% else %}
-You can see the code that does this link:https://github.com/openshift-roadshow/parksmap-web/blob/1.0.0/src/main/java/com/openshift/evg/roadshow/rest/ServiceWatcher.java#L20[here].
+You can see the code that does this
+link:https://github.com/openshift-roadshow/parksmap-web/blob/{{PARKSMAP_VERSION}}/src/main/java/com/openshift/evg/roadshow/rest/ServiceWatcher.java#L20[here].
 {% endif %}
 
 
@@ -306,6 +322,12 @@ You see that it only has one label: `app=nationalparks`. Now, use `oc label`:
 [source]
 ----
 oc label route nationalparks type=parksmap-backend
+----
+
+You will see something like:
+
+[source]
+----
 route "nationalparks" labeled
 ----
 
